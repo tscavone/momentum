@@ -4,7 +4,7 @@ import { Box, WrapItem, Heading, VStack, FormControl, Select, FormLabel, Button,
          Tabs, TabList, Tab, TabPanels, TabPanel, Drawer, DrawerBody, DrawerContent,
          DrawerOverlay, DrawerHeader, DrawerCloseButton, useDisclosure, Badge,
          Container } from "@chakra-ui/react";
-import { observable, makeObservable } from 'mobx';
+import { observable } from 'mobx';
 import { Id } from './client/util/Id';
 import { DateRange } from './client/util/DateRange';
 import { Text } from 'slate';
@@ -13,7 +13,8 @@ import { DatedObject } from './client/util/DatedObject';
 import { Note } from './client/value_objects/Note';
 import { RichTextBlock } from './client/components/RichTextBlock';
 import { observer } from "mobx-react";
-
+import { DatePicker } from './client/components/DatePicker';
+import { ReportDrawer } from './client/components/ReportDrawer';
 
 
   //
@@ -59,14 +60,7 @@ import { observer } from "mobx-react";
   //
   // Components
   //
-  const DatePicker = ({onChange, label, value}) => {
-    return (
-      <div className="date-picker">
-        <span>{label}:</span>
-        <input type="date" onChange={onChange} value={value}/>
-      </div>
-    )
-  }
+
 
   const NoteReport = ({note} : {note: DatedObject<Note>}) => {
   
@@ -107,33 +101,16 @@ import { observer } from "mobx-react";
         return children
     }
   }
-  //
-  // Date state
-  //
-  class ReportDates {
-    currentDate: Date | null;
-    reportStartDate: Date;
-    reportEndDate: Date;
-    
-    constructor(){
-      makeObservable(this,{
-        currentDate: observable,
-        reportStartDate: observable,
-        reportEndDate: observable
-      });
-      
-      this.currentDate = null;
-      this.reportStartDate = new Date("02/01/2022");
-      this.reportEndDate = new Date("03/21/2022");
-      }
-    }
-  let reportDates = new ReportDates();
 
   //
   // Employee State
   //
   const employee = observable({
     id: "1234",
+  })
+
+  const DateState = observable({
+    currentDate : null
   })
 
   const App = observer( () => {
@@ -158,23 +135,13 @@ import { observer } from "mobx-react";
   const updateNotes = () => {
     let id = new Id();
     id.id = employee.id
-    let currentDate = reportDates.currentDate; 
+    let currentDate = DateState.currentDate; 
     noteStore.save(id, currentDate ? currentDate : new Date());
   }
 
   const updateUser = (event) => {
     console.log("Update employee")
     employee.id = event.target.value;
-  }
-
-  const getDisplayNotes = () => {
-    let id = new Id();
-    id.id = employee.id
-
-    let displayNotes : DatedObject<Note>[] = (noteStore.getSaved(id,
-      new DateRange(reportDates.reportStartDate, reportDates.reportEndDate)) as 
-      DatedObject<Note>[])
-    return displayNotes;
   }
 
   return (
@@ -193,15 +160,7 @@ import { observer } from "mobx-react";
               <FormLabel htmlFor="currentDate">Date Simulation (debug)</FormLabel>
               <DatePicker value="" label="Current Date (debug)"
                 onChange={(event) =>
-                reportDates.currentDate = new Date(event.target.value)} />
-              <DatePicker value={reportDates.reportStartDate.toISOString().split('T')[0]}
-                label="Report Start Date"
-                onChange={(event) =>
-                  reportDates.reportStartDate = new Date(event.target.value)} />
-              <DatePicker value={reportDates.reportEndDate.toISOString().split('T')[0]}
-                label="Report End Date"
-                onChange={(event) =>
-                  reportDates.reportEndDate = new Date(event.target.value)} />
+                DateState.currentDate = new Date(event.target.value)} />
             </FormControl>
           </VStack>
         </Box>
@@ -233,29 +192,10 @@ import { observer } from "mobx-react";
           </TabPanel>
         </TabPanels>
       </Tabs>
-      <Drawer
+      <ReportDrawer
         isOpen={isOpen}
-        placement='right'
-        onClose={onClose}
-        size={"lg"}
-      >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Leigh's Report</DrawerHeader>
-
-          <DrawerBody>
-            <VStack>
-                {
-                  getDisplayNotes().map((note, i) => {
-                    return (<NoteReport key={i} note={note} />)
-                  })
-                }
-              </VStack>
-          </DrawerBody>
-
-        </DrawerContent>
-      </Drawer>
+        onOpen={onOpen}
+        onClose={onClose} />
 
     </Box>
     </div>

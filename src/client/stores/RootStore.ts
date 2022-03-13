@@ -3,6 +3,10 @@ import { NoteStore } from "./NoteStore";
 import { IDataSettings } from "../data_definitions/SettingsDefinitions";
 import { IDataGlobal } from "../data_definitions/GlobalDefinitions";
 import { ITemporalStore } from "./ITemporalStore";
+import { IStore } from "./IStore";
+import { SettingsStore } from "./SettingsStore";
+import { UserStore } from "./UserStore";
+import { TestUserData } from "../data_definitions/UsersDefinitions";
 
 const settingsTestData : IDataSettings = {
   "entries":[
@@ -65,26 +69,38 @@ const valueTestData : IDataGlobal = {
 //const UserData
 export class RootStore {
     _noteStore: ITemporalStore
+    _settingsStore: IStore
+    _userStore: IStore
   
     constructor() {
-        this._noteStore = new NoteStore()
+      this._noteStore = new NoteStore();
+      this._settingsStore = new SettingsStore();
+      this._userStore = new UserStore();
     }
 
     initialize(){
-        for(const id in valueTestData){
-            this.load(this._noteStore, valueTestData, id)
-        }    
+      this.loadNotes();
+      this.loadSettings();
+      this.loadUsers();
     }
 
-    load(store: ITemporalStore, jsonObj: any, employeeId?: string) : void {
-        console.log("Load Called")
-      
-        let employeeIdTyped : Id = new Id();
-        employeeId = employeeId ? employeeId : "";
-        employeeIdTyped.id = employeeId;
-        let thisEmployeeJsonObj = jsonObj[employeeId];
-      
-        store.load(thisEmployeeJsonObj, employeeIdTyped)
+    private loadNotes() : void {
+        for(let employeeId in valueTestData){
+          
+            let employeeIdTyped : Id = new Id();
+            employeeIdTyped.id = employeeId;
+            let thisEmployeeJsonObj = valueTestData[employeeId];
+          
+            this._noteStore.load(thisEmployeeJsonObj, employeeIdTyped)
+        } 
     }
-  }
+
+    private loadSettings() : void {
+        this._settingsStore.load(settingsTestData);
+    }    
+    
+    private loadUsers() : void {
+        this._userStore.load(TestUserData);
+    }
+}
   

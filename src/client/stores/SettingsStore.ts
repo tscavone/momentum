@@ -6,43 +6,15 @@ import { IDataSettings } from "../data_definitions/SettingsDefinitions";
 import { SettingsValueWithDesc } from "../value_objects/SettingsValueWithDesc";
 
 
-export class SettingsStore implements IStore {
-
-    settingsTestData : IDataSettings = {
-        "entries":[
-          {
-            _id: "1200",
-            _name: "Position",
-            _description: "An employment-level for software engineers",
-          }
-        ],
-        "values": [
-          {
-            _id: "1200-10",
-            _name: "Associate Software Engineer",
-            _description: "Somebody just starting out. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
-            _entryId: "1200"
-          },
-          {
-            _id: "1200-20",
-            _name: "Software Engineer",
-            _description: "Somebody who has been at it for a while. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
-            _entryId: "1200"
-          },
-          {
-            _id: "1200-30",
-            _name: "Senior Software Engineer",
-            _description: "Should be well versed in a lot of stuff and a good programmer.  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            _entryId: "1200"
-          }
-        ]
-      }   
-      
+export class SettingsStore implements IStore {      
     //
     //members
     //
     _settings: Map<string, [SettingsEntry, SettingsValue[]]>;
     
+    //
+    //constructor
+    //
     constructor(){
         this._settings = new Map<string, [SettingsEntry, SettingsValue[]]>();
     }

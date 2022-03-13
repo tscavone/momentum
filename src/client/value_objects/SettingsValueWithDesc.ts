@@ -14,6 +14,7 @@ export class SettingsValueWithDesc extends SettingsValue{
     public static fromJSON(jsonObj: IDataSettingsValue): SettingsValue {
         let entry = Object.assign(new SettingsValueWithDesc(), jsonObj) as SettingsValueWithDesc;
         entry.id = Id.fromString(jsonObj._id);
+        entry._entryId = Id.fromString(jsonObj._entryId);
         
         return entry;
     }

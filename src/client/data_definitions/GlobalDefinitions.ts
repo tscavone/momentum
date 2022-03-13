@@ -1,4 +1,5 @@
 export interface IDataNote {
+  // TODO: add ids!
     _text: string
   }
   

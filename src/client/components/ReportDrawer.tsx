@@ -5,7 +5,7 @@ import { Note } from "../value_objects/Note";
 import { Id } from "../util/Id";
 import { makeObservable, observable } from "mobx";
 import { DatePicker } from "./DatePicker";
-import { useNoteStore } from "./RootStoreProvider";
+import { useNoteStore, useSelectedEmployeeStore } from "./RootStoreProvider";
 import { DateRange } from "../util/DateRange";
 import { observer } from "mobx-react";
 
@@ -45,11 +45,11 @@ let reportDates = new ReportDates();
 export const ReportDrawer = observer( ({isOpen, onOpen, onClose }) => {
     
     const noteStore = useNoteStore();
+    const selectedEmployeeStore = useSelectedEmployeeStore();
     
     const getDisplayNotes = () => {
         let id = new Id();
-//        id.id = employee.id
-        id.id = "1234"
+        id.id = selectedEmployeeStore.selectedId;
     
         let displayNotes : DatedObject<Note>[] = (noteStore.getSaved(id,
           new DateRange(reportDates.reportStartDate, reportDates.reportEndDate)) as 

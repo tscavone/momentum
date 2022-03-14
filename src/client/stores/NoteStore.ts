@@ -56,14 +56,14 @@ export class NoteStore implements ITemporalStore {
 
     load(jsonObj: IDataNotes, employeeId?: Id): void
     {
-        let notes: TemporalCollection<Note> = this.getEmployeeObjects(employeeId!);
+        let notes: TemporalCollection<Note> = this.getEmployeeObjects(employeeId);
 
         notes.clear(new Note());
         notes.current = Note.fromJSON(jsonObj._notes._current);
 
         jsonObj._notes._temporalObjects.forEach(
             //todo: check for obj and date members
-            obj => this.getEmployeeObjects(employeeId!).put(Note.fromJSON(obj._obj), new Date(obj._date))
+            obj => this.getEmployeeObjects(employeeId).put(Note.fromJSON(obj._obj), new Date(obj._date))
         )
      }
 }

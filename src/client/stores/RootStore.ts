@@ -2,11 +2,11 @@ import { Id } from "../util/Id";
 import { NoteStore } from "./NoteStore";
 import { IDataSettings } from "../data_definitions/SettingsDefinitions";
 import { IDataGlobal } from "../data_definitions/GlobalDefinitions";
-import { ITemporalStore } from "./ITemporalStore";
-import { IStore } from "./IStore";
 import { SettingsStore } from "./SettingsStore";
 import { UserStore } from "./UserStore";
 import { TestUserData } from "../data_definitions/UsersDefinitions";
+import { SelectedEmployeeStore } from "./SelectedEmployeeStore";
+import { TestSelectedEmployeeData } from "../data_definitions/SelectedEmployeeDefinitions";
 
 const settingsTestData : IDataSettings = {
   "entries":[
@@ -68,22 +68,27 @@ const valueTestData : IDataGlobal = {
 
 //const UserData
 export class RootStore {
-    _noteStore: ITemporalStore
-    _settingsStore: IStore
-    _userStore: IStore
+    _noteStore: NoteStore
+    _settingsStore: SettingsStore
+    _userStore: UserStore
+    _selectedEmployeeStore: SelectedEmployeeStore
   
     constructor() {
       this._noteStore = new NoteStore();
       this._settingsStore = new SettingsStore();
       this._userStore = new UserStore();
+      this._selectedEmployeeStore = new SelectedEmployeeStore();
     }
 
     initialize(){
       this.loadNotes();
-      this.loadSettings();
-      this.loadUsers();
+      this._settingsStore.load(settingsTestData);
+      this._userStore.load(TestUserData);
+      this._selectedEmployeeStore.load(TestSelectedEmployeeData);
+      
     }
 
+    //TODO - move this loop into notesStore - there's no reason for it to be done here
     private loadNotes() : void {
         for(let employeeId in valueTestData){
           
@@ -95,12 +100,5 @@ export class RootStore {
         } 
     }
 
-    private loadSettings() : void {
-        this._settingsStore.load(settingsTestData);
-    }    
-    
-    private loadUsers() : void {
-        this._userStore.load(TestUserData);
-    }
 }
   

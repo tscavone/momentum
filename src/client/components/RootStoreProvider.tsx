@@ -8,6 +8,7 @@ import { ReactNode } from "react";
 import { IStore } from "../stores/IStore";
 import { ITemporalStore } from "../stores/ITemporalStore";
 import { RootStore } from "../stores/RootStore";
+import { SelectedEmployeeStore } from "../stores/SelectedEmployeeStore";
 
 const StoreContext = React.createContext<RootStore | undefined>(undefined);
 
@@ -33,9 +34,8 @@ export function RootStoreProvider({ children }: { children: ReactNode }) {
 export function useNoteStore(): ITemporalStore{
     const context = React.useContext(StoreContext)
     if (context === undefined) {
-        throw new Error("useRootStore must be used within RootStoreProvider")
+        throw new Error("context not initialized")
     }
-    //let context = initRootStore();
 
     return context._noteStore;
 }
@@ -43,9 +43,8 @@ export function useNoteStore(): ITemporalStore{
 export function useUserStore(): IStore{
     const context = React.useContext(StoreContext)
     if (context === undefined) {
-        throw new Error("useRootStore must be used within RootStoreProvider")
+        throw new Error("context not initialized")
     }
-//    let context = initRootStore();
 
     return context._userStore;
 }
@@ -55,7 +54,15 @@ export function useSettingsStore(): IStore{
     if (context === undefined) {
         throw new Error("useRootStore must be used within RootStoreProvider")
     }
-//    let context = initRootStore();
 
     return context._settingsStore;
+}
+
+export function useSelectedEmployeeStore(): SelectedEmployeeStore{
+    const context = React.useContext(StoreContext)
+    if (context === undefined) {
+        throw new Error("useRootStore must be used within RootStoreProvider")
+    }
+    
+    return context._selectedEmployeeStore;
 }

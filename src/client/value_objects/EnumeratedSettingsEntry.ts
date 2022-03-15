@@ -1,21 +1,22 @@
 // a type of setting whose values are an enumeration (tho not a typescript enumeration)
 //
-import { SettingsEntry } from "./SettingsEntry";
+import { SettingsEntry } from './SettingsEntry'
 
-export class EnumeratedSettingsEntry extends SettingsEntry {
+export class EnumeratedSettingsEntry {
+    // extends SettingsEntry { Not sure if this class even needs to exist, but something's off with it's inheritance
 
     //
     //members
     //
-    potentialValues: SettingsEntry[]
+    _potentialValues: SettingsEntry[]
 
     //
     //constructors
     //
-    constructor(){
-        super();
+    constructor() {
+        //super()
 
-        this.potentialValues = [];
+        this._potentialValues = []
     }
 
     //
@@ -29,12 +30,17 @@ export class EnumeratedSettingsEntry extends SettingsEntry {
     //
     //public methods
     //
-    addPotentialValue(potentialValue: string, potentialValueDescription?: string) {
-        let entry: SettingsEntry = new SettingsEntry();
+    addPotentialValue(
+        potentialValue: string,
+        potentialValueDescription?: string
+    ) {
+        let entry: SettingsEntry = new SettingsEntry()
 
-        entry._name = potentialValue;
-        entry._description = potentialValueDescription ? potentialValueDescription : "";
+        entry.name = potentialValue
+        entry.description = potentialValueDescription
+            ? potentialValueDescription
+            : ''
 
-        this.potentialValues.push(entry);
+        this._potentialValues.push(entry)
     }
-}  
+}

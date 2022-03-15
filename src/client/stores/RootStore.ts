@@ -2,39 +2,11 @@ import { Id } from "../util/Id";
 import { NoteStore } from "./NoteStore";
 import { IDataSettings } from "../data_definitions/SettingsDefinitions";
 import { IDataGlobal } from "../data_definitions/GlobalDefinitions";
-import { SettingsStore } from "./SettingsStore";
+import { SettingsStore, settingsTestData } from "./SettingsStore";
 import { UserStore } from "./UserStore";
 import { TestUserData } from "../data_definitions/UsersDefinitions";
 import { SelectedEmployeeStore } from "./SelectedEmployeeStore";
 import { TestSelectedEmployeeData } from "../data_definitions/SelectedEmployeeDefinitions";
-
-const settingsTestData : IDataSettings = {
-  "entries":[
-    {
-      _id: "1200",
-      _name: "Position",
-      _description: "An employment-level for software engineers"
-    }
-  ],
-  "values":[
-      { _entryId: "1200",
-        _id: "1200-10",
-        _name: "Associate Software Engineer",
-        _description: "Somebody just starting out. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
-      },
-      { _entryId: "1200",
-        _id: "1200-20",
-        _name: "Software Engineer",
-        _description: "Somebody who has been at it for a while. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
-      },
-      { _entryId: "1200",
-        _id: "1200-30",
-        _name: "Senior Software Engineer",
-        _description: "Should be well versed in a lot of stuff and a good programmer.  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-      }
-  ]
-}
-
 const valueTestData : IDataGlobal = {
     "1234": {
       _notes: {

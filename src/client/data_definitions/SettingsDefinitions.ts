@@ -1,18 +1,18 @@
 export interface IDataSettingsEntry {
-    _id: string,
-    _name: string,
-    _description: string,
+    _id: string
+    _name: string
+    _description: string
     _potentialValues?: IDataSettingsEntry[]
 }
 
 export interface IDataSettingsValue {
-    _entryId: string,
-    _id: string,
-    _name: string,
-    _description: string
+    _entryId: string
+    _id: string
+    _value: string
+    _description?: string
 }
 
-export interface IDataSettings{
-    "entries": IDataSettingsEntry[],
-    "values": IDataSettingsValue[] 
+export interface IDataSettings {
+    entries: IDataSettingsEntry[]
+    values: IDataSettingsValue[]
 }

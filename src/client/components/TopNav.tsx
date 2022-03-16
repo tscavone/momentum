@@ -22,13 +22,7 @@ import {
     Heading,
     Select,
 } from '@chakra-ui/react'
-import {
-    HamburgerIcon,
-    CloseIcon,
-    AddIcon,
-    ViewIcon,
-    ChevronDownIcon,
-} from '@chakra-ui/icons'
+import { HamburgerIcon, CloseIcon, ViewIcon } from '@chakra-ui/icons'
 import { ReportDrawer } from './ReportDrawer'
 import { useSelectedEmployeeStore } from './RootStoreProvider'
 

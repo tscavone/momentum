@@ -61,7 +61,7 @@ function SmallWithNavigation() {
 const App = observer(() => {
     return (
         <div className="App">
-            <Box m={5}>
+            <Box>
                 <TopNav>
                     <Tabs size="md" variant="enclosed">
                         <TabList>

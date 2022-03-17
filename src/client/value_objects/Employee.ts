@@ -1,13 +1,14 @@
-//
+// An employee, or direct report to a Manager/User
 //
 
 import { IdentifiedObject } from '../util/IdentifiedObject'
 
-export class StretchQuestion extends IdentifiedObject {
+export class Employee extends IdentifiedObject {
     //
     //members
     //
-    private _question: string
+    _first: string
+    _last: string
 
     //
     //constructors
@@ -15,18 +16,13 @@ export class StretchQuestion extends IdentifiedObject {
     constructor() {
         super()
 
-        this._question = ''
+        this._first = 'UNINITIALIZED'
+        this._last = 'UNINITIAILIZED'
     }
 
     //
     //accessors
     //
-    public get question(): string {
-        return this._question
-    }
-    public set question(value: string) {
-        this._question = value
-    }
 
     //
     //private methods

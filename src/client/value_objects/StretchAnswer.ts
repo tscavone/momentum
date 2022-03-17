@@ -1,36 +1,48 @@
-// 
 //
-
-import { Id } from "../util/Id";
-import { IdentifiedObject } from "../util/IdentifiedObject";
+//
+import { IDataStretchAnswer } from '../data_definitions/GlobalDefinitions'
+import { Id } from '../util/Id'
+import { IdentifiedObject } from '../util/IdentifiedObject'
 
 export class StretchAnswer extends IdentifiedObject {
-
     //
     //members
     //
-    _answer: string;
-    _question: Id;
-  
+    private _answer: string
+    private _question: Id
+
     //
     // constructors
     //
-    constructor(answer: string, question: Id) {
-        super();
-        this._answer = answer;
-        this._question = question;
+    constructor() {
+        super()
+        this._answer = null
+        this._question = null
     }
 
     //
     //accessors
     //
-
-    //
-    //private methods
-    //
+    public get answer(): string {
+        return this._answer
+    }
+    public set answer(value: string) {
+        this._answer = value
+    }
+    public get question(): Id {
+        return this._question
+    }
+    public set question(value: Id) {
+        this._question = value
+    }
 
     //
     //public methods
     //
+    public static fromJSON(jsonObj: IDataStretchAnswer): StretchAnswer {
+        let note = Object.assign(new StretchAnswer(), jsonObj) as StretchAnswer
+        note.id = Id.fromString(jsonObj._id)
 
+        return note
+    }
 }

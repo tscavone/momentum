@@ -1,69 +1,58 @@
 // store for employee note objects
 //
 
-import { TemporalCollection } from "../util/TemporalCollection";
-import { Note } from "../value_objects/Note";
-import { Id } from "../util/Id";
-import { DateRange } from "../util/DateRange";
-import { DatedObject } from "../util/DatedObject";
-import { IdentifiedObject } from "../util/IdentifiedObject";
-import { ITemporalStore } from "./ITemporalStore";
-import { IDataNotes } from "../data_definitions/GlobalDefinitions";
+import { TemporalCollection } from '../util/TemporalCollection'
+import { Note } from '../value_objects/Note'
+import { Id } from '../util/Id'
+import {
+    IDataEmployee,
+    IDataNote,
+    IDataTemporalObject,
+} from '../data_definitions/GlobalDefinitions'
+import { AbstractTemporalStore } from './AbstractTemporalStore'
+import { Employee } from '../value_objects/Employee'
 
-export class NoteStore implements ITemporalStore {
-
-    //
-    //members
-    //
-    _allEmployeeNotes: Map<string, TemporalCollection<Note>>
-
+export class NoteStore extends AbstractTemporalStore<Note> {
     //
     //constructors
     //
-    constructor(){
-        this._allEmployeeNotes = new Map<string, TemporalCollection<Note>>()
-    }
-    //
-    //accessors
-    //
-
-    //
-    //private methods
-    //
-    private getEmployeeObjects(employeeId: Id) : TemporalCollection<Note> {
-
-        if(this._allEmployeeNotes.get(employeeId.id) === undefined){
-            this._allEmployeeNotes.set(employeeId.id, new TemporalCollection<Note>(new Note()))
-        }
-
-        return this._allEmployeeNotes.get(employeeId.id)!;
+    constructor() {
+        super()
     }
 
     //
     //public methods
     //
-    setCurrent(employeeId : Id, newValue : string){
-        this._allEmployeeNotes.get(employeeId.id)!.current.text = newValue;
-    }
+    addEmployee(newEmployee: Employee | string): void {
+        const employeeId: string =
+            newEmployee instanceof Employee ? newEmployee.id.id : newEmployee
 
-    save(id: Id, date: Date) {
-        this._allEmployeeNotes.get(id.id)!.save(date)
-    }
-  
-    getSaved(id: Id, dateRange: DateRange): DatedObject<IdentifiedObject>[] {
-        return this.getEmployeeObjects(id).getSaved(dateRange)
-    }
+        if (this._allEmployeeObjects.get(employeeId) !== undefined) {
+            throw `adding employee over existing: ${employeeId}`
+        }
 
-    load(jsonObj: IDataNotes, employeeId?: Id): void
-    {
-        let notes: TemporalCollection<Note> = this.getEmployeeObjects(employeeId);
-
-        notes.clear(new Note());
-        notes.current = Note.fromJSON(jsonObj._notes._current);
-
-        jsonObj._notes._temporalObjects.forEach(
-            //todo: check for obj and date members
-            obj => this.getEmployeeObjects(employeeId).put(Note.fromJSON(obj._obj), new Date(obj._date))
+        this._allEmployeeObjects.set(
+            employeeId,
+            new TemporalCollection<Note>(new Note())
         )
-     }
+    }
+
+    load(jsonObj: IDataTemporalObject<IDataNote>, employeeId?: Id): void {
+        this.addEmployee(employeeId.id)
+
+        let notes: TemporalCollection<Note> =
+            this.getEmployeeObjects(employeeId)
+
+        notes.clear(new Note())
+        notes.current = Note.fromJSON(jsonObj._current)
+
+        jsonObj._temporalObjects.forEach(
+            //todo: check for obj and date members
+            (obj) =>
+                this.getEmployeeObjects(employeeId).put(
+                    Note.fromJSON(obj._obj),
+                    new Date(obj._date)
+                )
+        )
+    }
 }

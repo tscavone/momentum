@@ -8,6 +8,7 @@ import escapeHtml from 'escape-html'
 import { Text } from 'slate'
 import { RichTextBlock } from './RichTextBlock'
 import { Box, Button, VStack } from '@chakra-ui/react'
+import { Note } from '../value_objects/Note'
 
 export const NotesTab = () => {
     //
@@ -80,7 +81,9 @@ export const NotesTab = () => {
     const updateCurrentNote = (newValue) => {
         let id = new Id()
         id.id = selectedEmployeeStore.selectedId
-        noteStore.setCurrent(id, newValue.map((n) => serialize(n)).join(''))
+        let newNote = new Note()
+        newNote.text = newValue.map((n) => serialize(n)).join('')
+        noteStore.setCurrent(id, newNote)
     }
 
     const updateNotes = () => {

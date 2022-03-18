@@ -1,26 +1,25 @@
 // representation of a user of the system
 //
 
-import { IUserData } from "../data_definitions/UsersDefinitions";
-import { Id } from "../util/Id";
-import { IdentifiedObject } from "../util/IdentifiedObject";
+import { IEmployeeData } from '../data_definitions/EmployeeDefinitions'
+import { Id } from '../util/Id'
+import { IdentifiedObject } from '../util/IdentifiedObject'
 
-export class User extends IdentifiedObject{
-
+export class User extends IdentifiedObject {
     //
     //members
     //
-    _first : String;
-    _last : String;
+    _first: String
+    _last: String
 
     //
     //constructors
     //
-    constructor(){
-        super();
+    constructor() {
+        super()
 
-        this._first = "";
-        this._last = "";
+        this._first = ''
+        this._last = ''
     }
 
     //
@@ -34,11 +33,10 @@ export class User extends IdentifiedObject{
     //
     //public methods
     //
-    public static fromJSON(jsonObj: IUserData): User {
-        let user = Object.assign(new User(), jsonObj) as User;
-        user.id = Id.fromString(jsonObj._id);
-        
-        return user;
-    }
+    public static fromJSON(jsonObj: IEmployeeData): User {
+        let user = Object.assign(new User(), jsonObj) as User
+        user.id = Id.fromString(jsonObj._id)
 
+        return user
+    }
 }

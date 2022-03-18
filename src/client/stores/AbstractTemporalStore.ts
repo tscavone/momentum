@@ -13,6 +13,8 @@ import {
 } from '../data_definitions/GlobalDefinitions'
 import { Employee } from '../value_objects/Employee'
 import { clone } from 'lodash'
+import {} from 'typescript'
+import { makeAutoObservable } from 'mobx'
 
 export abstract class AbstractTemporalStore<T extends IdentifiedObject>
     implements ITemporalStore
@@ -35,8 +37,10 @@ export abstract class AbstractTemporalStore<T extends IdentifiedObject>
     //
     //private methods
     //
-    protected getEmployeeObjects(employeeId: Id): TemporalCollection<T> {
-        return this._allEmployeeObjects.get(employeeId.id)!
+    protected getEmployeeObjects(id: Id | string): TemporalCollection<T> {
+        let stringId = id instanceof Id ? id.id : id
+
+        return this._allEmployeeObjects.get(stringId)!
     }
 
     //
@@ -51,11 +55,20 @@ export abstract class AbstractTemporalStore<T extends IdentifiedObject>
         this._allEmployeeObjects.get(id.id)!.save(date)
     }
 
-    getSaved(id: Id, dateRange: DateRange): DatedObject<IdentifiedObject>[] {
-        return this.getEmployeeObjects(id).getSaved(dateRange)
+    getSaved(
+        id: Id | string,
+        dateRange: DateRange
+    ): DatedObject<IdentifiedObject>[] {
+        let stringId = id instanceof Id ? id.id : id
+
+        return this.getEmployeeObjects(stringId).getSaved(dateRange)
     }
 
-    abstract load(
+    getAllSaved(id: Id | string) {
+        return this.getSaved(id, DateRange.upTo(DateRange.AFTER_TIMES))
+    }
+
+    abstract loadEmployee(
         jsonObj: IDataTemporalObject<IDataIdentifiedObject>,
         employeeId?: Id
     ): void

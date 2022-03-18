@@ -4,60 +4,6 @@ import { SettingsEntry } from '../value_objects/SettingsEntry'
 import { IStore } from './IStore'
 import { IDataSettings } from '../data_definitions/SettingsDefinitions'
 import { SettingsValueWithDesc } from '../value_objects/SettingsValueWithDesc'
-import { entries } from 'lodash'
-
-export const settingsTestData: IDataSettings = {
-    entries: [
-        {
-            _id: '1200',
-            _name: 'positions',
-            _description: 'An employment-level for software engineers',
-        },
-        {
-            _id: '1300',
-            _name: 'stretch questions',
-            _description: 'Questions to ask to get to know your reports better',
-        },
-    ],
-    values: [
-        {
-            _entryId: '1200',
-            _id: '1200-10',
-            _value: 'Associate Software Engineer',
-            _description:
-                'Somebody just starting out. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
-        },
-        {
-            _entryId: '1200',
-            _id: '1200-20',
-            _value: 'Software Engineer',
-            _description:
-                'Somebody who has been at it for a while. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
-        },
-        {
-            _entryId: '1200',
-            _id: '1200-30',
-            _value: 'Senior Software Engineer',
-            _description:
-                'Should be well versed in a lot of stuff and a good programmer.  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        },
-        {
-            _entryId: '1300',
-            _id: '1300-10',
-            _value: "How do you debug a problem when you're really stuck?",
-        },
-        {
-            _entryId: '1300',
-            _id: '1300-20',
-            _value: 'What initially got you into coding?',
-        },
-        {
-            _entryId: '1300',
-            _id: '1300-30',
-            _value: 'Have you ever eaten Vegemite?',
-        },
-    ],
-}
 
 export class SettingsStore implements IStore {
     //
@@ -95,7 +41,7 @@ export class SettingsStore implements IStore {
         throw `getByEntryName: setting not found with name ${name}`
     }
 
-    load(jsonObj: IDataSettings, employeeId?: Id): void {
+    loadEmployee(jsonObj: IDataSettings, employeeId?: Id): void {
         //because we can't overload 'load' :/
         if (employeeId)
             throw "Settings Store doesn't use employeeId so this was most likely called in error"

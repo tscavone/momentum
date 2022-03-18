@@ -37,7 +37,10 @@ export class NoteStore extends AbstractTemporalStore<Note> {
         )
     }
 
-    load(jsonObj: IDataTemporalObject<IDataNote>, employeeId?: Id): void {
+    loadEmployee(
+        jsonObj: IDataTemporalObject<IDataNote>,
+        employeeId?: Id
+    ): void {
         this.addEmployee(employeeId.id)
 
         let notes: TemporalCollection<Note> =

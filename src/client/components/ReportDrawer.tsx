@@ -66,11 +66,8 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
     const selectedEmployeeStore = useSelectedEmployeeStore()
 
     const getDisplayNotes = () => {
-        let id = new Id()
-        id.id = selectedEmployeeStore.selectedId
-
         let displayNotes: DatedObject<Note>[] = noteStore.getSaved(
-            id,
+            selectedEmployeeStore.selectedId,
             new DateRange(
                 reportDates.reportStartDate,
                 reportDates.reportEndDate

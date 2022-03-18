@@ -1,22 +1,21 @@
 // store for users of the momentum app
 //
 
-import { Id } from "../util/Id";
-import { User } from "../value_objects/User";
-import { IStore } from "./IStore";
-import { IGlobalUserData } from "../data_definitions/UsersDefinitions";
+import { Id } from '../util/Id'
+import { User } from '../value_objects/User'
+import { IStore } from './IStore'
+import { IGlobalEmployeeData } from '../data_definitions/EmployeeDefinitions'
 
 export class UserStore implements IStore {
-    
     //
     //members
     //
-    private _users : Map<string, User>
+    private _users: Map<string, User>
 
     //
     //constructors
     //
-    constructor(){
+    constructor() {
         this._users = new Map<string, User>()
     }
     //
@@ -31,14 +30,14 @@ export class UserStore implements IStore {
     //public methods
     //
 
-    load(jsonObj: IGlobalUserData, employeeId?: Id): void {
+    loadEmployee(jsonObj: IGlobalEmployeeData, employeeId?: Id): void {
         //because we can't overload 'load' :/
-        if(employeeId)
+        if (employeeId)
             throw "Settings Store doesn't use employeeId so this was most likely called in error"
-    
-        for(const jsonId in jsonObj){
-            const user = User.fromJSON(jsonObj[jsonId]);
-            this._users.set(jsonId, (user as User));
+
+        for (const jsonId in jsonObj) {
+            const user = User.fromJSON(jsonObj[jsonId])
+            this._users.set(jsonId, user as User)
         }
     }
 }

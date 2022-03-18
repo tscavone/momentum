@@ -9,7 +9,7 @@ export class StretchAnswer extends IdentifiedObject {
     //members
     //
     private _answer: string
-    private _question: Id
+    private _question: string
 
     //
     // constructors
@@ -29,10 +29,10 @@ export class StretchAnswer extends IdentifiedObject {
     public set answer(value: string) {
         this._answer = value
     }
-    public get question(): Id {
+    public get question(): string {
         return this._question
     }
-    public set question(value: Id) {
+    public set question(value: string) {
         this._question = value
     }
 

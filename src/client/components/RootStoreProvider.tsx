@@ -9,6 +9,7 @@ import { ITemporalStore } from '../stores/ITemporalStore'
 import { RootStore } from '../stores/RootStore'
 import { SelectedEmployeeStore } from '../stores/SelectedEmployeeStore'
 import { SettingsStore } from '../stores/SettingsStore'
+import { StretchAnswerStore } from '../stores/StretchAnswerStore'
 import { UserStore } from '../stores/UserStore'
 
 const StoreContext = React.createContext<RootStore | undefined>(undefined)
@@ -69,4 +70,13 @@ export function useSelectedEmployeeStore(): SelectedEmployeeStore {
     }
 
     return context._selectedEmployeeStore
+}
+
+export function useStretchAnswerStore(): StretchAnswerStore {
+    const context = React.useContext(StoreContext)
+    if (context === undefined) {
+        throw new Error('useRootStore must be used within RootStoreProvider')
+    }
+
+    return context._stretchAnswerStore
 }

@@ -10,6 +10,9 @@ import { IStore } from './IStore'
 export interface ITemporalStore extends IStore {
     setCurrent(employeeId: Id, newValue: IdentifiedObject): void
     save(id: Id, date: Date): void
-    getSaved(id: Id, dateRange: DateRange): DatedObject<IdentifiedObject>[]
-    load(jsonObj: any, employeeId: Id): void
+    getSaved(
+        id: Id | string,
+        dateRange: DateRange
+    ): DatedObject<IdentifiedObject>[]
+    loadEmployee(jsonObj: any, employeeId: Id): void
 }

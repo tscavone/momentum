@@ -2,6 +2,7 @@
 //
 
 import { IdentifiedObject } from '../util/IdentifiedObject'
+import { Position } from './Position'
 
 export class Employee extends IdentifiedObject {
     //

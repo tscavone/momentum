@@ -1,15 +1,16 @@
-// An employee, or direct report to a Manager/User
+// representation of a user of the system
 //
 
+import { IEmployeeData } from '../data_definitions/EmployeeDefinitions'
+import { Id } from '../util/Id'
 import { IdentifiedObject } from '../util/IdentifiedObject'
-import { Position } from './Position'
 
 export class Employee extends IdentifiedObject {
     //
     //members
     //
-    _first: string
-    _last: string
+    private _first: String
+    private _last: String
 
     //
     //constructors
@@ -17,13 +18,25 @@ export class Employee extends IdentifiedObject {
     constructor() {
         super()
 
-        this._first = 'UNINITIALIZED'
-        this._last = 'UNINITIAILIZED'
+        this._first = ''
+        this._last = ''
     }
 
     //
     //accessors
     //
+    public get first(): String {
+        return this._first
+    }
+    public set first(value: String) {
+        this._first = value
+    }
+    public get last(): String {
+        return this._last
+    }
+    public set last(value: String) {
+        this._last = value
+    }
 
     //
     //private methods
@@ -32,4 +45,10 @@ export class Employee extends IdentifiedObject {
     //
     //public methods
     //
+    public static fromJSON(jsonObj: IEmployeeData): Employee {
+        let employee = Object.assign(new Employee(), jsonObj) as Employee
+        employee.id = Id.fromString(jsonObj._id)
+
+        return employee
+    }
 }

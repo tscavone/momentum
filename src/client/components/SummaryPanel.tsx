@@ -4,18 +4,23 @@ import {
     AccordionPanel,
     Box,
 } from '@chakra-ui/react'
-import { useSelectedEmployeeStore } from './RootStoreProvider'
+import { observer } from 'mobx-react'
+import { useEmployeeStore, useSelectedEmployeeStore } from './RootStoreProvider'
 
-export const SummaryPanel = () => {
+export const SummaryPanel = observer(() => {
     const selectedEmployeeStore = useSelectedEmployeeStore()
-    //    const selectedEmployeeStore = useEmployeeStore()
+    const employeeStore = useEmployeeStore()
+
+    const employeeData = employeeStore.getEmployee(
+        selectedEmployeeStore.selectedId
+    )
 
     return (
         <>
             <h2>
                 <AccordionButton>
                     <Box flex="1" textAlign="left">
-                        {selectedEmployeeStore.selectedId}
+                        {`${employeeData.first} ${employeeData.last}'s Summary`}
                     </Box>
                     <AccordionIcon />
                 </AccordionButton>
@@ -23,4 +28,4 @@ export const SummaryPanel = () => {
             <AccordionPanel pb={4}></AccordionPanel>
         </>
     )
-}
+})

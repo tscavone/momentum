@@ -36,7 +36,7 @@ export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
         )
     }
 
-    loadEmployee(
+    load(
         jsonObj: IDataTemporalObject<IDataStretchAnswer>,
         employeeId?: Id
     ): void {

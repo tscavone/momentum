@@ -1,7 +1,7 @@
 import { Id } from '../util/Id'
 import { NoteStore } from './NoteStore'
 import { SettingsStore } from './SettingsStore'
-import { UserStore } from './UserStore'
+import { EmployeeStore } from './EmployeeStore'
 import { SelectedEmployeeStore } from './SelectedEmployeeStore'
 import { TestSelectedEmployeeData } from '../data_definitions/SelectedEmployeeDefinitions'
 import { StretchAnswerStore } from './StretchAnswerStore'
@@ -14,7 +14,7 @@ import {
 //const UserData
 export class RootStore {
     _settingsStore: SettingsStore
-    _userStore: UserStore
+    _employeeStore: EmployeeStore
     _selectedEmployeeStore: SelectedEmployeeStore
     //Temporal Object Stores
     _noteStore: NoteStore
@@ -22,16 +22,16 @@ export class RootStore {
 
     constructor() {
         this._settingsStore = new SettingsStore()
-        this._userStore = new UserStore()
+        this._employeeStore = new EmployeeStore()
         this._selectedEmployeeStore = new SelectedEmployeeStore()
         this._noteStore = new NoteStore()
         this._stretchAnswerStore = new StretchAnswerStore()
     }
 
     initialize() {
-        this._settingsStore.loadEmployee(settingsTestData)
-        this._userStore.loadEmployee(employeeTestData)
-        this._selectedEmployeeStore.loadEmployee(TestSelectedEmployeeData)
+        this._settingsStore.load(settingsTestData)
+        this._employeeStore.load(employeeTestData)
+        this._selectedEmployeeStore.load(TestSelectedEmployeeData)
         this.loadTemporalObjects()
     }
 
@@ -41,11 +41,8 @@ export class RootStore {
             employeeIdTyped.id = employeeId
             let thisEmployeeJsonObj = valueTestData[employeeId]
 
-            this._noteStore.loadEmployee(
-                thisEmployeeJsonObj._notes,
-                employeeIdTyped
-            )
-            this._stretchAnswerStore.loadEmployee(
+            this._noteStore.load(thisEmployeeJsonObj._notes, employeeIdTyped)
+            this._stretchAnswerStore.load(
                 thisEmployeeJsonObj._stretchAnswers,
                 employeeIdTyped
             )

@@ -24,7 +24,7 @@ import {
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon, ViewIcon } from '@chakra-ui/icons'
 import { ReportDrawer } from './ReportDrawer'
-import { useSelectedEmployeeStore } from './RootStoreProvider'
+import { useEmployeeStore, useSelectedEmployeeStore } from './RootStoreProvider'
 
 const Links = ['Links', 'Settings']
 
@@ -52,8 +52,28 @@ export function TopNav({ children }: { children: ReactNode }) {
     } = useDisclosure()
     const reportButtonRef = useRef<HTMLButtonElement>(null)
     const selectedEmployeeStore = useSelectedEmployeeStore()
+    const employeeStore = useEmployeeStore()
     const updateUserSelector = (e: React.ChangeEvent<HTMLSelectElement>) => {
         selectedEmployeeStore.selectedId = e.currentTarget.value
+    }
+
+    const employeeData = employeeStore.getEmployee(
+        selectedEmployeeStore.selectedId
+    )
+
+    const getEmployeeSelectorOptions = (): ReactNode[] => {
+        let returnValues: ReactNode[] = []
+
+        employeeStore.employees.forEach((employee, id) => {
+            console.log('employees', id, employee)
+            returnValues.push(
+                <option
+                    value={id}
+                >{`${employee.first} ${employee.last}`}</option>
+            )
+        })
+
+        return returnValues
     }
 
     return (
@@ -91,9 +111,7 @@ export function TopNav({ children }: { children: ReactNode }) {
                             onChange={updateUserSelector}
                             defaultValue={selectedEmployeeStore.selectedId}
                         >
-                            <option value="1234">User1234</option>
-                            <option value="2345">User2345</option>
-                            <option value="3456">LongUser name Jones</option>
+                            {getEmployeeSelectorOptions()}
                         </Select>
                         <Button
                             variant={'solid'}

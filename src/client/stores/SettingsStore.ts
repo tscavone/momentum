@@ -41,7 +41,7 @@ export class SettingsStore implements IStore {
         throw `getByEntryName: setting not found with name ${name}`
     }
 
-    loadEmployee(jsonObj: IDataSettings, employeeId?: Id): void {
+    load(jsonObj: IDataSettings, employeeId?: Id): void {
         //because we can't overload 'load' :/
         if (employeeId)
             throw "Settings Store doesn't use employeeId so this was most likely called in error"

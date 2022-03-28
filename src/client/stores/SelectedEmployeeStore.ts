@@ -39,7 +39,7 @@ export class SelectedEmployeeStore implements IStore {
     //
     //public methods
     //
-    loadEmployee(jsonObj: ISelectedEmployeeData, employeeId?: Id): void {
+    load(jsonObj: ISelectedEmployeeData, employeeId?: Id): void {
         //the loaded data itself is a selected employee id, so there shouldn't be a passed one
         if (employeeId)
             throw "Settings Store doesn't use employeeId so this was most likely called in error"

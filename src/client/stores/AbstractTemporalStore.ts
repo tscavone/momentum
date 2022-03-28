@@ -68,7 +68,7 @@ export abstract class AbstractTemporalStore<T extends IdentifiedObject>
         return this.getSaved(id, DateRange.upTo(DateRange.AFTER_TIMES))
     }
 
-    abstract loadEmployee(
+    abstract load(
         jsonObj: IDataTemporalObject<IDataIdentifiedObject>,
         employeeId?: Id
     ): void

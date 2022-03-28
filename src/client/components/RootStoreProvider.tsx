@@ -10,7 +10,7 @@ import { RootStore } from '../stores/RootStore'
 import { SelectedEmployeeStore } from '../stores/SelectedEmployeeStore'
 import { SettingsStore } from '../stores/SettingsStore'
 import { StretchAnswerStore } from '../stores/StretchAnswerStore'
-import { UserStore } from '../stores/UserStore'
+import { EmployeeStore } from '../stores/EmployeeStore'
 
 const StoreContext = React.createContext<RootStore | undefined>(undefined)
 
@@ -45,13 +45,13 @@ export function useNoteStore(): ITemporalStore {
     return context._noteStore
 }
 
-export function useUserStore(): UserStore {
+export function useEmployeeStore(): EmployeeStore {
     const context = React.useContext(StoreContext)
     if (context === undefined) {
         throw new Error('context not initialized')
     }
 
-    return context._userStore
+    return context._employeeStore
 }
 
 export function useSettingsStore(): SettingsStore {

@@ -7,14 +7,12 @@ import { DatedObject } from '../util/DatedObject'
 import { IdentifiedObject } from '../util/IdentifiedObject'
 import { ITemporalStore } from './ITemporalStore'
 import {
-    IDataEmployee,
     IDataIdentifiedObject,
     IDataTemporalObject,
 } from '../data_definitions/GlobalDefinitions'
 import { Employee } from '../value_objects/Employee'
 import { clone } from 'lodash'
 import {} from 'typescript'
-import { makeAutoObservable } from 'mobx'
 
 export abstract class AbstractTemporalStore<T extends IdentifiedObject>
     implements ITemporalStore
@@ -48,11 +46,19 @@ export abstract class AbstractTemporalStore<T extends IdentifiedObject>
     //
     abstract addEmployee(newEmployee: Employee): void
 
-    setCurrent(employeeId: Id, newValue: T) {
-        this._allEmployeeObjects.get(employeeId.id)!.current = clone(newValue)
+    getCurrent(employeeId: Id | string): T {
+        const id = Id.toString(employeeId)
+        return this._allEmployeeObjects.get(id).current
     }
-    save(id: Id, date: Date) {
-        this._allEmployeeObjects.get(id.id)!.save(date)
+
+    setCurrent(employeeId: Id | string, newValue: T) {
+        const id = Id.toString(employeeId)
+        this._allEmployeeObjects.get(id).current = clone(newValue)
+    }
+
+    save(employeeId: Id | string, date: Date) {
+        const id = Id.toString(employeeId)
+        this._allEmployeeObjects.get(id)!.save(date)
     }
 
     getSaved(

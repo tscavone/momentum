@@ -1,13 +1,11 @@
 //
 // this component represents the notes tab in the main application
 //
-
-import { Id } from '../util/Id'
 import { useNoteStore, useSelectedEmployeeStore } from './RootStoreProvider'
 import escapeHtml from 'escape-html'
 import { Text } from 'slate'
 import { RichTextBlock } from './RichTextBlock'
-import { Box, Button, VStack } from '@chakra-ui/react'
+import { Box, Button, Checkbox, Flex, Spacer, VStack } from '@chakra-ui/react'
 import { Note } from '../value_objects/Note'
 
 export const NotesTab = () => {
@@ -79,18 +77,17 @@ export const NotesTab = () => {
     }
 
     const updateCurrentNote = (newValue) => {
-        let id = new Id()
-        id.id = selectedEmployeeStore.selectedId
         let newNote = new Note()
         newNote.text = newValue.map((n) => serialize(n)).join('')
-        noteStore.setCurrent(id, newNote)
+        noteStore.setCurrent(selectedEmployeeStore.selectedId, newNote)
     }
 
     const updateNotes = () => {
-        let id = new Id()
-        id.id = selectedEmployeeStore.selectedId
         let currentDate = selectedEmployeeStore._currentDate
-        noteStore.save(id, currentDate ? currentDate : new Date())
+        noteStore.save(
+            selectedEmployeeStore.selectedId,
+            currentDate ? currentDate : new Date()
+        )
     }
 
     return (
@@ -102,7 +99,21 @@ export const NotesTab = () => {
                     updateCurrentNote={updateCurrentNote}
                 />
             </Box>
-            <Button onClick={updateNotes}>Save Note</Button>
+
+            <Flex
+                alignItems={'center'}
+                justifyContent={'flex-end'}
+                direction={'row'}
+                w={[250, 500, 750]}
+            >
+                <Spacer />
+                <Box p={2}>
+                    <Checkbox>private</Checkbox>
+                </Box>
+                <Box p={2}>
+                    <Button onClick={updateNotes}>Save Note</Button>
+                </Box>
+            </Flex>
         </VStack>
     )
 }

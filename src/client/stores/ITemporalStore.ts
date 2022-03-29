@@ -8,8 +8,9 @@ import { IdentifiedObject } from '../util/IdentifiedObject'
 import { IStore } from './IStore'
 
 export interface ITemporalStore extends IStore {
-    setCurrent(employeeId: Id, newValue: IdentifiedObject): void
-    save(id: Id, date: Date): void
+    setCurrent(employeeId: Id | string, newValue: IdentifiedObject): void
+    getCurrent(employeeId: Id | string)
+    save(id: Id | string, date: Date): void
     getSaved(
         id: Id | string,
         dateRange: DateRange

@@ -1,5 +1,6 @@
 import {
     Box,
+    Button,
     Container,
     Link,
     Stack,
@@ -22,10 +23,25 @@ export function Footer() {
                 align={{ base: 'center', md: 'center' }}
             >
                 <Stack direction={'row'} spacing={6}>
-                    <Link href={'#'}>About</Link>
-                    <Link href={'#'}>Blog</Link>
+                    <Link href={'#'}>about</Link>\{' '}
+                    <Link href={'#'}>contact</Link>
                 </Stack>
+                <Box>
+                    <Button>save all</Button>
+                </Box>
             </Container>
         </Box>
+        // <Flex direction={'row'}>
+        //         <Box p={8}>
+        //             <Link href={'#'}>about</Link>
+        //         </Box>
+        //         <Box p={8}>
+        //             <Link href={'#'}>contact</Link>
+        //         </Box>
+        //         <Spacer />
+        //         <Box p={16}>
+        //             <Button>save all</Button>
+        //         </Box>
+        //     </Flex>
     )
 }

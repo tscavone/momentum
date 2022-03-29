@@ -54,7 +54,11 @@ export const StretchQuesitonTab = observer(() => {
             })
 
         answeredQuestions.forEach((value, key) => {
-            returnValues.push(<option value={key}>{value}</option>)
+            returnValues.push(
+                <option key={key} value={key}>
+                    {value}
+                </option>
+            )
         })
         return returnValues
     }

@@ -68,6 +68,7 @@ export function TopNav({ children }: { children: ReactNode }) {
             console.log('employees', id, employee)
             returnValues.push(
                 <option
+                    key={id}
                     value={id}
                 >{`${employee.first} ${employee.last}`}</option>
             )
@@ -106,7 +107,7 @@ export function TopNav({ children }: { children: ReactNode }) {
                     <Flex alignItems={'center'}>
                         <Select
                             variant="flushed"
-                            maxWidth="140px"
+                            maxWidth="300px"
                             colorScheme={'teal'}
                             onChange={updateUserSelector}
                             defaultValue={selectedEmployeeStore.selectedId}

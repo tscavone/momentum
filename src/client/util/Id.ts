@@ -1,30 +1,29 @@
 // a guid that is used to identify objects
 //
 
-import {v4 as uuidv4} from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
 
 export class Id {
-
     //
     //members
     //
-    private _id: string;
-    
+    private _id: string
+
     //
     //constructors
     //
-    constructor(){
-        this._id = uuidv4();
+    constructor() {
+        this._id = uuidv4()
     }
-    
+
     //
     //accessors
     //
     public get id(): string {
-        return this._id;
+        return this._id
     }
     public set id(value: string) {
-        this._id = value;
+        this._id = value
     }
 
     //
@@ -35,7 +34,11 @@ export class Id {
     //public methods
     //
 
-    static fromString(id: string){
-        return Object.assign(new Id(), {_id: id});
+    static fromString(id: string) {
+        return Object.assign(new Id(), { _id: id })
+    }
+
+    static toString(id: Id | string): string {
+        return id instanceof Id ? id.id : id
     }
 }

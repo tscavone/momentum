@@ -20,7 +20,7 @@ export const MainContent = () => {
                     <h2>
                         <AccordionButton>
                             <Box flex="1" textAlign="left">
-                                Current Updates
+                                current updates
                             </Box>
                             <AccordionIcon />
                         </AccordionButton>

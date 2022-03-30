@@ -16,7 +16,7 @@ export const TabContainer = () => {
     }
 
     return (
-        <Tabs size="md" variant="enclosed">
+        <Tabs size="md" variant="enclosed" colorScheme={'green'}>
             <TabList>
                 <Tab>
                     <EditIcon style={iconStyle} />

@@ -1,12 +1,17 @@
 //
 // this component represents the notes tab in the main application
 //
-import { useNoteStore, useSelectedEmployeeStore } from './RootStoreProvider'
+import {
+    useCurrentDateStore,
+    useNoteStore,
+    useSelectedEmployeeStore,
+} from './RootStoreProvider'
 import escapeHtml from 'escape-html'
 import { Text } from 'slate'
 import { RichTextBlock } from './RichTextBlock'
 import { Box, Button, Checkbox, Flex, Spacer, VStack } from '@chakra-ui/react'
 import { Note } from '../value_objects/Note'
+import { CurrentDateStore } from '../stores/CurrentDateStore'
 
 export const NotesTab = () => {
     //
@@ -49,6 +54,7 @@ export const NotesTab = () => {
 
     const noteStore = useNoteStore()
     const selectedEmployeeStore = useSelectedEmployeeStore()
+    const currentDateStore = useCurrentDateStore()
 
     //
     //  Methods that need to go into somewhere
@@ -66,7 +72,7 @@ export const NotesTab = () => {
 
         switch (node.type) {
             case 'block-quote':
-                return `<blockquote><p>${children}</p></blockquote>`
+                return `<blockquote class="blockquote"><p>${children}</p></blockquote>`
             case 'paragraph':
                 return `<p>${children}</p>`
             case 'link':
@@ -83,16 +89,12 @@ export const NotesTab = () => {
     }
 
     const updateNotes = () => {
-        let currentDate = selectedEmployeeStore._currentDate
-        noteStore.save(
-            selectedEmployeeStore.selectedId,
-            currentDate ? currentDate : new Date()
-        )
+        noteStore.save(selectedEmployeeStore.selectedId, currentDateStore.date)
     }
 
     return (
         <VStack>
-            <Box w={[250, 500]}>
+            <Box w={[250, 500, 750]}>
                 <RichTextBlock
                     initialValue={exampleValue}
                     readonly={false}
@@ -111,7 +113,9 @@ export const NotesTab = () => {
                     <Checkbox>private</Checkbox>
                 </Box>
                 <Box p={2}>
-                    <Button onClick={updateNotes}>Save Note</Button>
+                    <Button onClick={updateNotes} colorScheme="green">
+                        save note
+                    </Button>
                 </Box>
             </Flex>
         </VStack>

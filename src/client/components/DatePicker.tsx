@@ -1,6 +1,6 @@
 export const DatePicker = ({ onChange, label, value }) => {
     let pickerStyle = {
-        border: '1px solid lightblue',
+        border: '1px solid #406039',
         padding: '3px',
         borderRadius: '5px',
         margin: '5px',
@@ -13,6 +13,7 @@ export const DatePicker = ({ onChange, label, value }) => {
                 onChange={onChange}
                 value={value}
                 style={pickerStyle}
+                required
             />
         </div>
     )

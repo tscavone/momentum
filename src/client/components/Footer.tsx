@@ -27,7 +27,7 @@ export function Footer() {
                     <Link href={'#'}>contact</Link>
                 </Stack>
                 <Box>
-                    <Button>save all</Button>
+                    <Button colorScheme={'green'}>save all</Button>
                 </Box>
             </Container>
         </Box>

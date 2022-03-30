@@ -79,7 +79,7 @@ export function TopNav({ children }: { children: ReactNode }) {
 
     return (
         <>
-            <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+            <Box bg={useColorModeValue('gray.50', 'gray.900')} px={4}>
                 <Flex
                     h={16}
                     alignItems={'center'}
@@ -108,7 +108,7 @@ export function TopNav({ children }: { children: ReactNode }) {
                         <Select
                             variant="flushed"
                             maxWidth="300px"
-                            colorScheme={'teal'}
+                            colorScheme={'green'}
                             onChange={updateUserSelector}
                             defaultValue={selectedEmployeeStore.selectedId}
                         >
@@ -116,7 +116,7 @@ export function TopNav({ children }: { children: ReactNode }) {
                         </Select>
                         <Button
                             variant={'solid'}
-                            colorScheme={'teal'}
+                            colorScheme={'green'}
                             size={'sm'}
                             mr={4}
                             leftIcon={<ViewIcon />}

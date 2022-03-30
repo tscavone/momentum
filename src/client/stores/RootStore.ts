@@ -10,12 +10,14 @@ import {
     settingsTestData,
     valueTestData,
 } from '../../test/testdata'
+import { CurrentDateStore } from './CurrentDateStore'
 
 //const UserData
 export class RootStore {
     _settingsStore: SettingsStore
     _employeeStore: EmployeeStore
     _selectedEmployeeStore: SelectedEmployeeStore
+    _currentDateStore: CurrentDateStore
     //Temporal Object Stores
     _noteStore: NoteStore
     _stretchAnswerStore: StretchAnswerStore
@@ -24,6 +26,7 @@ export class RootStore {
         this._settingsStore = new SettingsStore()
         this._employeeStore = new EmployeeStore()
         this._selectedEmployeeStore = new SelectedEmployeeStore()
+        this._currentDateStore = new CurrentDateStore()
         this._noteStore = new NoteStore()
         this._stretchAnswerStore = new StretchAnswerStore()
     }

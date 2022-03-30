@@ -11,6 +11,7 @@ import { SelectedEmployeeStore } from '../stores/SelectedEmployeeStore'
 import { SettingsStore } from '../stores/SettingsStore'
 import { StretchAnswerStore } from '../stores/StretchAnswerStore'
 import { EmployeeStore } from '../stores/EmployeeStore'
+import { CurrentDateStore } from '../stores/CurrentDateStore'
 
 const StoreContext = React.createContext<RootStore | undefined>(undefined)
 
@@ -79,4 +80,13 @@ export function useStretchAnswerStore(): StretchAnswerStore {
     }
 
     return context._stretchAnswerStore
+}
+
+export function useCurrentDateStore(): CurrentDateStore {
+    const context = React.useContext(StoreContext)
+    if (context === undefined) {
+        throw new Error('useRootStore must be used within RootStoreProvider')
+    }
+
+    return context._currentDateStore
 }

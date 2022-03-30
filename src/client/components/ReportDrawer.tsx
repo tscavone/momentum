@@ -20,7 +20,11 @@ import { Note } from '../value_objects/Note'
 import { Id } from '../util/Id'
 import { makeObservable, observable } from 'mobx'
 import { DatePicker } from './DatePicker'
-import { useNoteStore, useSelectedEmployeeStore } from './RootStoreProvider'
+import {
+    useNoteStore,
+    useSelectedEmployeeStore,
+    useEmployeeStore,
+} from './RootStoreProvider'
 import { DateRange } from '../util/DateRange'
 import { observer } from 'mobx-react'
 
@@ -64,6 +68,9 @@ let reportDates = new ReportDates()
 export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
     const noteStore = useNoteStore()
     const selectedEmployeeStore = useSelectedEmployeeStore()
+    const selectedEmployee = useEmployeeStore().getEmployee(
+        selectedEmployeeStore.selectedId
+    )
 
     const getDisplayNotes = () => {
         let displayNotes: DatedObject<Note>[] = noteStore.getSaved(
@@ -82,7 +89,7 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
             <DrawerContent>
                 <DrawerCloseButton />
                 <DrawerHeader>
-                    <Center>Leigh's Report</Center>
+                    <Center>{` ${selectedEmployee.first}'s Report `}</Center>
                     <Divider orientation="horizontal" />
                     <HStack>
                         <Box>
@@ -115,7 +122,7 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
                                 }
                             />
                         </Box>
-                        <Button>Email Report</Button>
+                        <Button colorScheme={'green'}>Email Report</Button>
                     </HStack>
                 </DrawerHeader>
 

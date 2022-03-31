@@ -1,9 +1,11 @@
 // contains the notes
 //
 
+import { ReactNode } from 'react'
 import { IDataNote } from '../data_definitions/GlobalDefinitions'
 import { Id } from '../util/Id'
 import { IdentifiedObject } from '../util/IdentifiedObject'
+import { IReportable } from './IReportable'
 
 export class Note extends IdentifiedObject {
     //

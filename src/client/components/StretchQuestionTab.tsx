@@ -1,9 +1,10 @@
-import { CheckIcon } from '@chakra-ui/icons'
 import { Box, Divider, Heading, HStack, Select, VStack } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { ReactNode } from 'react'
 import { StretchAnswer } from '../value_objects/StretchAnswer'
+import { RichTextBlock, serialize } from './RichTextBlock'
 import {
+    useCurrentDateStore,
     useSelectedEmployeeStore,
     useSettingsStore,
     useStretchAnswerStore,
@@ -13,6 +14,7 @@ export const StretchQuesitonTab = observer(() => {
     const settingsStore = useSettingsStore()
     const stretchAnswerStore = useStretchAnswerStore()
     const selectedEmployeeStore = useSelectedEmployeeStore()
+    const currentDateStore = useCurrentDateStore()
 
     const populateStretchQuestions = (): ReactNode[] => {
         let answeredQuestions = new Map<string, string>()
@@ -63,6 +65,22 @@ export const StretchQuesitonTab = observer(() => {
         return returnValues
     }
 
+    const updateCurrentAnswer = (newValue) => {
+        let newAnswer = new StretchAnswer()
+        newAnswer.answer = newValue.map((n) => serialize(n)).join('')
+        stretchAnswerStore.setCurrent(
+            selectedEmployeeStore.selectedId,
+            newAnswer
+        )
+    }
+
+    const updateNotes = () => {
+        stretchAnswerStore.save(
+            selectedEmployeeStore.selectedId,
+            currentDateStore.date
+        )
+    }
+
     return (
         <Box>
             <VStack>
@@ -71,6 +89,13 @@ export const StretchQuesitonTab = observer(() => {
                 </Heading>
                 <Divider orientation="horizontal" />
                 <Select>{populateStretchQuestions()}</Select>
+                <Divider orientation="horizontal" />
+                <Box w={[250, 500, 750]}>
+                    <RichTextBlock
+                        readonly={false}
+                        updateCurrent={updateCurrentAnswer}
+                    />
+                </Box>
             </VStack>
         </Box>
     )

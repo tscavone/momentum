@@ -6,12 +6,9 @@ import {
     useNoteStore,
     useSelectedEmployeeStore,
 } from './RootStoreProvider'
-import escapeHtml from 'escape-html'
-import { Text } from 'slate'
-import { RichTextBlock } from './RichTextBlock'
+import { RichTextBlock, serialize } from './RichTextBlock'
 import { Box, Button, Checkbox, Flex, Spacer, VStack } from '@chakra-ui/react'
 import { Note } from '../value_objects/Note'
-import { CurrentDateStore } from '../stores/CurrentDateStore'
 
 export const NotesTab = () => {
     //
@@ -56,32 +53,6 @@ export const NotesTab = () => {
     const selectedEmployeeStore = useSelectedEmployeeStore()
     const currentDateStore = useCurrentDateStore()
 
-    //
-    //  Methods that need to go into somewhere
-    //
-    const serialize = (node: any) => {
-        if (Text.isText(node)) {
-            let string = escapeHtml(node.text)
-            if ((node as any).bold) {
-                string = `<strong>${string}</strong>`
-            }
-            return string
-        }
-
-        const children = node.children.map((n) => serialize(n)).join('')
-
-        switch (node.type) {
-            case 'block-quote':
-                return `<blockquote class="blockquote"><p>${children}</p></blockquote>`
-            case 'paragraph':
-                return `<p>${children}</p>`
-            case 'link':
-                return `<a href="${escapeHtml(node.url)}">${children}</a>`
-            default:
-                return children
-        }
-    }
-
     const updateCurrentNote = (newValue) => {
         let newNote = new Note()
         newNote.text = newValue.map((n) => serialize(n)).join('')
@@ -98,7 +69,7 @@ export const NotesTab = () => {
                 <RichTextBlock
                     initialValue={exampleValue}
                     readonly={false}
-                    updateCurrentNote={updateCurrentNote}
+                    updateCurrent={updateCurrentNote}
                 />
             </Box>
 

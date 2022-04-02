@@ -25,11 +25,9 @@ export class SelectedEmployeeStore implements IStore {
     }
 
     set selectedId(newId: string) {
-        console.log('old selected user value: ', this._selectedId)
         let newIdObj = new Id()
         newIdObj.id = newId
         this._selectedId = newIdObj
-        console.log('new value: ', this._selectedId)
     }
 
     get selectedId(): string {

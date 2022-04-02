@@ -6,7 +6,10 @@ import { IGlobalEmployeeData } from '../client/data_definitions/EmployeeDefiniti
 export const valueTestData: IDataGlobal = {
     '1234': {
         _notes: {
-            _current: { _id: '8888a', _text: 'Here is a current one' },
+            _current: {
+                _id: '8888a',
+                _text: '<p>This is editable <strong>rich</strong> text, much better than a &lt;textarea&gt;!</p><p>Since it&#39;s rich text, you can do things like turn a selection of text <strong>bold</strong>, or add a semantically rendered block quote in the middle of the page, like this:</p><blockquote class="blockquote"><p>A wise quote.</p></blockquote><p>Try it out for yourself!</p>',
+            },
             _temporalObjects: [
                 {
                     _obj: { _id: '8888b', _text: 'Here is the first' },
@@ -47,7 +50,10 @@ export const valueTestData: IDataGlobal = {
     },
     '2345': {
         _notes: {
-            _current: { _id: '8888z', _text: 'USER2 - Here is a current one' },
+            _current: {
+                _id: '8888z',
+                _text: '<p> USER2 -- This is editable <strong>rich</strong> text, much better than a &lt;textarea&gt;!</p><p>Since it&#39;s rich text, you can do things like turn a selection of text <strong>bold</strong>, or add a semantically rendered block quote in the middle of the page, like this:</p><blockquote class="blockquote"><p>A wise quote.</p></blockquote><p>Try it out for yourself!</p>',
+            },
             _temporalObjects: [
                 {
                     _obj: { _id: '8888l', _text: 'USER2 - Here is the first' },

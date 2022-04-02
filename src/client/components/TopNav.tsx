@@ -65,7 +65,6 @@ export function TopNav({ children }: { children: ReactNode }) {
         let returnValues: ReactNode[] = []
 
         employeeStore.employees.forEach((employee, id) => {
-            console.log('employees', id, employee)
             returnValues.push(
                 <option
                     key={id}

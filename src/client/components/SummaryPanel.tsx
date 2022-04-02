@@ -35,14 +35,20 @@ export const SummaryPanel = observer(() => {
                     </Box>
                     <DatePicker
                         value={
-                            currentDateStore.date.toISOString().split('T')[0]
+                            currentDateStore.date
+                                ? currentDateStore.date
+                                      .toISOString()
+                                      .split('T')[0]
+                                : ''
                         }
                         label='"current" date (demo purposes)'
-                        onChange={(event) =>
-                            (currentDateStore.date = new Date(
-                                event.target.value
-                            ))
-                        }
+                        onChange={(event) => {
+                            if (event.target.value)
+                                currentDateStore.date = new Date(
+                                    event.target.value
+                                )
+                            else currentDateStore.date = null
+                        }}
                     />
                 </Grid>
             </AccordionPanel>

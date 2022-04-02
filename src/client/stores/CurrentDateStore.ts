@@ -24,7 +24,6 @@ export class CurrentDateStore {
         return this._date
     }
     public set date(value: Date) {
-        console.log('setting date: ', value)
         this._date = value
     }
 

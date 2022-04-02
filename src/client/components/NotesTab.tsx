@@ -6,7 +6,7 @@ import {
     useNoteStore,
     useSelectedEmployeeStore,
 } from './RootStoreProvider'
-import { RichTextBlock, serialize } from './RichTextBlock'
+import { RichTextBlock, serialize, deserialize } from './RichTextBlock'
 import { Box, Button, Checkbox, Flex, Spacer, VStack } from '@chakra-ui/react'
 import { Note } from '../value_objects/Note'
 
@@ -55,19 +55,40 @@ export const NotesTab = () => {
 
     const updateCurrentNote = (newValue) => {
         let newNote = new Note()
+        //console.log('before serialization:', newValue)
         newNote.text = newValue.map((n) => serialize(n)).join('')
+        //console.log('after serialization:', newNote.text)
+        var parser = new DOMParser()
+        var el = parser.parseFromString(newNote.text, 'text/html')
+        let deserialized = deserialize(el.body)
+        //console.log('html element', el)
+        // console.log('deserialized', deserialized)
         noteStore.setCurrent(selectedEmployeeStore.selectedId, newNote)
     }
 
     const updateNotes = () => {
-        noteStore.save(selectedEmployeeStore.selectedId, currentDateStore.date)
+        noteStore.save(
+            selectedEmployeeStore.selectedId,
+            currentDateStore.date ? currentDateStore.date : new Date()
+        )
+    }
+
+    const getDeserialized = () => {
+        let currentNote = noteStore.getCurrent(
+            selectedEmployeeStore.selectedId
+        ) as Note
+        var parser = new DOMParser()
+        var el = parser.parseFromString(currentNote.text, 'text/html')
+        let deserialized = deserialize(el.body)
+        console.log('deserialized before passing', deserialized)
+        return deserialized
     }
 
     return (
         <VStack>
             <Box w={[250, 500, 750]}>
                 <RichTextBlock
-                    initialValue={exampleValue}
+                    initialValue={getDeserialized()}
                     readonly={false}
                     updateCurrent={updateCurrentNote}
                 />

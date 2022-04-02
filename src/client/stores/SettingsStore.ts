@@ -29,11 +29,7 @@ export class SettingsStore implements IStore {
 
     getByEntryName(name: string): [SettingsEntry, SettingsValue[]] {
         for (const [id, setting] of this._settings) {
-            console.log(
-                `checking for passed "${name}" against "${setting[0].name}"`
-            )
             if (setting[0].name === name) {
-                console.log(`returning`, this.getByEntryId(id))
                 return this.getByEntryId(id)
             }
         }
@@ -85,7 +81,5 @@ export class SettingsStore implements IStore {
 
             this._settings.set(key, [entry, entryValues])
         })
-
-        console.log('SETTINGS LOADED', this._settings)
     }
 }

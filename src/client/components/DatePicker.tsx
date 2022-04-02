@@ -13,7 +13,6 @@ export const DatePicker = ({ onChange, label, value }) => {
                 onChange={onChange}
                 value={value}
                 style={pickerStyle}
-                required
             />
         </div>
     )

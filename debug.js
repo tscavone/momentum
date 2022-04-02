@@ -28,7 +28,6 @@ const serialize = (node) => {
 }
 
 deserialize2 = (htmlString, markAttributes = {}) => {
-    console.log('Deserializing: ', htmlString)
     var parser = new DOMParser()
     var el = parser.parseFromString(htmlString, 'text/html')
     if (el.nodeType === Node.TEXT_NODE) {
@@ -74,5 +73,3 @@ deserialize2 = (htmlString, markAttributes = {}) => {
 }
 
 let str = '<p>here is some text<p>'
-
-console.log('deserializing ' + str, deserialize(str))

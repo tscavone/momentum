@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import isHotkey from 'is-hotkey'
 import { Editable, withReact, Slate, ReactEditor } from 'slate-react'
 import { Editor, Transforms, createEditor, Node, Text } from 'slate'
@@ -7,6 +7,8 @@ import { Box } from '@chakra-ui/react'
 import { toggleMark, Toolbar } from './RichTextSubComponents'
 import escapeHtml from 'escape-html'
 import { jsx } from 'slate-hyperscript'
+import { observer } from 'mobx-react'
+import { useSelectedEmployeeStore } from './RootStoreProvider'
 
 // @refresh reset
 const HOTKEYS: { [hotkey: string]: string } = {
@@ -45,151 +47,108 @@ export const serialize = (node: any) => {
     }
 }
 
-/*
-export const deserialize = (el, markAttributes = {}) => {
-    if (el.nodeType === Node.TEXT_NODE) {
-        return jsx('text', markAttributes, el.textContent)
-    } else if (el.nodeType !== Node.ELEMENT_NODE) {
-        return null
-    }
+export const RichTextBlock: React.FC<RichTextBlockProps> = observer(
+    ({ initialValue, readonly, updateCurrent }) => {
+        let selectedEmployeeStore = useSelectedEmployeeStore()
+        const [value, setValue] = useState<Node[]>(initialValue)
+        const renderElement = useCallback((props) => <Element {...props} />, [])
+        const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
+        const editor = useMemo(
+            () =>
+                withHistory(
+                    withReact<ReactEditor>(createEditor() as ReactEditor)
+                ),
+            []
+        )
+        useEffect(() => {
+            Transforms.delete(editor, {
+                at: {
+                    anchor: Editor.start(editor, []),
+                    focus: Editor.end(editor, []),
+                },
+            })
+            Transforms.insertNodes(editor, initialValue)
+        }, [selectedEmployeeStore.selectedId])
+        //focus selection
+        const [focused, setFocused] = React.useState(false)
+        const savedSelection = React.useRef(editor.selection)
 
-    const nodeAttributes: any = { ...markAttributes }
-
-    // define attibutes for text nodes
-    switch (el.nodeName) {
-        case 'strong':
-            nodeAttributes.bold = true
-    }
-
-    const children = Array.from(el.childNodes)
-        .map((node) => deserialize(node, nodeAttributes))
-        .flat()
-
-    if (children.length === 0) {
-        children.push(jsx('text', nodeAttributes, ''))
-    }
-
-    switch (el.nodeName) {
-        case 'BODY':
-            return jsx('fragment', {}, children)
-        case 'BR':
-            return '\n'
-        case 'BLOCKQUOTE':
-            return jsx('element', { type: 'quote' }, children)
-        case 'P':
-            return jsx('element', { type: 'paragraph' }, children)
-        case 'A':
-            return jsx(
-                'element',
-                { type: 'link', url: el.getAttribute('href') },
-                children
-            )
-        default:
-            return children
-    }
-}
-*/
-export const RichTextBlock: React.FC<RichTextBlockProps> = ({
-    initialValue,
-    readonly,
-    updateCurrent,
-}) => {
-    const defaultInitialValue = [
-        {
-            type: 'paragraph',
-            children: [{ text: '' }],
-        },
-    ]
-
-    initialValue = initialValue ? initialValue : defaultInitialValue
-    //console.log('Rich Text Initial value: ', initialValue)
-    const [value, setValue] = useState<Node[]>(initialValue)
-    const renderElement = useCallback((props) => <Element {...props} />, [])
-    const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
-    const editor = useMemo(
-        () =>
-            withHistory(withReact<ReactEditor>(createEditor() as ReactEditor)),
-        []
-    )
-
-    //focus selection
-    const [focused, setFocused] = React.useState(false)
-    const savedSelection = React.useRef(editor.selection)
-
-    const onFocus = React.useCallback(() => {
-        setFocused(true)
-        if (!editor.selection && value?.length) {
-            Transforms.select(
-                editor,
-                savedSelection.current ?? Editor.end(editor, [])
-            )
-        }
-    }, [editor])
-
-    const onBlur = React.useCallback(() => {
-        setFocused(false)
-        savedSelection.current = editor.selection
-    }, [editor])
-
-    const divRef = React.useRef<HTMLDivElement>(null)
-
-    const focusEditor = React.useCallback(
-        (e: React.MouseEvent) => {
-            if (e.target === divRef.current) {
-                ReactEditor.focus(editor)
-                e.preventDefault()
+        const onFocus = React.useCallback(() => {
+            setFocused(true)
+            if (!editor.selection && value?.length) {
+                Transforms.select(
+                    editor,
+                    savedSelection.current ?? Editor.end(editor, [])
+                )
             }
-        },
-        [editor]
-    )
+        }, [editor])
 
-    const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-        for (const hotkey in HOTKEYS) {
-            if (isHotkey(hotkey, event as any)) {
-                event.preventDefault()
-                const mark = HOTKEYS[hotkey]
-                toggleMark(editor, mark)
+        const onBlur = React.useCallback(() => {
+            setFocused(false)
+            savedSelection.current = editor.selection
+        }, [editor])
+
+        const divRef = React.useRef<HTMLDivElement>(null)
+
+        const focusEditor = React.useCallback(
+            (e: React.MouseEvent) => {
+                if (e.target === divRef.current) {
+                    ReactEditor.focus(editor)
+                    e.preventDefault()
+                }
+            },
+            [editor]
+        )
+
+        const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+            for (const hotkey in HOTKEYS) {
+                if (isHotkey(hotkey, event as any)) {
+                    event.preventDefault()
+                    const mark = HOTKEYS[hotkey]
+                    toggleMark(editor, mark)
+                }
             }
         }
+
+        const style = readonly
+            ? { maxHeight: '200px', overflow: 'auto' }
+            : { minHeight: '150px', resize: 'vertical', overflow: 'auto' }
+
+        return (
+            <Box ref={divRef} onMouseDown={focusEditor} borderWidth={'1px'}>
+                <Slate
+                    editor={editor}
+                    value={value}
+                    onChange={(newValue) => {
+                        setValue(newValue)
+                        updateCurrent(newValue)
+                    }}
+                >
+                    {readonly ? <></> : <Toolbar />}
+                    <Box padding={'15px 5px'}>
+                        <Editable
+                            readOnly={readonly}
+                            onFocus={onFocus}
+                            onBlur={onBlur}
+                            onKeyDown={onKeyDown}
+                            renderElement={renderElement}
+                            renderLeaf={renderLeaf}
+                            placeholder={
+                                readonly ? '' : 'Enter some rich text…'
+                            }
+                            spellCheck
+                            style={{
+                                minHeight: '150px',
+                                resize: 'vertical',
+                                overflow: 'auto',
+                            }}
+                        />
+                    </Box>
+                </Slate>
+            </Box>
+        )
     }
-
-    const style = readonly
-        ? { maxHeight: '200px', overflow: 'auto' }
-        : { minHeight: '150px', resize: 'vertical', overflow: 'auto' }
-
-    return (
-        <Box ref={divRef} onMouseDown={focusEditor} borderWidth={'1px'}>
-            <Slate
-                editor={editor}
-                value={value}
-                onChange={(newValue) => {
-                    setValue(newValue)
-                    updateCurrent(newValue)
-                    //console.log('current set:  ', newValue)
-                }}
-            >
-                {readonly ? <></> : <Toolbar />}
-                <Box padding={'15px 5px'}>
-                    <Editable
-                        readOnly={readonly}
-                        onFocus={onFocus}
-                        onBlur={onBlur}
-                        onKeyDown={onKeyDown}
-                        renderElement={renderElement}
-                        renderLeaf={renderLeaf}
-                        placeholder={readonly ? '' : 'Enter some rich text…'}
-                        spellCheck
-                        style={{
-                            minHeight: '150px',
-                            resize: 'vertical',
-                            overflow: 'auto',
-                        }}
-                    />
-                </Box>
-            </Slate>
-        </Box>
-    )
-}
+)
 
 const ELEMENT_TAGS = {
     A: (el) => ({ type: 'link', url: el.getAttribute('href') }),

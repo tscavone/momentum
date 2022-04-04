@@ -80,7 +80,12 @@ export const StretchQuesitonTab = observer(() => {
             currentDateStore.date
         )
     }
-
+    const defaultInitialValue = [
+        {
+            type: 'paragraph',
+            children: [{ text: '' }],
+        },
+    ]
     return (
         <Box>
             <VStack>
@@ -94,6 +99,7 @@ export const StretchQuesitonTab = observer(() => {
                     <RichTextBlock
                         readonly={false}
                         updateCurrent={updateCurrentAnswer}
+                        initialValue={defaultInitialValue}
                     />
                 </Box>
             </VStack>

@@ -52,7 +52,7 @@ export const valueTestData: IDataGlobal = {
         _notes: {
             _current: {
                 _id: '8888z',
-                _text: '<p> USER2 -- This is editable <strong>rich</strong> text, much better than a &lt;textarea&gt;!</p><p>Since it&#39;s rich text, you can do things like turn a selection of text <strong>bold</strong>, or add a semantically rendered block quote in the middle of the page, like this:</p><blockquote class="blockquote"><p>A wise quote.</p></blockquote><p>Try it out for yourself!</p>',
+                _text: '<p>USER2 -- This is editable <strong>rich</strong> text, much better than a &lt;textarea&gt;!</p><p>Since it&#39;s rich text, you can do things like turn a selection of text <strong>bold</strong>, or add a semantically rendered block quote in the middle of the page, like this:</p><blockquote class="blockquote"><p>A wise quote.</p></blockquote><p>Try it out for yourself!</p>',
             },
             _temporalObjects: [
                 {

@@ -116,11 +116,12 @@ export function TopNav({ children }: { children: ReactNode }) {
                         <Button
                             variant={'solid'}
                             colorScheme={'green'}
-                            size={'sm'}
                             mr={4}
                             leftIcon={<ViewIcon />}
                             ref={reportButtonRef}
                             onClick={onDrawerOpen}
+                            margin={4}
+                            padding={5}
                         >
                             Report
                         </Button>

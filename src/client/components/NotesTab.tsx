@@ -9,60 +9,22 @@ import {
 import { RichTextBlock, serialize, deserialize } from './RichTextBlock'
 import { Box, Button, Checkbox, Flex, Spacer, VStack } from '@chakra-ui/react'
 import { Note } from '../value_objects/Note'
+import { observer } from 'mobx-react'
 
-export const NotesTab = () => {
-    //
-    // example data
-    //
-    const exampleValue = [
-        {
-            type: 'paragraph',
-            children: [
-                { text: 'This is editable ' },
-                { text: 'rich', bold: true },
-                { text: ' text, ' },
-                { text: 'much', italic: true },
-                { text: ' better than a ' },
-                { text: '<textarea>', code: true },
-                { text: '!' },
-            ],
-        },
-        {
-            type: 'paragraph',
-            children: [
-                {
-                    text: "Since it's rich text, you can do things like turn a selection of text ",
-                },
-                { text: 'bold', bold: true },
-                {
-                    text: ', or add a semantically rendered block quote in the middle of the page, like this:',
-                },
-            ],
-        },
-        {
-            type: 'block-quote',
-            children: [{ text: 'A wise quote.' }],
-        },
-        {
-            type: 'paragraph',
-            children: [{ text: 'Try it out for yourself!' }],
-        },
-    ]
-
+export const NotesTab = observer(() => {
     const noteStore = useNoteStore()
     const selectedEmployeeStore = useSelectedEmployeeStore()
     const currentDateStore = useCurrentDateStore()
 
     const updateCurrentNote = (newValue) => {
         let newNote = new Note()
-        //console.log('before serialization:', newValue)
+        console.log('before serialization:', newValue)
         newNote.text = newValue.map((n) => serialize(n)).join('')
-        //console.log('after serialization:', newNote.text)
+        console.log('after serialization:', newNote.text)
         var parser = new DOMParser()
         var el = parser.parseFromString(newNote.text, 'text/html')
         let deserialized = deserialize(el.body)
-        //console.log('html element', el)
-        // console.log('deserialized', deserialized)
+        console.log('deserialized', deserialized)
         noteStore.setCurrent(selectedEmployeeStore.selectedId, newNote)
     }
 
@@ -80,6 +42,7 @@ export const NotesTab = () => {
         var parser = new DOMParser()
         var el = parser.parseFromString(currentNote.text, 'text/html')
         let deserialized = deserialize(el.body)
+
         console.log('deserialized before passing', deserialized)
         return deserialized
     }
@@ -112,4 +75,4 @@ export const NotesTab = () => {
             </Flex>
         </VStack>
     )
-}
+})

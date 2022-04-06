@@ -1,8 +1,18 @@
-import { Box, Divider, Heading, HStack, Select, VStack } from '@chakra-ui/react'
+import {
+    Box,
+    Button,
+    Divider,
+    Flex,
+    Heading,
+    Select,
+    VStack,
+} from '@chakra-ui/react'
 import { observer } from 'mobx-react'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
+import { DatedObject } from '../util/DatedObject'
+import { Id } from '../util/Id'
 import { StretchAnswer } from '../value_objects/StretchAnswer'
-import { RichTextBlock, serialize } from './RichTextBlock'
+import { RichTextBlock, serialize, deserialize } from './RichTextBlock'
 import {
     useCurrentDateStore,
     useSelectedEmployeeStore,
@@ -16,7 +26,43 @@ export const StretchQuesitonTab = observer(() => {
     const selectedEmployeeStore = useSelectedEmployeeStore()
     const currentDateStore = useCurrentDateStore()
 
+    const [selectedQuestionId, setSelectedQuestionId] = useState(null)
+
+    //null if the selected question has no answer or there's no selected question yet
+    const getSelectedAnswer = (): StretchAnswer => {
+        if (selectedQuestionId === null) return null
+
+        const stretchAnswer = stretchAnswerStore
+            .getAllSaved(selectedEmployeeStore.selectedId)
+            .filter(
+                (datedAnswer: DatedObject<StretchAnswer>) =>
+                    datedAnswer.obj.questionId === selectedQuestionId
+            )[0] as DatedObject<StretchAnswer>
+
+        return stretchAnswer ? stretchAnswer.obj : null
+    }
+
+    const shouldBeReadOnly = (): boolean => {
+        return getSelectedAnswer() !== null
+    }
+
+    const [richTextReadOnly, setRichTextReadOnly] = useState(shouldBeReadOnly())
+
+    useEffect(() => {
+        if (selectedQuestionId !== null) {
+            const selectedAnswer = getSelectedAnswer()
+            if (!selectedAnswer) {
+                stretchAnswerStore.getCurrent(
+                    selectedEmployeeStore.selectedId
+                ).questionId = selectedQuestionId
+            }
+        }
+        setRichTextReadOnly(shouldBeReadOnly())
+    }, [selectedQuestionId, shouldBeReadOnly])
+
     const populateStretchQuestions = (): ReactNode[] => {
+        const settingsQuestionsValues =
+            settingsStore.getByEntryName('stretch questions')[1]
         let answeredQuestions = new Map<string, string>()
         stretchAnswerStore
             .getAllSaved(selectedEmployeeStore.selectedId)
@@ -24,32 +70,40 @@ export const StretchQuesitonTab = observer(() => {
                 const stretchAnswer = datedObject.obj as StretchAnswer
 
                 answeredQuestions.set(
-                    stretchAnswer.question,
+                    stretchAnswer.questionId.id,
                     stretchAnswer.answer
                 )
             })
+        console.log('answeredQuestions', answeredQuestions)
+        console.log(
+            'questions',
+            settingsStore.getByEntryName('stretch questions')[1]
+        )
 
-        let returnValues = settingsStore
-            .getByEntryName('stretch questions')[1]
-            .map((setting) => {
-                const isAnswered = answeredQuestions.delete(setting.value)
-
+        let returnValues = settingsQuestionsValues
+            .filter((settingQuestionValue) => !settingQuestionValue.deleted)
+            .map((settingQuestionValue) => {
+                const settingQuestionID = settingQuestionValue.id.id
+                const isAnswered = answeredQuestions.delete(settingQuestionID)
+                console.log('settingQuestion id', settingQuestionID)
                 //TODO change from i to classname switch, and also turn if/else into inline logic
                 if (isAnswered) {
                     return (
                         <option
-                            key={setting.id.id}
+                            key={settingQuestionID}
                             style={{ fontStyle: 'italic' }}
-                            disabled
-                            value={setting.id.id}
+                            value={settingQuestionID}
                         >
-                            {setting.value + ' |  (answered)'}
+                            {settingQuestionValue.value + ' |  (answered)'}
                         </option>
                     )
                 } else {
                     return (
-                        <option key={setting.id.id} value={setting.id.id}>
-                            {setting.value}
+                        <option
+                            key={settingQuestionID}
+                            value={settingQuestionID}
+                        >
+                            {settingQuestionValue.value}
                         </option>
                     )
                 }
@@ -58,7 +112,12 @@ export const StretchQuesitonTab = observer(() => {
         answeredQuestions.forEach((value, key) => {
             returnValues.push(
                 <option key={key} value={key}>
-                    {value}
+                    {
+                        settingsQuestionsValues.filter(
+                            (settingsQuestionValue) =>
+                                settingsQuestionValue.id.id === key
+                        )[0].value
+                    }
                 </option>
             )
         })
@@ -68,24 +127,32 @@ export const StretchQuesitonTab = observer(() => {
     const updateCurrentAnswer = (newValue) => {
         let newAnswer = new StretchAnswer()
         newAnswer.answer = newValue.map((n) => serialize(n)).join('')
+        newAnswer.questionId = Id.fromString(selectedQuestionId)
         stretchAnswerStore.setCurrent(
             selectedEmployeeStore.selectedId,
             newAnswer
         )
     }
 
-    const updateNotes = () => {
+    const updateStretchAnswer = () => {
         stretchAnswerStore.save(
             selectedEmployeeStore.selectedId,
             currentDateStore.date
         )
     }
-    const defaultInitialValue = [
-        {
-            type: 'paragraph',
-            children: [{ text: '' }],
-        },
-    ]
+
+    const getDeserialized = () => {
+        const selectedAnswer = getSelectedAnswer()
+        if (!selectedAnswer) return selectedAnswer
+
+        var parser = new DOMParser()
+        var el = parser.parseFromString(selectedAnswer.answer, 'text/html')
+        let deserialized = deserialize(el.body)
+
+        console.log('deserialized before passing', deserialized)
+        return deserialized
+    }
+
     return (
         <Box>
             <VStack>
@@ -93,15 +160,39 @@ export const StretchQuesitonTab = observer(() => {
                     Stretch Questions
                 </Heading>
                 <Divider orientation="horizontal" />
-                <Select>{populateStretchQuestions()}</Select>
+                <Select
+                    value={selectedQuestionId}
+                    placeholder="Select a stretch question"
+                    onChange={(event) =>
+                        setSelectedQuestionId(event.target.value)
+                    }
+                >
+                    {populateStretchQuestions()}
+                </Select>
                 <Divider orientation="horizontal" />
                 <Box w={[250, 500, 750]}>
                     <RichTextBlock
-                        readonly={false}
+                        readOnly={richTextReadOnly}
                         updateCurrent={updateCurrentAnswer}
-                        initialValue={defaultInitialValue}
+                        initialValue={getDeserialized()}
+                        renderDependencies={[selectedQuestionId]}
                     />
                 </Box>
+                <Flex
+                    alignItems={'center'}
+                    justifyContent={'flex-end'}
+                    direction={'row'}
+                    w={[250, 500, 750]}
+                >
+                    <Box p={2}>
+                        <Button
+                            onClick={updateStretchAnswer}
+                            colorScheme="green"
+                        >
+                            save answer
+                        </Button>
+                    </Box>
+                </Flex>
             </VStack>
         </Box>
     )

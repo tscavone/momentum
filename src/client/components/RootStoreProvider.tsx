@@ -5,13 +5,13 @@
 
 import * as React from 'react'
 import { ReactNode } from 'react'
-import { ITemporalStore } from '../stores/ITemporalStore'
 import { RootStore } from '../stores/RootStore'
 import { SelectedEmployeeStore } from '../stores/SelectedEmployeeStore'
 import { SettingsStore } from '../stores/SettingsStore'
 import { StretchAnswerStore } from '../stores/StretchAnswerStore'
 import { EmployeeStore } from '../stores/EmployeeStore'
 import { CurrentDateStore } from '../stores/CurrentDateStore'
+import { NoteStore } from '../stores/NoteStore'
 
 const StoreContext = React.createContext<RootStore | undefined>(undefined)
 
@@ -37,7 +37,7 @@ export function RootStoreProvider({ children }: { children: ReactNode }) {
 //     return context;
 // }
 
-export function useNoteStore(): ITemporalStore {
+export function useNoteStore(): NoteStore {
     const context = React.useContext(StoreContext)
     if (context === undefined) {
         throw new Error('context not initialized')

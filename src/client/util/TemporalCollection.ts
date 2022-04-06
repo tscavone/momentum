@@ -8,6 +8,7 @@ import { DatedObject } from './DatedObject'
 import { clone } from 'lodash'
 import { makeAutoObservable } from 'mobx'
 import { IdentifiedObject } from './IdentifiedObject'
+import { Id } from './Id'
 
 export class TemporalCollection<T extends IdentifiedObject> {
     //members
@@ -26,7 +27,7 @@ export class TemporalCollection<T extends IdentifiedObject> {
     //private methods
     private milestoneCache(): Date[] {
         if (this._milestoneCache == null) {
-            this._milestoneCache = [] // for compiler :/
+            this._milestoneCache = []
             this.calculateMilestones()
         }
         return this._milestoneCache
@@ -81,6 +82,19 @@ export class TemporalCollection<T extends IdentifiedObject> {
         }
 
         return resultSet
+    }
+
+    //return null if not found
+    getSavedById(id: Id | string): T | null {
+        const idStr = Id.asString(id)
+
+        for (const obj of this._temporalObjects.values()) {
+            if (obj.id.id === idStr) {
+                return obj
+            }
+        }
+
+        return null
     }
 
     get current(): T {

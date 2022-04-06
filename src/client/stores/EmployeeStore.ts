@@ -32,8 +32,8 @@ export class EmployeeStore implements IStore {
     //
     //public methods
     //
-    getEmployee(passedId: Id | string): Employee {
-        const id = passedId instanceof Id ? passedId.id : passedId
+    getEmployee(employeeId: Id | string): Employee {
+        const id = Id.asString(employeeId)
 
         return this._employees.get(id)
     }

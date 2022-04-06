@@ -2,14 +2,14 @@
 //
 import { IDataStretchAnswer } from '../data_definitions/GlobalDefinitions'
 import { Id } from '../util/Id'
-import { IdentifiedObject } from '../util/IdentifiedObject'
+import { TemporalObject } from '../util/TemporalObject'
 
-export class StretchAnswer extends IdentifiedObject {
+export class StretchAnswer extends TemporalObject {
     //
     //members
     //
     private _answer: string
-    private _question: string
+    private _questionId: Id
 
     //
     // constructors
@@ -17,7 +17,7 @@ export class StretchAnswer extends IdentifiedObject {
     constructor() {
         super()
         this._answer = null
-        this._question = null
+        this._questionId = null
     }
 
     //
@@ -29,20 +29,32 @@ export class StretchAnswer extends IdentifiedObject {
     public set answer(value: string) {
         this._answer = value
     }
-    public get question(): string {
-        return this._question
+    public get questionId(): Id {
+        return this._questionId
     }
-    public set question(value: string) {
-        this._question = value
+    public set questionId(value: Id) {
+        if (this._questionId === null) {
+            this._questionId = Id.fromString(value.id)
+        } else {
+            this._questionId.id = value.id
+        }
     }
 
     //
     //public methods
     //
     public static fromJSON(jsonObj: IDataStretchAnswer): StretchAnswer {
-        let note = Object.assign(new StretchAnswer(), jsonObj) as StretchAnswer
-        note.id = Id.fromString(jsonObj._id)
+        let answer = Object.assign(
+            new StretchAnswer(),
+            jsonObj
+        ) as StretchAnswer
+        answer._questionId = Id.fromString(jsonObj._questionId)
+        answer.id = Id.fromString(jsonObj._id)
 
-        return note
+        return answer
+    }
+
+    isNewlyMinted(): boolean {
+        return this.answer === null && this.questionId === null
     }
 }

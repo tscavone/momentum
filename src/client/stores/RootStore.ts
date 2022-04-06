@@ -9,7 +9,7 @@ import {
     employeeTestData,
     settingsTestData,
     valueTestData,
-} from '../../test/testdata'
+} from '../../tests/testdata'
 import { CurrentDateStore } from './CurrentDateStore'
 
 //const UserData

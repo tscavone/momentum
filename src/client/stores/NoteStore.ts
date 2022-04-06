@@ -23,9 +23,8 @@ export class NoteStore extends AbstractTemporalStore<Note> {
     //
     //public methods
     //
-    addEmployee(newEmployee: Employee | string): void {
-        const employeeId: string =
-            newEmployee instanceof Employee ? newEmployee.id.id : newEmployee
+    addEmployee(newEmployeeId: Id | string): void {
+        const employeeId = Id.asString(newEmployeeId)
 
         if (this._allEmployeeObjects.get(employeeId) !== undefined) {
             throw `adding employee over existing: ${employeeId}`
@@ -44,7 +43,10 @@ export class NoteStore extends AbstractTemporalStore<Note> {
             this.getEmployeeObjects(employeeId)
 
         notes.clear(new Note())
-        notes.current = Note.fromJSON(jsonObj._current)
+
+        //currently we're not saving the current object of a temporal collection, but we might want to in the future
+        // to preserve people's work
+        if (jsonObj._current) notes.current = Note.fromJSON(jsonObj._current)
 
         jsonObj._temporalObjects.forEach(
             //todo: check for obj and date members

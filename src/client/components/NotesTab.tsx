@@ -39,6 +39,9 @@ export const NotesTab = observer(() => {
         let currentNote = noteStore.getCurrent(
             selectedEmployeeStore.selectedId
         ) as Note
+
+        if (currentNote.isNewlyMinted()) return
+
         var parser = new DOMParser()
         var el = parser.parseFromString(currentNote.text, 'text/html')
         let deserialized = deserialize(el.body)
@@ -52,7 +55,7 @@ export const NotesTab = observer(() => {
             <Box w={[250, 500, 750]}>
                 <RichTextBlock
                     initialValue={getDeserialized()}
-                    readonly={false}
+                    readOnly={false}
                     updateCurrent={updateCurrentNote}
                 />
             </Box>

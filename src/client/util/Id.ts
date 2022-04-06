@@ -38,7 +38,7 @@ export class Id {
         return Object.assign(new Id(), { _id: id })
     }
 
-    static toString(id: Id | string): string {
+    static asString(id: Id | string): string {
         return id instanceof Id ? id.id : id
     }
 }

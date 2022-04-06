@@ -20,8 +20,9 @@ const HOTKEYS: { [hotkey: string]: string } = {
 
 export interface RichTextBlockProps {
     initialValue?: any
-    readonly: any
+    readOnly: any
     updateCurrent: any
+    renderDependencies?: any[]
 }
 
 export const serialize = (node: any) => {
@@ -48,7 +49,15 @@ export const serialize = (node: any) => {
 }
 
 export const RichTextBlock: React.FC<RichTextBlockProps> = observer(
-    ({ initialValue, readonly, updateCurrent }) => {
+    ({ initialValue, readOnly, updateCurrent, renderDependencies }) => {
+        const defaultInitialValue = [
+            {
+                type: 'paragraph',
+                children: [{ text: '' }],
+            },
+        ]
+
+        initialValue = initialValue ? initialValue : defaultInitialValue
         let selectedEmployeeStore = useSelectedEmployeeStore()
         const [value, setValue] = useState<Node[]>(initialValue)
         const renderElement = useCallback((props) => <Element {...props} />, [])
@@ -60,6 +69,8 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = observer(
                 ),
             []
         )
+        renderDependencies =
+            typeof renderDependencies === 'undefined' ? [] : renderDependencies
         useEffect(() => {
             Transforms.delete(editor, {
                 at: {
@@ -68,7 +79,11 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = observer(
                 },
             })
             Transforms.insertNodes(editor, initialValue)
-        }, [selectedEmployeeStore.selectedId])
+        }, [selectedEmployeeStore.selectedId, ...renderDependencies])
+        console.log('dependencies... ', [
+            selectedEmployeeStore.selectedId,
+            ...renderDependencies,
+        ])
         //focus selection
         const [focused, setFocused] = React.useState(false)
         const savedSelection = React.useRef(editor.selection)
@@ -110,7 +125,7 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = observer(
             }
         }
 
-        const style = readonly
+        const style = readOnly
             ? { maxHeight: '200px', overflow: 'auto' }
             : { minHeight: '150px', resize: 'vertical', overflow: 'auto' }
 
@@ -124,17 +139,17 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = observer(
                         updateCurrent(newValue)
                     }}
                 >
-                    {readonly ? <></> : <Toolbar />}
+                    {readOnly ? <></> : <Toolbar />}
                     <Box padding={'15px 5px'}>
                         <Editable
-                            readOnly={readonly}
+                            readOnly={readOnly}
                             onFocus={onFocus}
                             onBlur={onBlur}
                             onKeyDown={onKeyDown}
                             renderElement={renderElement}
                             renderLeaf={renderLeaf}
                             placeholder={
-                                readonly ? '' : 'Enter some rich text…'
+                                readOnly ? '' : 'Enter some rich text…'
                             }
                             spellCheck
                             style={{

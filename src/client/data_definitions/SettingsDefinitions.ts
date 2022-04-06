@@ -10,6 +10,7 @@ export interface IDataSettingsValue {
     _id: string
     _value: string
     _description?: string
+    _deleted?: string
 }
 
 export interface IDataSettings {

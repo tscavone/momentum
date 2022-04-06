@@ -8,7 +8,7 @@ export interface IDataNote extends IDataIdentifiedObject {
 
 export interface IDataStretchAnswer extends IDataIdentifiedObject {
     _answer: string
-    _question: string
+    _questionId: string
 }
 export interface IDatedObject<T> {
     _obj: T
@@ -16,7 +16,7 @@ export interface IDatedObject<T> {
 }
 
 export interface IDataTemporalObject<T> {
-    _current: T
+    _current?: T
     _temporalObjects: IDatedObject<T>[]
 }
 

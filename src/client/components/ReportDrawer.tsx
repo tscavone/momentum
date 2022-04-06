@@ -142,7 +142,12 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
         reportObject: IdentifiedObject
     ): ReactNode => {
         if (reportObject instanceof Note) {
-            return <NoteReport note={reportObject}></NoteReport>
+            return (
+                <NoteReport
+                    key={reportObject.id.id}
+                    note={reportObject}
+                ></NoteReport>
+            )
         } else {
             throw Error(
                 `ReportDrawer:renderReportComponent reportObject not of any instance: ${reportObject}`

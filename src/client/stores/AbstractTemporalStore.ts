@@ -10,11 +10,11 @@ import {
     IDataIdentifiedObject,
     IDataTemporalObject,
 } from '../data_definitions/GlobalDefinitions'
-import { Employee } from '../value_objects/Employee'
 import { clone } from 'lodash'
 import {} from 'typescript'
+import { TemporalObject } from '../util/TemporalObject'
 
-export abstract class AbstractTemporalStore<T extends IdentifiedObject>
+export abstract class AbstractTemporalStore<T extends TemporalObject>
     implements ITemporalStore
 {
     //
@@ -36,7 +36,7 @@ export abstract class AbstractTemporalStore<T extends IdentifiedObject>
     //private methods
     //
     protected getEmployeeObjects(id: Id | string): TemporalCollection<T> {
-        let stringId = id instanceof Id ? id.id : id
+        let stringId = Id.asString(id)
 
         return this._allEmployeeObjects.get(stringId)!
     }
@@ -44,28 +44,28 @@ export abstract class AbstractTemporalStore<T extends IdentifiedObject>
     //
     //public methods
     //
-    abstract addEmployee(newEmployee: Employee): void
+    abstract addEmployee(newEmployeeId: Id | string): void
 
     getCurrent(employeeId: Id | string): T {
-        const id = Id.toString(employeeId)
+        const id = Id.asString(employeeId)
         return this._allEmployeeObjects.get(id).current
     }
 
     setCurrent(employeeId: Id | string, newValue: T) {
-        const id = Id.toString(employeeId)
+        const id = Id.asString(employeeId)
         this._allEmployeeObjects.get(id).current = clone(newValue)
     }
 
     save(employeeId: Id | string, date: Date) {
-        const id = Id.toString(employeeId)
+        const id = Id.asString(employeeId)
         this._allEmployeeObjects.get(id)!.save(date)
     }
 
     getSaved(
         id: Id | string,
         dateRange: DateRange
-    ): DatedObject<IdentifiedObject>[] {
-        let stringId = id instanceof Id ? id.id : id
+    ): DatedObject<TemporalObject>[] {
+        const stringId = id instanceof Id ? id.id : id
 
         return this.getEmployeeObjects(stringId).getSaved(dateRange)
     }

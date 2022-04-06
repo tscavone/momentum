@@ -1,13 +1,11 @@
 // contains the notes
 //
 
-import { ReactNode } from 'react'
 import { IDataNote } from '../data_definitions/GlobalDefinitions'
 import { Id } from '../util/Id'
-import { IdentifiedObject } from '../util/IdentifiedObject'
-import { IReportable } from './IReportable'
+import { TemporalObject } from '../util/TemporalObject'
 
-export class Note extends IdentifiedObject {
+export class Note extends TemporalObject {
     //
     //members
     //
@@ -18,7 +16,7 @@ export class Note extends IdentifiedObject {
     //
     constructor() {
         super()
-        this._text = ''
+        this._text = null
     }
 
     //
@@ -34,6 +32,10 @@ export class Note extends IdentifiedObject {
     //
     //public methods
     //
+    isNewlyMinted(): boolean {
+        return this.text === null
+    }
+
     public static fromJSON(jsonObj: IDataNote): Note {
         let note = Object.assign(new Note(), jsonObj) as Note
         note.id = Id.fromString(jsonObj._id)

@@ -1,7 +1,6 @@
 //
 
 import { Container } from '@chakra-ui/react'
-import { ReactNode } from 'react'
 import { Note } from '../../value_objects/Note'
 
 // a component to display a Note in the report drawer

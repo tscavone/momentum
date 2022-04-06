@@ -4,7 +4,6 @@
 import { TemporalCollection } from '../util/TemporalCollection'
 import { Id } from '../util/Id'
 import { AbstractTemporalStore } from './AbstractTemporalStore'
-import { Employee } from '../value_objects/Employee'
 import { StretchAnswer } from '../value_objects/StretchAnswer'
 import {
     IDataStretchAnswer,
@@ -22,9 +21,8 @@ export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
     //
     //public methods
     //
-    addEmployee(newEmployee: Employee | string): void {
-        const employeeId: string =
-            newEmployee instanceof Employee ? newEmployee.id.id : newEmployee
+    addEmployee(newEmployeeId: Id | string): void {
+        const employeeId = Id.asString(newEmployeeId)
 
         if (this._allEmployeeObjects.get(employeeId) !== undefined) {
             throw `adding employee over existing: ${employeeId}`
@@ -33,6 +31,15 @@ export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
         this._allEmployeeObjects.set(
             employeeId,
             new TemporalCollection<StretchAnswer>(new StretchAnswer())
+        )
+    }
+
+    getAnswer(employeeId: string | Id, questionId: string | Id): StretchAnswer {
+        let questionIdStr = Id.asString(questionId)
+        let employeeIdStr = Id.asString(employeeId)
+
+        return this.getEmployeeObjects(employeeIdStr).getSavedById(
+            questionIdStr
         )
     }
 
@@ -46,7 +53,11 @@ export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
             this.getEmployeeObjects(employeeId)
 
         stretchAnswers.clear(new StretchAnswer())
-        stretchAnswers.current = StretchAnswer.fromJSON(jsonObj._current)
+
+        //currently we're not saving the current object of a temporal collection, but we might want to in the future
+        // to preserve people's work
+        if (jsonObj._current)
+            stretchAnswers.current = StretchAnswer.fromJSON(jsonObj._current)
 
         jsonObj._temporalObjects.forEach((obj) =>
             this.getEmployeeObjects(employeeId).put(

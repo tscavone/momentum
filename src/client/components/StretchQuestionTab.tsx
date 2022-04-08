@@ -4,7 +4,9 @@ import {
     Divider,
     Flex,
     Heading,
+    Input,
     Select,
+    Textarea,
     VStack,
 } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
@@ -124,7 +126,7 @@ export const StretchQuesitonTab = observer(() => {
         return returnValues
     }
 
-    const updateCurrentAnswer = (newValue) => {
+    const updateCurrentAnswer = (e) => {
         let newAnswer = new StretchAnswer()
         newAnswer.answer = newValue.map((n) => serialize(n)).join('')
         newAnswer.questionId = Id.fromString(selectedQuestionId)
@@ -153,6 +155,23 @@ export const StretchQuesitonTab = observer(() => {
         return deserialized
     }
 
+    const getValue = () => {
+        let newValue = selectedQuestionStore.getSelectedAnswer(
+            stretchAnswerStore,
+            selectedEmployeeStore
+        )
+            ? selectedQuestionStore.getSelectedAnswer(
+                  stretchAnswerStore,
+                  selectedEmployeeStore
+              ).answer
+            : ''
+
+        return newValue
+            ? newValue
+            : stretchAnswerStore.getCurrent(selectedEmployeeStore.selectedId)
+                  .answer
+    }
+
     return (
         <Box>
             <VStack>
@@ -169,7 +188,6 @@ export const StretchQuesitonTab = observer(() => {
                 >
                     {populateStretchQuestions()}
                 </Select>
-                <Divider orientation="horizontal" />
                 <Box w={[250, 500, 750]}>
                     <RichTextBlock
                         readOnly={richTextReadOnly}

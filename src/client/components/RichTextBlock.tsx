@@ -9,6 +9,7 @@ import escapeHtml from 'escape-html'
 import { jsx } from 'slate-hyperscript'
 import { observer } from 'mobx-react'
 import { useSelectedEmployeeStore } from './RootStoreProvider'
+import { createNode } from 'typescript'
 
 // @refresh reset
 const HOTKEYS: { [hotkey: string]: string } = {
@@ -79,11 +80,9 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = observer(
                 },
             })
             Transforms.insertNodes(editor, initialValue)
+            console.log('inserting Data', initialValue)
         }, [selectedEmployeeStore.selectedId, ...renderDependencies])
-        console.log('dependencies... ', [
-            selectedEmployeeStore.selectedId,
-            ...renderDependencies,
-        ])
+
         //focus selection
         const [focused, setFocused] = React.useState(false)
         const savedSelection = React.useRef(editor.selection)

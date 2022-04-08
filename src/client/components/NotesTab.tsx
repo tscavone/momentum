@@ -18,13 +18,13 @@ export const NotesTab = observer(() => {
 
     const updateCurrentNote = (newValue) => {
         let newNote = new Note()
-        console.log('before serialization:', newValue)
+
         newNote.text = newValue.map((n) => serialize(n)).join('')
-        console.log('after serialization:', newNote.text)
+
         var parser = new DOMParser()
         var el = parser.parseFromString(newNote.text, 'text/html')
         let deserialized = deserialize(el.body)
-        console.log('deserialized', deserialized)
+
         noteStore.setCurrent(selectedEmployeeStore.selectedId, newNote)
     }
 
@@ -46,7 +46,6 @@ export const NotesTab = observer(() => {
         var el = parser.parseFromString(currentNote.text, 'text/html')
         let deserialized = deserialize(el.body)
 
-        console.log('deserialized before passing', deserialized)
         return deserialized
     }
 

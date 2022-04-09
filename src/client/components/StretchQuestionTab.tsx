@@ -4,11 +4,13 @@ import {
     Divider,
     Flex,
     Heading,
+    Input,
     Select,
+    Textarea,
     VStack,
 } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
-import { computed, makeAutoObservable } from 'mobx'
+import { computed, makeAutoObservable, observable } from 'mobx'
 import { ReactNode } from 'react'
 import { DatedObject } from '../util/DatedObject'
 import { Id } from '../util/Id'
@@ -28,7 +30,9 @@ class SelectedQuestionStore {
     // _shouldBeReadOnly: boolean
 
     constructor() {
-        makeAutoObservable(this)
+        makeAutoObservable(this, {
+            _selectedQuestionId: observable,
+        })
         this.selectedQuestionId = null
         // this.shouldBeReadOnly = true
     }
@@ -55,13 +59,16 @@ class SelectedQuestionStore {
         if (this.selectedQuestionId === null) return null
 
         const stretchAnswer = stretchAnswerStore
-            .getAllSavedWithCurrent(selectedEmployeeStore.selectedId)
-            .filter(
-                (answer: StretchAnswer) =>
-                    answer.questionId.id === this.selectedQuestionId
-            )[0] as StretchAnswer
+            .getAllSaved(selectedEmployeeStore.selectedId)
+            .filter((answer: DatedObject<StretchAnswer>) => {
+                console.log('\tchecking against', answer.obj.questionId.id)
+                return answer.obj.questionId.id === this.selectedQuestionId
+            })[0]
 
-        return stretchAnswer ? stretchAnswer : null
+        if (stretchAnswer) {
+            console.log('selected stretch answer', stretchAnswer.obj.answer)
+        }
+        return stretchAnswer ? stretchAnswer.obj : null
     }
 }
 const selectedQuestionStore = new SelectedQuestionStore()
@@ -73,18 +80,12 @@ export const StretchQuesitonTab = observer(() => {
     const currentDateStore = useCurrentDateStore()
 
     const shouldBeReadOnly = (): boolean => {
-        const current = stretchAnswerStore.getCurrent(
-            selectedEmployeeStore.selectedId
+        const selectedAnswer = selectedQuestionStore.getSelectedAnswer(
+            stretchAnswerStore,
+            selectedEmployeeStore
         )
 
-        if (!current || !current.questionId) {
-            return false
-        } else {
-            return (
-                selectedQuestionStore.selectedQuestionId ===
-                current.questionId.id
-            )
-        }
+        return selectedAnswer !== null
     }
 
     const populateStretchQuestions = (): ReactNode[] => {
@@ -145,9 +146,11 @@ export const StretchQuesitonTab = observer(() => {
         return returnValues
     }
 
-    const updateCurrentAnswer = (newValue) => {
+    const updateCurrentAnswer = (e) => {
+        //todo - is there a way to do this without adding a new object every time?
+
         let newAnswer = new StretchAnswer()
-        newAnswer.answer = newValue.map((n) => serialize(n)).join('')
+        newAnswer.answer = e.target.value
         newAnswer.questionId = Id.fromString(
             selectedQuestionStore.selectedQuestionId
         )
@@ -155,31 +158,71 @@ export const StretchQuesitonTab = observer(() => {
             selectedEmployeeStore.selectedId,
             newAnswer
         )
+        // stretchAnswerStore.getCurrent(selectedEmployeeStore.selectedId).answer =
+        //     e.target.value
+        // //todo - cache id somehow?
+        // stretchAnswerStore.getCurrent(
+        //     selectedEmployeeStore.selectedId
+        // ).questionId = Id.fromString(selectedQuestionStore.selectedQuestionId)
     }
 
-    const updateStretchAnswer = () => {
+    const saveStretchAnswer = () => {
         stretchAnswerStore.save(
             selectedEmployeeStore.selectedId,
             currentDateStore.date
         )
+        stretchAnswerStore.setCurrent(
+            selectedEmployeeStore.selectedId,
+            new StretchAnswer()
+        )
+        console.log(
+            'saved stretch answers: ',
+            stretchAnswerStore.getAllSaved(selectedEmployeeStore.selectedId)
+        )
     }
 
-    const getDeserialized = () => {
-        const selectedAnswer = selectedQuestionStore.getSelectedAnswer(
+    const getValue = () => {
+        console.log('Get Value called')
+        let newValue = selectedQuestionStore.getSelectedAnswer(
             stretchAnswerStore,
             selectedEmployeeStore
         )
-        console.log('gettingDeserialized with selectedAnswer', selectedAnswer)
-        if (!selectedAnswer) return undefined
+            ? selectedQuestionStore.getSelectedAnswer(
+                  stretchAnswerStore,
+                  selectedEmployeeStore
+              ).answer
+            : null
 
-        var parser = new DOMParser()
-        var el = parser.parseFromString(selectedAnswer.answer, 'text/html')
-        let deserialized = deserialize(el.body.firstChild)
-
-        console.log('deserialized before passing', deserialized)
-        return deserialized
+        console.log(
+            '\t new value',
+            newValue,
+            stretchAnswerStore.getCurrent(selectedEmployeeStore.selectedId)
+                .answer
+        )
+        return newValue
+            ? newValue
+            : stretchAnswerStore.getCurrent(selectedEmployeeStore.selectedId)
+                  .answer
     }
 
+    // const getValue = () => {
+    //     let selectedAnswer = selectedQuestionStore.getSelectedAnswer(
+    //         stretchAnswerStore,
+    //         selectedEmployeeStore
+    //     )
+    //     console.log('HERE IS GET VALUE selected ANSWER ', selectedAnswer)
+    //     if (selectedAnswer !== null) {
+    //         return selectedAnswer.answer
+    //     }
+
+    //     let currentAnswer = stretchAnswerStore.getCurrent(
+    //         selectedEmployeeStore.selectedId
+    //     ).answer
+
+    //     console.log('HERE IS GET VALUE CURRENT ANSWER ', currentAnswer)
+    //     //if current answer is null, we want to return '' to clear the input
+    //     return currentAnswer ? currentAnswer : ''
+    // }
     return (
         <Box>
             <VStack>
@@ -188,6 +231,7 @@ export const StretchQuesitonTab = observer(() => {
                 </Heading>
                 <Divider orientation="horizontal" />
                 <Select
+                    w={[250, 500, 750]}
                     value={(function () {
                         console.log(
                             'value for select: ',
@@ -199,34 +243,26 @@ export const StretchQuesitonTab = observer(() => {
                     onChange={(event) => {
                         selectedQuestionStore.selectedQuestionId =
                             event.target.value
-                        console.log(
-                            'setting changed id: ',
-                            event.target.value,
-                            ' and after: ',
-                            selectedQuestionStore.selectedQuestionId
-                        )
+
+                        stretchAnswerStore.getCurrent(
+                            selectedEmployeeStore.selectedId
+                        ).questionId.id = event.target.value
                     }}
                 >
                     {populateStretchQuestions()}
                 </Select>
-                <Divider orientation="horizontal" />
                 <Box w={[250, 500, 750]}>
-                    {(function () {
-                        if (!shouldBeReadOnly()) {
-                            return (
-                                <RichTextBlock
-                                    readOnly={false}
-                                    updateCurrent={updateCurrentAnswer}
-                                    initialValue={getDeserialized()}
-                                    renderDependencies={[
-                                        selectedQuestionStore._selectedQuestionId,
-                                    ]}
-                                />
-                            )
-                        } else {
-                            return <p>answer text here </p>
+                    <Textarea
+                        colorScheme={'green'}
+                        value={getValue()}
+                        onChange={updateCurrentAnswer}
+                        isReadOnly={shouldBeReadOnly()}
+                        className={
+                            shouldBeReadOnly()
+                                ? 'readonly-textarea'
+                                : 'editable-textarea'
                         }
-                    })()}
+                    ></Textarea>
                 </Box>
                 <Flex
                     alignItems={'center'}
@@ -236,7 +272,10 @@ export const StretchQuesitonTab = observer(() => {
                 >
                     <Box p={2}>
                         <Button
-                            onClick={updateStretchAnswer}
+                            onClick={saveStretchAnswer}
+                            disabled={stretchAnswerStore
+                                .getCurrent(selectedEmployeeStore.selectedId)
+                                .isNewlyMinted()}
                             colorScheme="green"
                         >
                             save answer

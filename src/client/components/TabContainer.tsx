@@ -1,7 +1,15 @@
 import { NotesTab } from './NotesTab'
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react'
+import {
+    Tabs,
+    TabList,
+    Tab,
+    TabPanels,
+    TabPanel,
+    Tooltip,
+} from '@chakra-ui/react'
 import {
     CheckIcon,
+    ChevronUpIcon,
     EditIcon,
     ExternalLinkIcon,
     InfoOutlineIcon,
@@ -9,8 +17,18 @@ import {
     TimeIcon,
 } from '@chakra-ui/icons'
 import { StretchQuesitonTab } from './StretchQuestionTab'
+import {
+    useNoteStore,
+    useSelectedEmployeeStore,
+    useStretchAnswerStore,
+} from './RootStoreProvider'
+import { observer } from 'mobx-react'
+import { TabButton } from './TabButton'
 
-export const TabContainer = () => {
+export const TabContainer = observer(() => {
+    const noteStore = useNoteStore()
+    const stretchAnswerStore = useStretchAnswerStore()
+    const selectedEmployeeStore = useSelectedEmployeeStore()
     const iconStyle = {
         marginRight: '5px',
     }
@@ -18,14 +36,21 @@ export const TabContainer = () => {
     return (
         <Tabs size="md" variant="enclosed" colorScheme={'green'}>
             <TabList>
-                <Tab>
-                    <EditIcon style={iconStyle} />
-                    Notes
-                </Tab>
-                <Tab>
-                    <QuestionOutlineIcon style={iconStyle} />
-                    Stretch
-                </Tab>
+                <TabButton
+                    infoStore={noteStore}
+                    name={'notes'}
+                    icon={<EditIcon style={iconStyle}></EditIcon>}
+                />
+                <TabButton
+                    infoStore={stretchAnswerStore}
+                    name={'stretch'}
+                    icon={
+                        <QuestionOutlineIcon
+                            style={iconStyle}
+                        ></QuestionOutlineIcon>
+                    }
+                />
+
                 <Tab>
                     <TimeIcon style={iconStyle} />
                     Follow Ups
@@ -53,4 +78,4 @@ export const TabContainer = () => {
             </TabPanels>
         </Tabs>
     )
-}
+})

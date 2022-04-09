@@ -1,0 +1,10 @@
+readonly-textarea {
+    border-color: lightgray;
+}
+editable-textarea {
+    box-shadow: inset 1px 1px 3px #ccc;
+}
+button.edited-tab {
+    color: white !important;
+    background-color: green;
+}

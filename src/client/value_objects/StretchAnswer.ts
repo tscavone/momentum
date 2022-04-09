@@ -16,7 +16,7 @@ export class StretchAnswer extends TemporalObject {
     //
     constructor() {
         super()
-        this._answer = null
+        this._answer = ''
         this._questionId = null
     }
 
@@ -55,6 +55,6 @@ export class StretchAnswer extends TemporalObject {
     }
 
     isNewlyMinted(): boolean {
-        return this.answer === null && this.questionId === null
+        return this.answer === '' || this.questionId === null
     }
 }

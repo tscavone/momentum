@@ -8,11 +8,11 @@ export const valueTestData: IDataGlobal = {
         _notes: {
             _temporalObjects: [
                 {
-                    _obj: { _id: '8888b', _text: 'Here is the first' },
+                    _obj: { _id: '8888b', _text: '<p>Here is the first</p>' },
                     _date: '02/01/2022',
                 },
                 {
-                    _obj: { _id: '8888c', _text: 'Here is the second' },
+                    _obj: { _id: '8888c', _text: '<p>Here is the second</p>' },
                     _date: '03/01/2022',
                 },
             ],
@@ -22,7 +22,7 @@ export const valueTestData: IDataGlobal = {
                 {
                     _obj: {
                         _id: '9999b',
-                        _answer: '<p>Games, I love games</p>',
+                        _answer: 'Games, I love games',
                         _questionId: '1300-20',
                     },
                     _date: '02/01/2022',
@@ -30,8 +30,7 @@ export const valueTestData: IDataGlobal = {
                 {
                     _obj: {
                         _id: '9999c',
-                        _answer:
-                            '<p>Here is an answer to a deleted question</p>',
+                        _answer: 'Here is an answer to a deleted question',
                         _questionId: '32132148378945231894732',
                     },
                     _date: '03/01/2022',
@@ -43,11 +42,17 @@ export const valueTestData: IDataGlobal = {
         _notes: {
             _temporalObjects: [
                 {
-                    _obj: { _id: '8888l', _text: 'USER2 - Here is the first' },
+                    _obj: {
+                        _id: '8888l',
+                        _text: '<p>USER2 - Here is the first</p>',
+                    },
                     _date: '02/02/2022',
                 },
                 {
-                    _obj: { _id: '8888g', _text: 'USER2 - Here is the second' },
+                    _obj: {
+                        _id: '8888g',
+                        _text: '<p>USER2 - Here is the second</p>',
+                    },
                     _date: '03/02/2022',
                 },
             ],
@@ -57,7 +62,7 @@ export const valueTestData: IDataGlobal = {
                 {
                     _obj: {
                         _id: '99999b',
-                        _answer: '<p>No, it sounds horrible!</p>',
+                        _answer: 'No, it sounds horrible!',
                         _questionId: '1300-30',
                     },
                     _date: '02/01/2022',

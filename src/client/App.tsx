@@ -1,9 +1,9 @@
 import { Box } from '@chakra-ui/react'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'
-import { Footer } from './client/components/Footer'
-import { MainContent } from './client/components/MainContent'
-import { TopNav } from './client/components/TopNav'
+import { Footer } from './components/Footer'
+import { MainContent } from './components/MainContent'
+import { TopNav } from './components/TopNav'
 
 const DateState = observable({
     currentDate: null,

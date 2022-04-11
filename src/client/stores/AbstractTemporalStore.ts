@@ -61,16 +61,26 @@ export abstract class AbstractTemporalStore<T extends TemporalObject>
         this._allEmployeeObjects.get(id)!.save(date)
     }
 
-    getSaved(
-        id: Id | string,
-        dateRange: DateRange
-    ): DatedObject<TemporalObject>[] {
+    getSaved(id: Id | string, dateRange: DateRange): DatedObject<T>[] {
         const stringId = id instanceof Id ? id.id : id
 
         return this.getEmployeeObjects(stringId).getSaved(dateRange)
     }
 
-    getAllSaved(id: Id | string) {
+    getAllSavedWithCurrent(id: Id | string): T[] {
+        let retval: T[] = [this.getCurrent(id)]
+
+        for (const datedObj of this.getSaved(
+            id,
+            DateRange.upTo(DateRange.AFTER_TIMES)
+        ).values()) {
+            retval.push(datedObj.obj as T)
+        }
+
+        return retval
+    }
+
+    getAllSaved(id: Id | string): DatedObject<T>[] {
         return this.getSaved(id, DateRange.upTo(DateRange.AFTER_TIMES))
     }
 

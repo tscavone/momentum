@@ -18,7 +18,7 @@ const StoreContext = React.createContext<RootStore | undefined>(undefined)
 // create the provider component
 export function RootStoreProvider({ children }: { children: ReactNode }) {
     const rootStore = new RootStore()
-    rootStore.initialize()
+    rootStore.initialize('abcdef')
 
     return (
         <StoreContext.Provider value={rootStore}>

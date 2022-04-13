@@ -15,5 +15,7 @@ export interface IDataSettingsValue {
 
 export interface IDataSettings {
     entries: IDataSettingsEntry[]
-    values: IDataSettingsValue[]
+    values: {
+        [key: string]: IDataSettingsValue[]
+    }
 }

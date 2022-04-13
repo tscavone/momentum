@@ -3,6 +3,9 @@ import { DatedObject } from '../client/util/DatedObject'
 import { Id } from '../client/util/Id'
 import { IdentifiedObject } from '../client/util/IdentifiedObject'
 import { Note } from '../client/value_objects/Note'
+import { SettingsEntry } from '../client/value_objects/SettingsEntry'
+import { SettingsValue } from '../client/value_objects/SettingsValue'
+import { SettingsValueWithDesc } from '../client/value_objects/SettingsValueWithDesc'
 import { StretchAnswer } from '../client/value_objects/StretchAnswer'
 
 test('Root store constructs', () => {
@@ -11,7 +14,7 @@ test('Root store constructs', () => {
 
 test('Root store initializes', () => {
     const rootStore = new RootStore()
-    rootStore.initialize()
+    rootStore.initialize('abcdef')
 })
 
 const testDatedNote = ({
@@ -66,7 +69,7 @@ const testDatedAnswer = ({
 
 test('Root store noteStore load is correct', () => {
     const rootStore = new RootStore()
-    rootStore.initialize()
+    rootStore.initialize('abcdef')
 
     let allSavedNotes = rootStore._noteStore.getAllSaved(
         '1234'
@@ -77,13 +80,13 @@ test('Root store noteStore load is correct', () => {
         datedNote: allSavedNotes[0],
         date: new Date('02/01/2022'),
         id: '8888b',
-        text: 'Here is the first',
+        text: '<p>Here is the first</p>',
     })
     testDatedNote({
         datedNote: allSavedNotes[1],
         date: new Date('03/01/2022'),
         id: '8888c',
-        text: 'Here is the second',
+        text: '<p>Here is the second</p>',
     })
 
     allSavedNotes = rootStore._noteStore.getAllSaved(
@@ -94,19 +97,20 @@ test('Root store noteStore load is correct', () => {
         datedNote: allSavedNotes[0],
         date: new Date('02/02/2022'),
         id: '8888l',
-        text: 'USER2 - Here is the first',
+        text: '<p>USER2 - Here is the first</p>',
     })
     testDatedNote({
         datedNote: allSavedNotes[1],
         date: new Date('03/02/2022'),
         id: '8888g',
-        text: 'USER2 - Here is the second',
+        text: '<p>USER2 - Here is the second</p>',
     })
 })
 
 test('Root store stretchAnswerStore load is correct', () => {
     const rootStore = new RootStore()
-    rootStore.initialize()
+    rootStore.initialize('abcdef')
+
     let allSavedAnswers = rootStore._stretchAnswerStore.getAllSaved(
         '1234'
     ) as DatedObject<StretchAnswer>[]
@@ -116,14 +120,14 @@ test('Root store stretchAnswerStore load is correct', () => {
         date: new Date('02/01/2022'),
         id: '9999b',
         questionId: '1300-20',
-        answer: '<p>Games, I love games</p>',
+        answer: 'Games, I love games',
     })
     testDatedAnswer({
         datedAnswer: allSavedAnswers[1],
         date: new Date('03/01/2022'),
         id: '9999c',
         questionId: '32132148378945231894732',
-        answer: '<p>Here is an answer to a deleted question</p>',
+        answer: 'Here is an answer to a deleted question',
     })
 
     allSavedAnswers = rootStore._stretchAnswerStore.getAllSaved(
@@ -135,7 +139,7 @@ test('Root store stretchAnswerStore load is correct', () => {
         date: new Date('02/01/2022'),
         id: '99999b',
         questionId: '1300-30',
-        answer: '<p>No, it sounds horrible!</p>',
+        answer: 'No, it sounds horrible!',
     })
 
     allSavedAnswers = rootStore._stretchAnswerStore.getAllSaved(
@@ -143,42 +147,122 @@ test('Root store stretchAnswerStore load is correct', () => {
     ) as DatedObject<StretchAnswer>[]
 })
 
-/*
-_stretchAnswers: {
-            _temporalObjects: [
-                {
-                    _obj: {
-                        _id: '9999b',
-                        _answer: '<p>Games, I love games</p>',
-                        _questionId: '1300-20',
-                    },
-                    _date: '02/01/2022',
-                },
-                {
-                    _obj: {
-                        _id: '9999c',
-                        _answer:
-                            '<p>Here is an answer to a deleted question</p>',
-                        _questionId: '32132148378945231894732',
-                    },
-                    _date: '03/01/2022',
-                },
-            ],
+const testSettingsEntry = ({
+    entry,
+    id,
+    name,
+    description,
+}: {
+    entry: SettingsEntry
+    id: string
+    name: string
+    description: string
+}) => {
+    expect(entry.id).toBeInstanceOf(Id)
+    expect(entry.id.id).toBe(id)
+    expect(entry.name).toBe(name)
+    expect(entry.description).toBe(description)
+}
+
+const testSettingsValues = (
+    values: SettingsValueWithDesc[] | SettingsValue[],
+    checkValues: {
+        entryId: string
+        id: string
+        value: string
+        description?: string
+        deleted?: string
+    }[]
+) => {
+    expect(values.length).toEqual(checkValues.length)
+    for (let i = 0; i < values.length; i++) {
+        const value = values[i]
+        const check = checkValues[i]
+        expect(value.id).toBeInstanceOf(Id)
+        expect(value.id.id).toBe(check.id)
+        expect(value.entryId).toBeInstanceOf(Id)
+        expect(value.entryId.id).toBe(check.entryId)
+        expect(value.value).toBe(check.value)
+
+        if (value instanceof SettingsValueWithDesc) {
+            expect(value.description).toBe(check.description)
+        }
+        if (value.deleted) {
+            expect(value.deleted).toBe('true')
+        }
+    }
+}
+
+test('Root store settings load is correct', () => {
+    const rootStore = new RootStore()
+    rootStore.initialize('abcdef')
+
+    expect(() =>
+        rootStore._settingsStore.getByEntryName('incorrect entry')
+    ).toThrow('getByEntryName: setting not found with name incorrect entry')
+
+    const positions = rootStore._settingsStore.getByEntryName('positions')
+
+    testSettingsEntry({
+        entry: positions[0],
+        id: '1200',
+        name: 'positions',
+        description: 'An employment-level for software engineers',
+    })
+    testSettingsValues(positions[1], [
+        {
+            entryId: '1200',
+            id: '1200-10',
+            value: 'Associate Software Engineer',
+            description:
+                'Somebody just starting out. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
         },
-
-        _stretchAnswers: {
-            _temporalObjects: [
-                {
-                    _obj: {
-                        _id: '99999b',
-                        _answer: '<p>No, it sounds horrible!</p>',
-                        _questionId: '1300-30',
-                    },
-                    _date: '02/01/2022',
-                },
-            ],
+        {
+            entryId: '1200',
+            id: '1200-20',
+            value: 'Software Engineer',
+            description:
+                'Somebody who has been at it for a while. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
         },
+        {
+            entryId: '1200',
+            id: '1200-30',
+            value: 'Senior Software Engineer',
+            description:
+                'Should be well versed in a lot of stuff and a good programmer.  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        },
+    ])
 
+    const stretch = rootStore._settingsStore.getByEntryName('stretch questions')
 
+    testSettingsEntry({
+        entry: stretch[0],
+        id: '1300',
+        name: 'stretch questions',
+        description: 'Questions to ask to get to know your reports better',
+    })
 
-*/
+    testSettingsValues(stretch[1], [
+        {
+            entryId: '1300',
+            id: '1300-10',
+            value: "How do you debug a problem when you're really stuck?",
+        },
+        {
+            entryId: '1300',
+            id: '1300-20',
+            value: 'What initially got you into coding?',
+        },
+        {
+            entryId: '1300',
+            id: '1300-30',
+            value: 'Have you ever eaten Vegemite?',
+        },
+        {
+            entryId: '1300',
+            id: '32132148378945231894732',
+            value: 'This is a deleted question',
+            deleted: 'true',
+        },
+    ])
+})

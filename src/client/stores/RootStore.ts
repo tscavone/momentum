@@ -31,8 +31,10 @@ export class RootStore {
         this._stretchAnswerStore = new StretchAnswerStore()
     }
 
-    initialize() {
-        this._settingsStore.load(settingsTestData)
+    initialize(userId: Id | string) {
+        const userIdStr = Id.asString(userId)
+
+        this._settingsStore.load(settingsTestData, userId)
         this._employeeStore.load(employeeTestData)
         this._selectedEmployeeStore.load(TestSelectedEmployeeData)
         this.loadTemporalObjects()

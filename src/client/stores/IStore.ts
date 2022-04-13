@@ -4,5 +4,5 @@
 import { Id } from '../util/Id'
 
 export interface IStore {
-    load(jsonObj: any): void
+    load(jsonObj: any, userId: Id | string): void
 }

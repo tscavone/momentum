@@ -27,6 +27,9 @@ export class SettingsStore implements IStore {
         return setting
     }
 
+    //returns the an array, the first object being the settings entry that matches the name,
+    // the second element being an array of settings values that correspond to that entry for
+    // this loaded user
     getByEntryName(name: string): [SettingsEntry, SettingsValue[]] {
         for (const [id, setting] of this._settings) {
             if (setting[0].name === name) {
@@ -37,11 +40,8 @@ export class SettingsStore implements IStore {
         throw `getByEntryName: setting not found with name ${name}`
     }
 
-    load(jsonObj: IDataSettings, employeeId?: Id): void {
-        //because we can't overload 'load' :/
-        if (employeeId)
-            throw "Settings Store doesn't use employeeId so this was most likely called in error"
-
+    load(jsonObj: IDataSettings, userId: Id | string): void {
+        const userIdStr = Id.asString(userId)
         const entries = new Map<string, SettingsEntry>()
         const values = new Map<string, SettingsValue[]>()
 
@@ -52,7 +52,7 @@ export class SettingsStore implements IStore {
         }
 
         //load values
-        for (const jsonValue of jsonObj['values']) {
+        for (const jsonValue of jsonObj['values'][userIdStr]) {
             let value = null
 
             if (jsonValue._description) {

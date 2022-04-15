@@ -11,15 +11,11 @@ export class SelectedEmployeeStore implements IStore {
     //
     private _selectedId: Id
 
-    //dumping this here for debugging purposes
-    public _currentDate: Date
-
     //
     //constructor
     //
     constructor() {
         this._selectedId = new Id()
-        this._currentDate = new Date()
 
         makeAutoObservable(this)
     }

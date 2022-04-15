@@ -1,8 +1,10 @@
 import { IDataGlobal } from '../client/data_definitions/GlobalDefinitions'
 import { IDataSettings } from '../client/data_definitions/SettingsDefinitions'
 import { IGlobalEmployeeData } from '../client/data_definitions/EmployeeDefinitions'
+import { IAuthedUserData } from '../client/data_definitions/AuthedUserDefinitions'
+import { ISelectedEmployeeData } from '../client/data_definitions/SelectedEmployeeDefinitions'
 
-//global employee data
+//test global business logic data
 export const valueTestData: IDataGlobal = {
     abcdef: {
         //IDataEmployees
@@ -126,7 +128,7 @@ export const valueTestData: IDataGlobal = {
     },
 }
 
-//settings data
+//test settings data
 export const settingsTestData: IDataSettings = {
     entries: [
         {
@@ -232,7 +234,7 @@ export const settingsTestData: IDataSettings = {
     },
 }
 
-//employee data
+//test employee data
 export const employeeTestData: IGlobalEmployeeData = {
     '1234': {
         _id: '1234',
@@ -244,4 +246,15 @@ export const employeeTestData: IGlobalEmployeeData = {
         _first: 'Brandon',
         _last: 'Flowers',
     },
+}
+
+//auto login user for now...
+export const TestAuthedUserData: IAuthedUserData = {
+    _userId: 'abcdef',
+    _token: 'abc123',
+}
+
+//test user selction
+export const TestSelectedEmployeeData: ISelectedEmployeeData = {
+    _selectedId: '1234',
 }

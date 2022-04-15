@@ -4,11 +4,24 @@ const pino = require('express-pino-logger')()
 const cors = require('cors')
 
 const app = express()
+// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(pino)
+
+// parse application/json
+app.use(bodyParser.json())
+
+// app.use(function (req, res) {
+//     res.setHeader('Content-Type', 'text/plain')
+//     res.write('you posted:\n')
+//     res.end(JSON.stringify(req.body, null, 2))
+// })
+// app.use(pino)
 app.use(cors())
 
-app.use('/login', (req, res) => {
+app.post('/login', (req, res) => {
+    console.log('req.method', req.method) // "DELETE"
+    console.log('req.body', req.body)
+    console.log('req.body.username', req.body.username)
     res.send({
         token: 'abc123',
     })

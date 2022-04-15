@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 async function loginUser(credentials) {
+    console.log('credentials: ', JSON.stringify(credentials))
     return fetch('http://localhost:3001/login', {
         method: 'POST',
         headers: {

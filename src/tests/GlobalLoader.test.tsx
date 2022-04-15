@@ -105,7 +105,9 @@ test('Root store noteStore load is correct with multiple users', () => {
         text: '<p>USER2 - Here is the second</p>',
     })
 
+    //
     //test the loading of another user
+    //
     rootStore.initialize('uvwxyz')
     allSavedNotes = rootStore._noteStore.getAllSaved(
         '9876'
@@ -161,7 +163,9 @@ test('Root store stretchAnswerStore load is correct', () => {
         answer: 'No, it sounds horrible!',
     })
 
+    //
     //test the loading of another user
+    //
     rootStore.initialize('uvwxyz')
     allSavedAnswers = rootStore._stretchAnswerStore.getAllSaved(
         '9876'
@@ -171,9 +175,16 @@ test('Root store stretchAnswerStore load is correct', () => {
     testDatedAnswer({
         datedAnswer: allSavedAnswers[0],
         date: new Date('02/01/2022'),
-        id: 'b99999',
-        questionId: '1300-30',
-        answer: 'No, it sounds horrible!',
+        id: 'b9999',
+        questionId: '1300-20',
+        answer: 'other user - games got me into this',
+    })
+    testDatedAnswer({
+        datedAnswer: allSavedAnswers[1],
+        date: new Date('03/01/2022'),
+        id: 'c9999',
+        questionId: '23213214837894523189473',
+        answer: 'other user - Here is an answer to a deleted question',
     })
 })
 

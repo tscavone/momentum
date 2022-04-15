@@ -3,14 +3,16 @@ import { NoteStore } from './NoteStore'
 import { SettingsStore } from './SettingsStore'
 import { EmployeeStore } from './EmployeeStore'
 import { SelectedEmployeeStore } from './SelectedEmployeeStore'
-import { TestSelectedEmployeeData } from '../data_definitions/SelectedEmployeeDefinitions'
 import { StretchAnswerStore } from './StretchAnswerStore'
 import {
     employeeTestData,
     settingsTestData,
     valueTestData,
+    TestSelectedEmployeeData,
+    TestAuthedUserData,
 } from '../../tests/testdata'
 import { CurrentDateStore } from './CurrentDateStore'
+import { AuthedUserStore } from './AuthedUserStore'
 
 //const UserData
 export class RootStore {
@@ -18,6 +20,7 @@ export class RootStore {
     _employeeStore: EmployeeStore
     _selectedEmployeeStore: SelectedEmployeeStore
     _currentDateStore: CurrentDateStore
+    _authedUserStore: AuthedUserStore
     //Temporal Object Stores
     _noteStore: NoteStore
     _stretchAnswerStore: StretchAnswerStore
@@ -27,6 +30,7 @@ export class RootStore {
         this._employeeStore = new EmployeeStore()
         this._selectedEmployeeStore = new SelectedEmployeeStore()
         this._currentDateStore = new CurrentDateStore()
+        this._authedUserStore = new AuthedUserStore()
         this._noteStore = new NoteStore()
         this._stretchAnswerStore = new StretchAnswerStore()
     }
@@ -41,6 +45,7 @@ export class RootStore {
         this._settingsStore.load(userScopedSettingsTestData)
         this._employeeStore.load(employeeTestData)
         this._selectedEmployeeStore.load(TestSelectedEmployeeData)
+        this._authedUserStore.load(TestAuthedUserData)
         this.loadTemporalObjects(userIdString)
     }
 

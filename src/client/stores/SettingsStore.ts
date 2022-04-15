@@ -2,7 +2,11 @@ import { Id } from '../util/Id'
 import { SettingsValue } from '../value_objects/SettingsValue'
 import { SettingsEntry } from '../value_objects/SettingsEntry'
 import { IStore } from './IStore'
-import { IDataSettings } from '../data_definitions/SettingsDefinitions'
+import {
+    IDataSettings,
+    IDataSettingsEntry,
+    IDataSettingsValue,
+} from '../data_definitions/SettingsDefinitions'
 import { SettingsValueWithDesc } from '../value_objects/SettingsValueWithDesc'
 
 export class SettingsStore implements IStore {
@@ -40,8 +44,13 @@ export class SettingsStore implements IStore {
         throw `getByEntryName: setting not found with name ${name}`
     }
 
-    load(jsonObj: IDataSettings, userId: Id | string): void {
-        const userIdStr = Id.asString(userId)
+    load(jsonObj: {
+        entries: IDataSettingsEntry[]
+        values: IDataSettingsValue[]
+    }): void {
+        //clear all existing data
+        this._settings.clear()
+
         const entries = new Map<string, SettingsEntry>()
         const values = new Map<string, SettingsValue[]>()
 
@@ -52,7 +61,7 @@ export class SettingsStore implements IStore {
         }
 
         //load values
-        for (const jsonValue of jsonObj['values'][userIdStr]) {
+        for (const jsonValue of jsonObj['values']) {
             let value = null
 
             if (jsonValue._description) {

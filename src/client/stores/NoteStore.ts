@@ -4,13 +4,8 @@
 import { TemporalCollection } from '../util/TemporalCollection'
 import { Note } from '../value_objects/Note'
 import { Id } from '../util/Id'
-import {
-    IDataEmployee,
-    IDataNote,
-    IDataTemporalObject,
-} from '../data_definitions/GlobalDefinitions'
+import { IDataEmployees } from '../data_definitions/GlobalDefinitions'
 import { AbstractTemporalStore } from './AbstractTemporalStore'
-import { Employee } from '../value_objects/Employee'
 
 export class NoteStore extends AbstractTemporalStore<Note> {
     //
@@ -36,25 +31,32 @@ export class NoteStore extends AbstractTemporalStore<Note> {
         )
     }
 
-    load(jsonObj: IDataTemporalObject<IDataNote>, employeeId?: Id): void {
-        this.addEmployee(employeeId.id)
+    load(employeeData: IDataEmployees): void {
+        //clear all existing data
+        this._allEmployeeObjects.clear()
 
-        let notes: TemporalCollection<Note> =
-            this.getEmployeeObjects(employeeId)
+        for (let employeeId in employeeData) {
+            const notesData = employeeData[employeeId]._notes
+            this.addEmployee(employeeId)
 
-        notes.clear(new Note())
+            let notes: TemporalCollection<Note> =
+                this.getEmployeeObjects(employeeId)
 
-        //currently we're not saving the current object of a temporal collection, but we might want to in the future
-        // to preserve people's work
-        if (jsonObj._current) notes.current = Note.fromJSON(jsonObj._current)
+            notes.clear(new Note())
 
-        jsonObj._temporalObjects.forEach(
-            //todo: check for obj and date members
-            (obj) =>
-                this.getEmployeeObjects(employeeId).put(
-                    Note.fromJSON(obj._obj),
-                    new Date(obj._date)
-                )
-        )
+            //currently we're not saving the current object of a temporal collection, but we might want to in the future
+            // to preserve people's work
+            if (notesData._current)
+                notes.current = Note.fromJSON(notesData._current)
+
+            notesData._temporalObjects.forEach(
+                //todo: check for obj and date members
+                (obj) =>
+                    this.getEmployeeObjects(employeeId).put(
+                        Note.fromJSON(obj._obj),
+                        new Date(obj._date)
+                    )
+            )
+        }
     }
 }

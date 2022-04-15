@@ -1,7 +1,6 @@
 import { RootStore } from '../client/stores/RootStore'
 import { DatedObject } from '../client/util/DatedObject'
 import { Id } from '../client/util/Id'
-import { IdentifiedObject } from '../client/util/IdentifiedObject'
 import { Note } from '../client/value_objects/Note'
 import { SettingsEntry } from '../client/value_objects/SettingsEntry'
 import { SettingsValue } from '../client/value_objects/SettingsValue'
@@ -67,7 +66,7 @@ const testDatedAnswer = ({
     expect(stretchAnswer.answer).toBe(answer)
 }
 
-test('Root store noteStore load is correct', () => {
+test('Root store noteStore load is correct with multiple users', () => {
     const rootStore = new RootStore()
     rootStore.initialize('abcdef')
 
@@ -104,6 +103,26 @@ test('Root store noteStore load is correct', () => {
         date: new Date('03/02/2022'),
         id: '8888g',
         text: '<p>USER2 - Here is the second</p>',
+    })
+
+    //test the loading of another user
+    rootStore.initialize('uvwxyz')
+    allSavedNotes = rootStore._noteStore.getAllSaved(
+        '9876'
+    ) as DatedObject<Note>[]
+    expect(allSavedNotes.length).toEqual(2)
+
+    testDatedNote({
+        datedNote: allSavedNotes[0],
+        date: new Date('02/01/2022'),
+        id: 'b8888',
+        text: '<p>other user - first note</p>',
+    })
+    testDatedNote({
+        datedNote: allSavedNotes[1],
+        date: new Date('03/01/2022'),
+        id: 'c8888',
+        text: '<p>other user - second note</p>',
     })
 })
 
@@ -142,9 +161,20 @@ test('Root store stretchAnswerStore load is correct', () => {
         answer: 'No, it sounds horrible!',
     })
 
+    //test the loading of another user
+    rootStore.initialize('uvwxyz')
     allSavedAnswers = rootStore._stretchAnswerStore.getAllSaved(
-        '1234'
+        '9876'
     ) as DatedObject<StretchAnswer>[]
+    expect(allSavedAnswers.length).toEqual(2)
+
+    testDatedAnswer({
+        datedAnswer: allSavedAnswers[0],
+        date: new Date('02/01/2022'),
+        id: 'b99999',
+        questionId: '1300-30',
+        answer: 'No, it sounds horrible!',
+    })
 })
 
 const testSettingsEntry = ({

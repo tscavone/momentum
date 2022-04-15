@@ -38,10 +38,9 @@ export class EmployeeStore implements IStore {
         return this._employees.get(id)
     }
 
-    load(jsonObj: IGlobalEmployeeData, employeeId?: Id): void {
-        //because we can't overload 'load' :/
-        if (employeeId)
-            throw "Settings Store doesn't use employeeId so this was most likely called in error"
+    load(jsonObj: IGlobalEmployeeData): void {
+        //clear all existing data
+        this._employees.clear()
 
         for (const jsonId in jsonObj) {
             const user = Employee.fromJSON(jsonObj[jsonId])

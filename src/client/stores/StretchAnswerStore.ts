@@ -5,10 +5,7 @@ import { TemporalCollection } from '../util/TemporalCollection'
 import { Id } from '../util/Id'
 import { AbstractTemporalStore } from './AbstractTemporalStore'
 import { StretchAnswer } from '../value_objects/StretchAnswer'
-import {
-    IDataStretchAnswer,
-    IDataTemporalObject,
-} from '../data_definitions/GlobalDefinitions'
+import { IDataEmployees } from '../data_definitions/GlobalDefinitions'
 
 export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
     //
@@ -43,27 +40,30 @@ export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
         )
     }
 
-    load(
-        jsonObj: IDataTemporalObject<IDataStretchAnswer>,
-        employeeId?: Id
-    ): void {
-        this.addEmployee(employeeId.id)
+    load(employeeData: IDataEmployees): void {
+        //clear all existing data
+        this._allEmployeeObjects.clear()
 
-        let stretchAnswers: TemporalCollection<StretchAnswer> =
-            this.getEmployeeObjects(employeeId)
+        for (let employeeId in employeeData) {
+            const stretchData = employeeData[employeeId]._stretchAnswers
+            this.addEmployee(employeeId)
 
-        stretchAnswers.clear(new StretchAnswer())
+            let stretchAnswers: TemporalCollection<StretchAnswer> =
+                this.getEmployeeObjects(employeeId)
 
-        //currently we're not saving the current object of a temporal collection, but we might want to in the future
-        // to preserve people's work
-        if (jsonObj._current)
-            stretchAnswers.current = StretchAnswer.fromJSON(jsonObj._current)
+            //currently we're not saving the current object of a temporal collection, but we might want to in the future
+            // to preserve people's work
+            if (stretchData._current)
+                stretchAnswers.current = StretchAnswer.fromJSON(
+                    stretchData._current
+                )
 
-        jsonObj._temporalObjects.forEach((obj) =>
-            this.getEmployeeObjects(employeeId).put(
-                StretchAnswer.fromJSON(obj._obj),
-                new Date(obj._date)
+            stretchData._temporalObjects.forEach((obj) =>
+                this.getEmployeeObjects(employeeId).put(
+                    StretchAnswer.fromJSON(obj._obj),
+                    new Date(obj._date)
+                )
             )
-        )
+        }
     }
 }

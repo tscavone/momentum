@@ -25,6 +25,10 @@ export interface IDataEmployee {
     _stretchAnswers: IDataTemporalObject<IDataStretchAnswer>
 }
 
-export interface IDataGlobal {
+export interface IDataEmployees {
     [key: string]: IDataEmployee
+}
+
+export interface IDataGlobal {
+    [key: string]: IDataEmployees
 }

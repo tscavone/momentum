@@ -4,70 +4,124 @@ import { IGlobalEmployeeData } from '../client/data_definitions/EmployeeDefiniti
 
 //global employee data
 export const valueTestData: IDataGlobal = {
-    '1234': {
-        _notes: {
-            _temporalObjects: [
-                {
-                    _obj: { _id: '8888b', _text: '<p>Here is the first</p>' },
-                    _date: '02/01/2022',
-                },
-                {
-                    _obj: { _id: '8888c', _text: '<p>Here is the second</p>' },
-                    _date: '03/01/2022',
-                },
-            ],
+    abcdef: {
+        //IDataEmployees
+        '1234': {
+            //IDataEmployee
+            _notes: {
+                //IDataTemporalObject
+                _temporalObjects: [
+                    {
+                        _obj: {
+                            _id: '8888b',
+                            _text: '<p>Here is the first</p>',
+                        },
+                        _date: '02/01/2022',
+                    },
+                    {
+                        _obj: {
+                            _id: '8888c',
+                            _text: '<p>Here is the second</p>',
+                        },
+                        _date: '03/01/2022',
+                    },
+                ],
+            },
+            _stretchAnswers: {
+                _temporalObjects: [
+                    {
+                        _obj: {
+                            _id: '9999b',
+                            _answer: 'Games, I love games',
+                            _questionId: '1300-20',
+                        },
+                        _date: '02/01/2022',
+                    },
+                    {
+                        _obj: {
+                            _id: '9999c',
+                            _answer: 'Here is an answer to a deleted question',
+                            _questionId: '32132148378945231894732',
+                        },
+                        _date: '03/01/2022',
+                    },
+                ],
+            },
         },
-        _stretchAnswers: {
-            _temporalObjects: [
-                {
-                    _obj: {
-                        _id: '9999b',
-                        _answer: 'Games, I love games',
-                        _questionId: '1300-20',
+        '2345': {
+            _notes: {
+                _temporalObjects: [
+                    {
+                        _obj: {
+                            _id: '8888l',
+                            _text: '<p>USER2 - Here is the first</p>',
+                        },
+                        _date: '02/02/2022',
                     },
-                    _date: '02/01/2022',
-                },
-                {
-                    _obj: {
-                        _id: '9999c',
-                        _answer: 'Here is an answer to a deleted question',
-                        _questionId: '32132148378945231894732',
+                    {
+                        _obj: {
+                            _id: '8888g',
+                            _text: '<p>USER2 - Here is the second</p>',
+                        },
+                        _date: '03/02/2022',
                     },
-                    _date: '03/01/2022',
-                },
-            ],
+                ],
+            },
+            _stretchAnswers: {
+                _temporalObjects: [
+                    {
+                        _obj: {
+                            _id: '99999b',
+                            _answer: 'No, it sounds horrible!',
+                            _questionId: '1300-30',
+                        },
+                        _date: '02/01/2022',
+                    },
+                ],
+            },
         },
     },
-    '2345': {
-        _notes: {
-            _temporalObjects: [
-                {
-                    _obj: {
-                        _id: '8888l',
-                        _text: '<p>USER2 - Here is the first</p>',
+    uvwxyz: {
+        '9876': {
+            _notes: {
+                _temporalObjects: [
+                    {
+                        _obj: {
+                            _id: 'b8888',
+                            _text: '<p>other user - first note</p>',
+                        },
+                        _date: '02/01/2022',
                     },
-                    _date: '02/02/2022',
-                },
-                {
-                    _obj: {
-                        _id: '8888g',
-                        _text: '<p>USER2 - Here is the second</p>',
+                    {
+                        _obj: {
+                            _id: 'c8888',
+                            _text: '<p>other user - second note</p>',
+                        },
+                        _date: '03/01/2022',
                     },
-                    _date: '03/02/2022',
-                },
-            ],
-        },
-        _stretchAnswers: {
-            _temporalObjects: [
-                {
-                    _obj: {
-                        _id: '99999b',
-                        _answer: 'No, it sounds horrible!',
-                        _questionId: '1300-30',
+                ],
+            },
+            _stretchAnswers: {
+                _temporalObjects: [
+                    {
+                        _obj: {
+                            _id: 'b9999',
+                            _answer: 'other user - games got me into this',
+                            _questionId: '1300-20',
+                        },
+                        _date: '02/01/2022',
                     },
-                    _date: '02/01/2022',
-                },
-            ],
+                    {
+                        _obj: {
+                            _id: 'c9999',
+                            _answer:
+                                'other user - Here is an answer to a deleted question',
+                            _questionId: '23213214837894523189473',
+                        },
+                        _date: '03/01/2022',
+                    },
+                ],
+            },
         },
     },
 }

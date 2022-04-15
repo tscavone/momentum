@@ -32,25 +32,20 @@ export class RootStore {
     }
 
     initialize(userId: Id | string) {
-        const userIdStr = Id.asString(userId)
+        const userIdString = Id.asString(userId)
 
-        this._settingsStore.load(settingsTestData, userId)
+        let userScopedSettingsTestData = {
+            entries: settingsTestData['entries'],
+            values: settingsTestData['values'][userIdString],
+        }
+        this._settingsStore.load(userScopedSettingsTestData)
         this._employeeStore.load(employeeTestData)
         this._selectedEmployeeStore.load(TestSelectedEmployeeData)
-        this.loadTemporalObjects()
+        this.loadTemporalObjects(userIdString)
     }
 
-    private loadTemporalObjects(): void {
-        for (let employeeId in valueTestData) {
-            let employeeIdTyped: Id = new Id()
-            employeeIdTyped.id = employeeId
-            let thisEmployeeJsonObj = valueTestData[employeeId]
-
-            this._noteStore.load(thisEmployeeJsonObj._notes, employeeIdTyped)
-            this._stretchAnswerStore.load(
-                thisEmployeeJsonObj._stretchAnswers,
-                employeeIdTyped
-            )
-        }
+    private loadTemporalObjects(userId: string): void {
+        this._noteStore.load(valueTestData[userId])
+        this._stretchAnswerStore.load(valueTestData[userId])
     }
 }

@@ -56,6 +56,9 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
         selectedEmployeeStore.selectedId
     )
 
+    if (!selectedEmployee) {
+        return <></>
+    }
     // Map<string, IReportable[]>
     //rename all this stuff
     function getReportComponentsInRange(

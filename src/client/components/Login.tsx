@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { Id } from '../util/Id'
+import { useAuthedUserStore, useRootStore } from './RootStoreProvider'
 
 async function loginUser(credentials) {
     console.log('credentials: ', JSON.stringify(credentials))
@@ -11,18 +13,30 @@ async function loginUser(credentials) {
     }).then((data) => data.json())
 }
 
-export default function Login({ setToken }) {
+export default function Login() {
+    const authedUserStore = useAuthedUserStore()
+    const rootStore = useRootStore()
     const [username, setUserName] = useState<string>()
     const [password, setPassword] = useState<string>()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const token = await loginUser({
-            username,
-            password,
-        })
-        setToken(token)
-        console.log('set Token: ', token)
+        let responseData: { userId: string; token: string } = null
+
+        try {
+            responseData = await loginUser({
+                username,
+                password,
+            })
+            console.log('------> logged in')
+            rootStore.initialize(Id.fromString(responseData.userId))
+            console.log('-------> initialized')
+            authedUserStore.token = responseData.token
+            authedUserStore.userId = Id.fromString(responseData.userId)
+        } catch (e) {
+            console.log('error logging in :  ', e)
+            return
+        }
     }
 
     return (

@@ -19,7 +19,6 @@ const StoreContext = React.createContext<RootStore | undefined>(undefined)
 // create the provider component
 export function RootStoreProvider({ children }: { children: ReactNode }) {
     const rootStore = new RootStore()
-    rootStore.initialize('abcdef')
 
     return (
         <StoreContext.Provider value={rootStore}>
@@ -37,6 +36,15 @@ export function RootStoreProvider({ children }: { children: ReactNode }) {
 
 //     return context;
 // }
+
+export function useRootStore() {
+    const context = React.useContext(StoreContext)
+    if (context === undefined) {
+        throw new Error('context not initialized')
+    }
+
+    return context
+}
 
 export function useNoteStore(): NoteStore {
     const context = React.useContext(StoreContext)

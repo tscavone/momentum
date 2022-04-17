@@ -37,20 +37,38 @@ export class RootStore {
 
     initialize(userId: Id | string) {
         const userIdString = Id.asString(userId)
+        console.log('userId string', userIdString)
 
+        this._selectedEmployeeStore.load(TestSelectedEmployeeData)
+        console.log('store loaded', this._selectedEmployeeStore)
+        this.loadTemporalObjects(userIdString)
         let userScopedSettingsTestData = {
             entries: settingsTestData['entries'],
             values: settingsTestData['values'][userIdString],
         }
         this._settingsStore.load(userScopedSettingsTestData)
+        console.log('store loaded', this._settingsStore)
         this._employeeStore.load(employeeTestData)
-        this._selectedEmployeeStore.load(TestSelectedEmployeeData)
+        console.log('store loaded', this._employeeStore)
         this._authedUserStore.load(TestAuthedUserData)
-        this.loadTemporalObjects(userIdString)
+        console.log('store loaded', this._authedUserStore)
+
+        console.log(
+            'loaded stores',
+            this._selectedEmployeeStore,
+            this._settingsStore,
+            this._employeeStore,
+            this._currentDateStore,
+            this._authedUserStore,
+            this._noteStore,
+            this._stretchAnswerStore
+        )
     }
 
     private loadTemporalObjects(userId: string): void {
         this._noteStore.load(valueTestData[userId])
+        console.log('store loaded', this._noteStore)
         this._stretchAnswerStore.load(valueTestData[userId])
+        console.log('store loaded', this._stretchAnswerStore)
     }
 }

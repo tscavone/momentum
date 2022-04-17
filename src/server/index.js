@@ -18,13 +18,34 @@ app.use(bodyParser.json())
 // app.use(pino)
 app.use(cors())
 
+// HERE trying to get environment vars to work to use them for login
 app.post('/login', (req, res) => {
-    console.log('req.method', req.method) // "DELETE"
+    const username = req.body.username
+    const password = req.body.password
+
     console.log('req.body', req.body)
     console.log('req.body.username', req.body.username)
-    res.send({
-        token: 'abc123',
-    })
+    console.log('env USERNAME1', process.env.USERNAME1)
+
+    if (
+        username === process.env.USERNAME1 &&
+        password === process.env.PASSWORD1
+    ) {
+        res.send({
+            token: 'abc123',
+            userId: process.env.USERID1,
+        })
+    } else if (
+        username === process.env.USERNAME2 &&
+        password === process.env.PASSWORD2
+    ) {
+        res.send({
+            token: 'abc123',
+            userId: process.env.USERID2,
+        })
+    } else {
+        res.send(401)
+    }
 })
 
 // app.get('/api/greeting', (req, res) => {

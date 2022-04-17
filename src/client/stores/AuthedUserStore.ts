@@ -35,6 +35,10 @@ export class AuthedUserStore implements IStore {
         this._token = value
     }
 
+    public logout(): void {
+        this._userId = null
+        this._token = null
+    }
     //
     //public methods
     //

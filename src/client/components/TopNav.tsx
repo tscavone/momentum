@@ -24,7 +24,12 @@ import {
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon, ViewIcon } from '@chakra-ui/icons'
 import { ReportDrawer } from './ReportDrawer'
-import { useEmployeeStore, useSelectedEmployeeStore } from './RootStoreProvider'
+import {
+    useAuthedUserStore,
+    useEmployeeStore,
+    useSelectedEmployeeStore,
+} from './RootStoreProvider'
+import { AuthedUserStore } from '../stores/AuthedUserStore'
 
 const Links = ['Links', 'Settings']
 
@@ -53,13 +58,10 @@ export function TopNav({ children }: { children: ReactNode }) {
     const reportButtonRef = useRef<HTMLButtonElement>(null)
     const selectedEmployeeStore = useSelectedEmployeeStore()
     const employeeStore = useEmployeeStore()
+    const authedUserStore = useAuthedUserStore()
     const updateUserSelector = (e: React.ChangeEvent<HTMLSelectElement>) => {
         selectedEmployeeStore.selectedId = e.currentTarget.value
     }
-
-    const employeeData = employeeStore.getEmployee(
-        selectedEmployeeStore.selectedId
-    )
 
     const getEmployeeSelectorOptions = (): ReactNode[] => {
         let returnValues: ReactNode[] = []
@@ -141,10 +143,13 @@ export function TopNav({ children }: { children: ReactNode }) {
                                 />
                             </MenuButton>
                             <MenuList>
-                                <MenuItem>Link 1</MenuItem>
-                                <MenuItem>Link 2</MenuItem>
+                                <MenuItem>settings</MenuItem>
                                 <MenuDivider />
-                                <MenuItem>Link 3</MenuItem>
+                                <MenuItem
+                                    onClick={() => authedUserStore.logout()}
+                                >
+                                    logout
+                                </MenuItem>
                             </MenuList>
                         </Menu>
                     </Flex>

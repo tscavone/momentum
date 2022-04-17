@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { Footer } from './components/Footer'
 import Login from './components/Login'
 import { MainContent } from './components/MainContent'
+import { useAuthedUserStore } from './components/RootStoreProvider'
 import { TopNav } from './components/TopNav'
 
 const DateState = observable({
@@ -12,10 +13,10 @@ const DateState = observable({
 })
 
 const App = observer(() => {
-    const [token, setToken] = useState()
+    const authedUserStore = useAuthedUserStore()
 
-    if (!token) {
-        return <Login setToken={setToken} />
+    if (authedUserStore.token === null || authedUserStore.userId === null) {
+        return <Login />
     }
 
     return (

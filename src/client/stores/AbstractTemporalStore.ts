@@ -7,7 +7,6 @@ import { DatedObject } from '../util/DatedObject'
 import { ITemporalStore } from './ITemporalStore'
 import { IDataEmployees } from '../data_definitions/GlobalDefinitions'
 import { clone } from 'lodash'
-import {} from 'typescript'
 import { TemporalObject } from '../util/TemporalObject'
 
 export abstract class AbstractTemporalStore<T extends TemporalObject>
@@ -34,7 +33,7 @@ export abstract class AbstractTemporalStore<T extends TemporalObject>
     protected getEmployeeObjects(id: Id | string): TemporalCollection<T> {
         let stringId = Id.asString(id)
 
-        return this._allEmployeeObjects.get(stringId)!
+        return this._allEmployeeObjects.get(stringId)
     }
 
     //
@@ -60,7 +59,7 @@ export abstract class AbstractTemporalStore<T extends TemporalObject>
     getSaved(id: Id | string, dateRange: DateRange): DatedObject<T>[] {
         const stringId = id instanceof Id ? id.id : id
 
-        return this.getEmployeeObjects(stringId).getSaved(dateRange)
+        return this.getEmployeeObjects(stringId)?.getSaved(dateRange)
     }
 
     getAllSavedWithCurrent(id: Id | string): T[] {

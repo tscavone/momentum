@@ -88,9 +88,12 @@ export const StretchQuesitonTab = observer(() => {
     }
 
     const populateStretchQuestions = (): ReactNode[] => {
+        //get all stretch questions for this user
         const settingsQuestionsValues =
             settingsStore.getByEntryName('stretch questions')[1]
         let answeredQuestions = new Map<string, string>()
+
+        //make a map of all the questions that have answers
         stretchAnswerStore
             .getAllSaved(selectedEmployeeStore.selectedId)
             .forEach((datedObject) => {
@@ -102,6 +105,10 @@ export const StretchQuesitonTab = observer(() => {
                 )
             })
 
+        //for all not deleted answers, render the question value in the select dropdown with
+        //specific styling to let the user know that the employee has answered this question.  Also,
+        //delete such questions from the set of answeredQuestions.  This will leave only answers that correspond to
+        //deleted questions
         let returnValues = settingsQuestionsValues
             .filter((settingQuestionValue) => !settingQuestionValue.deleted)
             .map((settingQuestionValue) => {
@@ -130,6 +137,7 @@ export const StretchQuesitonTab = observer(() => {
                 }
             })
 
+        //for any deleted questions
         answeredQuestions.forEach((value, key) => {
             returnValues.push(
                 <option key={key} value={key}>

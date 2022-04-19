@@ -1,3 +1,3 @@
 export interface ISelectedEmployeeData {
-    _selectedId: string
+    [key: string]: { _selectedId: string }
 }

@@ -109,7 +109,7 @@ export const valueTestData: IDataGlobal = {
                         _obj: {
                             _id: 'b9999',
                             _answer: 'other user - games got me into this',
-                            _questionId: '1300-20',
+                            _questionId: '1300-20-2',
                         },
                         _date: '02/01/2022',
                     },
@@ -118,7 +118,7 @@ export const valueTestData: IDataGlobal = {
                             _id: 'c9999',
                             _answer:
                                 'other user - Here is an answer to a deleted question',
-                            _questionId: '23213214837894523189473',
+                            _questionId: '32132148378945231894732-2',
                         },
                         _date: '03/01/2022',
                     },
@@ -236,15 +236,24 @@ export const settingsTestData: IDataSettings = {
 
 //test employee data
 export const employeeTestData: IGlobalEmployeeData = {
-    '1234': {
-        _id: '1234',
-        _first: 'Tom',
-        _last: 'Waits',
+    abcdef: {
+        '1234': {
+            _id: '1234',
+            _first: 'Tom',
+            _last: 'Waits',
+        },
+        '2345': {
+            _id: '2345',
+            _first: 'Brandon',
+            _last: 'Flowers',
+        },
     },
-    '2345': {
-        _id: '2345',
-        _first: 'Brandon',
-        _last: 'Flowers',
+    uvwxyz: {
+        '9876': {
+            _id: '9876',
+            _first: 'Sam',
+            _last: 'Jones',
+        },
     },
 }
 
@@ -256,5 +265,6 @@ export const TestAuthedUserData: IAuthedUserData = {
 
 //test user selction
 export const TestSelectedEmployeeData: ISelectedEmployeeData = {
-    _selectedId: '1234',
+    abcdef: { _selectedId: '1234' },
+    uvwxyz: { _selectedId: '9876' },
 }

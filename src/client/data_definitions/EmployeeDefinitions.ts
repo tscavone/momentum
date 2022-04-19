@@ -5,5 +5,7 @@ export interface IEmployeeData {
 }
 
 export interface IGlobalEmployeeData {
-    [key: string]: IEmployeeData
+    [key: string]: {
+        [key: string]: IEmployeeData
+    }
 }

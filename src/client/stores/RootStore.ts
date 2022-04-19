@@ -39,7 +39,7 @@ export class RootStore {
         const userIdString = Id.asString(userId)
         console.log('userId string', userIdString)
 
-        this._selectedEmployeeStore.load(TestSelectedEmployeeData)
+        this._selectedEmployeeStore.load(TestSelectedEmployeeData[userIdString])
         console.log('store loaded', this._selectedEmployeeStore)
         this.loadTemporalObjects(userIdString)
         let userScopedSettingsTestData = {
@@ -48,7 +48,7 @@ export class RootStore {
         }
         this._settingsStore.load(userScopedSettingsTestData)
         console.log('store loaded', this._settingsStore)
-        this._employeeStore.load(employeeTestData)
+        this._employeeStore.load(employeeTestData[userIdString])
         console.log('store loaded', this._employeeStore)
         this._authedUserStore.load(TestAuthedUserData)
         console.log('store loaded', this._authedUserStore)

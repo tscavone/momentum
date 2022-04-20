@@ -1,22 +1,14 @@
-import { NotesTab } from './NotesTab'
-import {
-    Tabs,
-    TabList,
-    Tab,
-    TabPanels,
-    TabPanel,
-    Tooltip,
-} from '@chakra-ui/react'
+import { NotesTab } from './tabs/NotesTab'
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react'
 import {
     CheckIcon,
-    ChevronUpIcon,
     EditIcon,
     ExternalLinkIcon,
     InfoOutlineIcon,
     QuestionOutlineIcon,
     TimeIcon,
 } from '@chakra-ui/icons'
-import { StretchQuesitonTab } from './StretchQuestionTab'
+import { StretchQuesitonTab } from './tabs/StretchQuestionTab'
 import {
     useNoteStore,
     useSelectedEmployeeStore,
@@ -24,6 +16,7 @@ import {
 } from './RootStoreProvider'
 import { observer } from 'mobx-react'
 import { TabButton } from './TabButton'
+import { GoalsTab } from './tabs/GoalsTab'
 
 export const TabContainer = observer(() => {
     const noteStore = useNoteStore()
@@ -74,6 +67,10 @@ export const TabContainer = observer(() => {
                 </TabPanel>
                 <TabPanel>
                     <StretchQuesitonTab />
+                </TabPanel>
+                <TabPanel></TabPanel>
+                <TabPanel>
+                    <GoalsTab />
                 </TabPanel>
             </TabPanels>
         </Tabs>

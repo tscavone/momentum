@@ -132,6 +132,13 @@ export const valueTestData: IDataGlobal = {
 export const settingsTestData: IDataSettings = {
     entries: [
         {
+            _id: '1100',
+            _name: 'persistence',
+            _description:
+                'What type of persistence would you like to use [local/browser, server]',
+            _potentialValues: ['test', 'local', 'server'],
+        },
+        {
             _id: '1200',
             _name: 'positions',
             _description: 'An employment-level for software engineers',
@@ -144,6 +151,11 @@ export const settingsTestData: IDataSettings = {
     ],
     values: {
         abcdef: [
+            {
+                _entryId: '1100',
+                _id: '1100-10',
+                _value: 'test',
+            },
             {
                 _entryId: '1200',
                 _id: '1200-10',
@@ -188,6 +200,11 @@ export const settingsTestData: IDataSettings = {
             },
         ],
         uvwxyz: [
+            {
+                _entryId: '1100',
+                _id: '1100-10-2',
+                _value: 'test',
+            },
             {
                 _entryId: '1200',
                 _id: '1200-10-2',

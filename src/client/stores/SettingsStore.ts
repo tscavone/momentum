@@ -85,6 +85,7 @@ export class SettingsStore implements IStore {
         entries.forEach((entry, key) => {
             let entryValues = values.get(entry.id.id)
 
+            //NOTE: this error can occur if there is a new setting and no values associated with it
             if (!entryValues)
                 throw 'Internal error, values not mapped to settings entries'
 

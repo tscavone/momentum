@@ -11,18 +11,18 @@ import {
 import { observer } from 'mobx-react'
 import { computed, makeAutoObservable, observable } from 'mobx'
 import { ReactNode } from 'react'
-import { DatedObject } from '../util/DatedObject'
-import { Id } from '../util/Id'
-import { StretchAnswer } from '../value_objects/StretchAnswer'
-import { RichTextBlock, serialize, deserialize } from './RichTextBlock'
+import { DatedObject } from '../../util/DatedObject'
+import { Id } from '../../util/Id'
+import { StretchAnswer } from '../../value_objects/StretchAnswer'
+import { RichTextBlock, serialize, deserialize } from '../RichTextBlock'
 import {
     useCurrentDateStore,
     useSelectedEmployeeStore,
     useSettingsStore,
     useStretchAnswerStore,
-} from './RootStoreProvider'
-import { StretchAnswerStore } from '../stores/StretchAnswerStore'
-import { SelectedEmployeeStore } from '../stores/SelectedEmployeeStore'
+} from '../RootStoreProvider'
+import { StretchAnswerStore } from '../../stores/StretchAnswerStore'
+import { SelectedEmployeeStore } from '../../stores/SelectedEmployeeStore'
 
 class SelectedQuestionStore {
     _selectedQuestionId: string
@@ -200,12 +200,6 @@ export const StretchQuesitonTab = observer(() => {
               ).answer
             : null
 
-        console.log(
-            '\t new value',
-            newValue,
-            stretchAnswerStore.getCurrent(selectedEmployeeStore.selectedId)
-                .answer
-        )
         return newValue
             ? newValue
             : stretchAnswerStore.getCurrent(selectedEmployeeStore.selectedId)
@@ -234,7 +228,7 @@ export const StretchQuesitonTab = observer(() => {
         <Box>
             <VStack>
                 <Heading as="h4" size="md">
-                    Stretch Questions
+                    stretch questions
                 </Heading>
                 <Divider orientation="horizontal" />
                 <Select

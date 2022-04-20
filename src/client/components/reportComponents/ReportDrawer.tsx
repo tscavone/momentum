@@ -13,22 +13,22 @@ import {
     Center,
     Button,
 } from '@chakra-ui/react'
-import { DatedObject } from '../util/DatedObject'
-import { ITemporalStore } from '../stores/ITemporalStore'
-import { Note } from '../value_objects/Note'
+import { DatedObject } from '../../util/DatedObject'
+import { ITemporalStore } from '../../stores/ITemporalStore'
+import { Note } from '../../value_objects/Note'
 import { makeObservable, observable } from 'mobx'
-import { DatePicker } from './DatePicker'
+import { DatePicker } from '../DatePicker'
 import {
     useNoteStore,
     useSelectedEmployeeStore,
     useEmployeeStore,
-} from './RootStoreProvider'
-import { DateRange } from '../util/DateRange'
+} from '../RootStoreProvider'
+import { DateRange } from '../../util/DateRange'
 import { observer } from 'mobx-react'
-import { IdentifiedObject } from '../util/IdentifiedObject'
+import { IdentifiedObject } from '../../util/IdentifiedObject'
 import { ReactNode } from 'react'
-import { dateToString } from '../util/utils'
-import { NoteReport } from './reportComponents/NoteReport'
+import { dateToString } from '../../util/utils'
+import { NoteReport } from './NoteReport'
 
 //
 // Date state

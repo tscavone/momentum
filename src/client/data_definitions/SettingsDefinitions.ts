@@ -2,7 +2,7 @@ export interface IDataSettingsEntry {
     _id: string
     _name: string
     _description: string
-    _potentialValues?: IDataSettingsEntry[]
+    _potentialValues?: string[]
 }
 
 export interface IDataSettingsValue {

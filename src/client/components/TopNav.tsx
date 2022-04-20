@@ -23,15 +23,14 @@ import {
     Select,
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon, ViewIcon } from '@chakra-ui/icons'
-import { ReportDrawer } from './ReportDrawer'
+import { ReportDrawer } from './reportComponents/ReportDrawer'
 import {
     useAuthedUserStore,
     useEmployeeStore,
     useSelectedEmployeeStore,
 } from './RootStoreProvider'
-import { AuthedUserStore } from '../stores/AuthedUserStore'
 
-const Links = ['Links', 'Settings']
+const Links = ['links', 'settings']
 
 const NavLink = ({ children }: { children: ReactNode }) => (
     <Link
@@ -94,7 +93,7 @@ export function TopNav({ children }: { children: ReactNode }) {
                         onClick={isOpen ? onClose : onOpen}
                     />
                     <HStack spacing={6} alignItems={'center'}>
-                        <Heading>Momentum</Heading>
+                        <Heading>momentum</Heading>
                         <HStack
                             as={'nav'}
                             spacing={4}

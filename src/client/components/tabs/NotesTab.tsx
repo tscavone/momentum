@@ -5,10 +5,19 @@ import {
     useCurrentDateStore,
     useNoteStore,
     useSelectedEmployeeStore,
-} from './RootStoreProvider'
-import { RichTextBlock, serialize, deserialize } from './RichTextBlock'
-import { Box, Button, Checkbox, Flex, Spacer, VStack } from '@chakra-ui/react'
-import { Note } from '../value_objects/Note'
+} from '../RootStoreProvider'
+import { RichTextBlock, serialize, deserialize } from '../RichTextBlock'
+import {
+    Box,
+    Button,
+    Checkbox,
+    Divider,
+    Flex,
+    Heading,
+    Spacer,
+    VStack,
+} from '@chakra-ui/react'
+import { Note } from '../../value_objects/Note'
 import { observer } from 'mobx-react'
 
 export const NotesTab = observer(() => {
@@ -51,6 +60,10 @@ export const NotesTab = observer(() => {
 
     return (
         <VStack>
+            <Heading as="h4" size="md">
+                notes
+            </Heading>
+            <Divider orientation="horizontal" />
             <Box w={[250, 500, 750]}>
                 <RichTextBlock
                     initialValue={getDeserialized()}

@@ -15,7 +15,7 @@ import {
     QuestionOutlineIcon,
     TimeIcon,
 } from '@chakra-ui/icons'
-import { StretchQuesitonTab } from './StretchQuestionTab'
+import { StretchQuesitonTab } from './tabs/StretchQuestionTab'
 import { useSelectedEmployeeStore } from './RootStoreProvider'
 import { observer } from 'mobx-react'
 

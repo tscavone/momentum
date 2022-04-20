@@ -11,7 +11,7 @@ export class SettingsEntry extends IdentifiedObject {
     //
     private _name: string
     private _description: string
-    private _potentialValues: SettingsEntry[]
+    private _potentialValues: string[]
 
     //
     //
@@ -53,10 +53,7 @@ export class SettingsEntry extends IdentifiedObject {
         entry.id = Id.fromString(jsonObj._id)
 
         if (jsonObj._potentialValues) {
-            let potentialValues: SettingsEntry[] = jsonObj._potentialValues.map(
-                (potentialValue: IDataSettingsEntry) =>
-                    Object.assign(new SettingsEntry(), potentialValue)
-            )
+            let potentialValues: string[] = [...jsonObj._potentialValues]
 
             entry._potentialValues = potentialValues
         }

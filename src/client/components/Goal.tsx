@@ -1,5 +1,6 @@
 import {
     Box,
+    Flex,
     FormControl,
     FormLabel,
     Input,
@@ -46,16 +47,18 @@ export const Goal = observer(() => {
     const [sliderValue, setSliderValue] = useState(50)
 
     return (
-        <Box w={[250, 500, 750]} className="goal">
+        <Flex w={[250, 500, 750]}>
             <FormControl>
                 <details>
                     <summary className="goal-name">
                         <Input width="97%" placeholder="goal name" />
                     </summary>
                     <Slider
+                        pl={'15px'}
+                        w={'97%'}
                         aria-label="slider-ex-6"
                         onChange={(val) => setSliderValue(val)}
-                        className="goal-slider"
+                        colorScheme={'green'}
                     >
                         <SliderMark value={10} mt="1" ml="-2.5" fontSize="sm">
                             10%
@@ -90,23 +93,23 @@ export const Goal = observer(() => {
                             bg="green.500"
                             color="white"
                             mt="-10"
-                            ml="-5"
-                            w="12"
                         ></SliderMark>
                         <SliderTrack>
                             <SliderFilledTrack />
                         </SliderTrack>
                         <SliderThumb />
                     </Slider>
-                    <Textarea
-                        id="goal-description"
-                        colorScheme={'green'}
-                        value={getValue()}
-                        onChange={updateCurrent}
-                        isReadOnly={false}
-                    ></Textarea>
+                    <Box pl={'15px'} w={'99%'} mt={'20px'}>
+                        <Textarea
+                            id="goal-description"
+                            colorScheme={'green'}
+                            value={getValue()}
+                            onChange={updateCurrent}
+                            isReadOnly={false}
+                        ></Textarea>
+                    </Box>
                 </details>
             </FormControl>
-        </Box>
+        </Flex>
     )
 })

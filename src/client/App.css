@@ -8,23 +8,3 @@ button.edited-tab {
     color: white !important;
     background-color: green;
 }
-
-goal {
-    margin-left: 10px;
-}
-
-goal-name {
-    width: 90%;
-}
-
-goal-description {
-    width: 90%;
-}
-
-goal-slider {
-    width: 90%;
-}
-
-goal-summary {
-    width: 90%;
-}

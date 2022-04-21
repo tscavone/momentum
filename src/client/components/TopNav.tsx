@@ -29,6 +29,7 @@ import {
     useEmployeeStore,
     useSelectedEmployeeStore,
 } from './RootStoreProvider'
+import { SettingsMenuItem } from './SettingsMenuItem'
 
 const Links = ['links', 'settings']
 
@@ -48,6 +49,12 @@ const NavLink = ({ children }: { children: ReactNode }) => (
 )
 
 export function TopNav({ children }: { children: ReactNode }) {
+    //stores
+    const selectedEmployeeStore = useSelectedEmployeeStore()
+    const employeeStore = useEmployeeStore()
+    const authedUserStore = useAuthedUserStore()
+
+    //report drawer
     const { isOpen, onOpen, onClose } = useDisclosure()
     const {
         isOpen: isDrawerOpen,
@@ -55,13 +62,11 @@ export function TopNav({ children }: { children: ReactNode }) {
         onClose: onDrawerClose,
     } = useDisclosure()
     const reportButtonRef = useRef<HTMLButtonElement>(null)
-    const selectedEmployeeStore = useSelectedEmployeeStore()
-    const employeeStore = useEmployeeStore()
-    const authedUserStore = useAuthedUserStore()
+
+    //employee selector
     const updateUserSelector = (e: React.ChangeEvent<HTMLSelectElement>) => {
         selectedEmployeeStore.selectedId = e.currentTarget.value
     }
-
     const getEmployeeSelectorOptions = (): ReactNode[] => {
         let returnValues: ReactNode[] = []
 
@@ -142,7 +147,7 @@ export function TopNav({ children }: { children: ReactNode }) {
                                 />
                             </MenuButton>
                             <MenuList>
-                                <MenuItem>settings</MenuItem>
+                                <SettingsMenuItem />
                                 <MenuDivider />
                                 <MenuItem
                                     onClick={() => authedUserStore.logout()}

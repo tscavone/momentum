@@ -9,12 +9,11 @@ import {
     VStack,
 } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
-import { computed, makeAutoObservable, observable } from 'mobx'
+import { makeAutoObservable, observable } from 'mobx'
 import { ReactNode } from 'react'
 import { DatedObject } from '../../util/DatedObject'
 import { Id } from '../../util/Id'
 import { StretchAnswer } from '../../value_objects/StretchAnswer'
-import { RichTextBlock, serialize, deserialize } from '../RichTextBlock'
 import {
     useCurrentDateStore,
     useSelectedEmployeeStore,

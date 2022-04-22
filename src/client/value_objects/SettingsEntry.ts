@@ -5,6 +5,14 @@ import { IDataSettingsEntry } from '../data_definitions/SettingsDefinitions'
 import { Id } from '../util/Id'
 import { IdentifiedObject } from '../util/IdentifiedObject'
 
+export enum SettingsType {
+    select,
+    multiple,
+    single,
+    range,
+    number,
+}
+
 export class SettingsEntry extends IdentifiedObject {
     //
     //members
@@ -12,6 +20,7 @@ export class SettingsEntry extends IdentifiedObject {
     private _name: string
     private _description: string
     private _potentialValues: string[]
+    private _type: SettingsType
 
     //
     //
@@ -22,6 +31,7 @@ export class SettingsEntry extends IdentifiedObject {
         this._name = ''
         this._description = ''
         this._potentialValues = []
+        this._type = SettingsType.single
     }
 
     //
@@ -40,6 +50,18 @@ export class SettingsEntry extends IdentifiedObject {
     public set description(value: string) {
         this._description = value
     }
+    public get potentialValues(): string[] {
+        return this._potentialValues
+    }
+    public set potentialValues(value: string[]) {
+        this._potentialValues = value
+    }
+    public get type(): SettingsType {
+        return this._type
+    }
+    public set type(value: SettingsType) {
+        this._type = value
+    }
 
     //
     //private methods
@@ -56,6 +78,28 @@ export class SettingsEntry extends IdentifiedObject {
             let potentialValues: string[] = [...jsonObj._potentialValues]
 
             entry._potentialValues = potentialValues
+        }
+
+        switch (jsonObj._type) {
+            case 'select':
+                entry._type = SettingsType.select
+                break
+            case 'multiple':
+                entry._type = SettingsType.multiple
+                break
+            case 'single':
+                entry._type = SettingsType.single
+                break
+            case 'range':
+                entry._type = SettingsType.range
+                break
+            case 'multiple':
+                entry._type = SettingsType.multiple
+                break
+            default:
+                throw Error(
+                    'incorrect type loaded in SettingsEntry:  ' + jsonObj._type
+                )
         }
 
         return entry

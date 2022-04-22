@@ -1,4 +1,3 @@
-import { Id } from '../util/Id'
 import { SettingsValue } from '../value_objects/SettingsValue'
 import { SettingsEntry } from '../value_objects/SettingsEntry'
 import { IStore } from './IStore'
@@ -13,13 +12,21 @@ export class SettingsStore implements IStore {
     //
     //members
     //
-    _settings: Map<string, [SettingsEntry, SettingsValue[]]>
+    // keyed by id
+    private _settings: Map<string, [SettingsEntry, SettingsValue[]]>
 
     //
     //constructor
     //
     constructor() {
         this._settings = new Map<string, [SettingsEntry, SettingsValue[]]>()
+    }
+
+    public get settings(): Map<string, [SettingsEntry, SettingsValue[]]> {
+        return this._settings
+    }
+    public set settings(value: Map<string, [SettingsEntry, SettingsValue[]]>) {
+        this._settings = value
     }
 
     getByEntryId(entryId: string): [SettingsEntry, SettingsValue[]] {

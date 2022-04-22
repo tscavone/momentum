@@ -1,5 +1,8 @@
 import {
+    Box,
     Button,
+    FormControl,
+    FormLabel,
     MenuItem,
     Modal,
     ModalBody,
@@ -10,27 +13,54 @@ import {
     ModalOverlay,
     useDisclosure,
 } from '@chakra-ui/react'
+import { SettingsEntry } from '../value_objects/SettingsEntry'
+import { SettingsValue } from '../value_objects/SettingsValue'
+import { useSettingsStore } from './RootStoreProvider'
+import { SettingsInput } from './SettingsInput'
 
-export const SettingsMenuItem = () => {
-    //settings dialog
+export const SettingsMenuItem = ({
+    settings,
+}: {
+    settings: Map<string, [SettingsEntry, SettingsValue[]]>
+}) => {
+    //stores
+
     const {
         isOpen: isSettingsOpen,
         onOpen: onSettingsOpen,
         onClose: onSettingsClosed,
     } = useDisclosure()
+
     return (
         <>
-            <MenuItem onClick={onSettingsOpen}>settings</MenuItem>
+            <MenuItem
+                data-testid="openSettingsMenuDialog"
+                onClick={onSettingsOpen}
+            >
+                settings
+            </MenuItem>
 
             <Modal isOpen={isSettingsOpen} onClose={onSettingsClosed}>
                 <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Modal Title</ModalHeader>
+                <ModalContent maxW="48rem">
+                    <ModalHeader>settings</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        Here is a bunch of modal text Here is a bunch of modal
-                        text Here is a bunch of modal text Here is a bunch of
-                        modal text
+                        <FormControl>
+                            {Array.from(settings.entries()).map(
+                                (settingsEntry) => {
+                                    return (
+                                        <Box p="2" key={settingsEntry[0]}>
+                                            <SettingsInput
+                                                settingsEntryAndValues={
+                                                    settingsEntry[1]
+                                                }
+                                            ></SettingsInput>
+                                        </Box>
+                                    )
+                                }
+                            )}
+                        </FormControl>
                     </ModalBody>
 
                     <ModalFooter>
@@ -39,9 +69,9 @@ export const SettingsMenuItem = () => {
                             mr={3}
                             onClick={onSettingsClosed}
                         >
-                            Close
+                            save
                         </Button>
-                        <Button variant="ghost">Secondary Action</Button>
+                        <Button variant="ghost">close</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>

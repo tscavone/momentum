@@ -135,18 +135,21 @@ export const settingsTestData: IDataSettings = {
             _id: '1100',
             _name: 'persistence',
             _description:
-                'What type of persistence would you like to use [local/browser, server]',
+                'what type of persistence would you like to use [local/browser, server]',
             _potentialValues: ['test', 'local', 'server'],
+            _type: 'select',
         },
         {
             _id: '1200',
             _name: 'positions',
-            _description: 'An employment-level for software engineers',
+            _description: 'employment-levels for software engineers',
+            _type: 'multiple',
         },
         {
             _id: '1300',
             _name: 'stretch questions',
-            _description: 'Questions to ask to get to know your reports better',
+            _description: 'questions to ask to get to know your reports better',
+            _type: 'multiple',
         },
     ],
     values: {

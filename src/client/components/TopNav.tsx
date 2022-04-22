@@ -28,10 +28,11 @@ import {
     useAuthedUserStore,
     useEmployeeStore,
     useSelectedEmployeeStore,
+    useSettingsStore,
 } from './RootStoreProvider'
 import { SettingsMenuItem } from './SettingsMenuItem'
 
-const Links = ['links', 'settings']
+const Links = ['links']
 
 const NavLink = ({ children }: { children: ReactNode }) => (
     <Link
@@ -53,6 +54,7 @@ export function TopNav({ children }: { children: ReactNode }) {
     const selectedEmployeeStore = useSelectedEmployeeStore()
     const employeeStore = useEmployeeStore()
     const authedUserStore = useAuthedUserStore()
+    const settingsStore = useSettingsStore()
 
     //report drawer
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -147,7 +149,9 @@ export function TopNav({ children }: { children: ReactNode }) {
                                 />
                             </MenuButton>
                             <MenuList>
-                                <SettingsMenuItem />
+                                <SettingsMenuItem
+                                    settings={settingsStore.settings}
+                                />
                                 <MenuDivider />
                                 <MenuItem
                                     onClick={() => authedUserStore.logout()}

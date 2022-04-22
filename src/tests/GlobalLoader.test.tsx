@@ -2,7 +2,10 @@ import { RootStore } from '../client/stores/RootStore'
 import { DatedObject } from '../client/util/DatedObject'
 import { Id } from '../client/util/Id'
 import { Note } from '../client/value_objects/Note'
-import { SettingsEntry } from '../client/value_objects/SettingsEntry'
+import {
+    SettingsEntry,
+    SettingsType,
+} from '../client/value_objects/SettingsEntry'
 import { SettingsValue } from '../client/value_objects/SettingsValue'
 import { SettingsValueWithDesc } from '../client/value_objects/SettingsValueWithDesc'
 import { StretchAnswer } from '../client/value_objects/StretchAnswer'
@@ -176,14 +179,14 @@ test('Root store stretchAnswerStore load is correct', () => {
         datedAnswer: allSavedAnswers[0],
         date: new Date('02/01/2022'),
         id: 'b9999',
-        questionId: '1300-20',
+        questionId: '1300-20-2',
         answer: 'other user - games got me into this',
     })
     testDatedAnswer({
         datedAnswer: allSavedAnswers[1],
         date: new Date('03/01/2022'),
         id: 'c9999',
-        questionId: '23213214837894523189473',
+        questionId: '32132148378945231894732-2',
         answer: 'other user - Here is an answer to a deleted question',
     })
 })
@@ -193,16 +196,19 @@ const testSettingsEntry = ({
     id,
     name,
     description,
+    type,
 }: {
     entry: SettingsEntry
     id: string
     name: string
     description: string
+    type: string
 }) => {
     expect(entry.id).toBeInstanceOf(Id)
     expect(entry.id.id).toBe(id)
     expect(entry.name).toBe(name)
     expect(entry.description).toBe(description)
+    expect(entry.type).toBe(SettingsType[type])
 }
 
 const testSettingsValues = (
@@ -242,13 +248,31 @@ test('Root store settings load is correct', () => {
         rootStore._settingsStore.getByEntryName('incorrect entry')
     ).toThrow('getByEntryName: setting not found with name incorrect entry')
 
-    const positions = rootStore._settingsStore.getByEntryName('positions')
+    let persistence = rootStore._settingsStore.getByEntryName('persistence')
+    testSettingsEntry({
+        entry: persistence[0],
+        id: '1100',
+        name: 'persistence',
+        description:
+            'what type of persistence would you like to use [local/browser, server]',
+        type: 'select',
+    })
+    testSettingsValues(persistence[1], [
+        {
+            entryId: '1100',
+            id: '1100-10',
+            value: 'test',
+        },
+    ])
+
+    let positions = rootStore._settingsStore.getByEntryName('positions')
 
     testSettingsEntry({
         entry: positions[0],
         id: '1200',
         name: 'positions',
-        description: 'An employment-level for software engineers',
+        description: 'employment-levels for software engineers',
+        type: 'multiple',
     })
     testSettingsValues(positions[1], [
         {
@@ -274,13 +298,14 @@ test('Root store settings load is correct', () => {
         },
     ])
 
-    const stretch = rootStore._settingsStore.getByEntryName('stretch questions')
+    let stretch = rootStore._settingsStore.getByEntryName('stretch questions')
 
     testSettingsEntry({
         entry: stretch[0],
         id: '1300',
         name: 'stretch questions',
-        description: 'Questions to ask to get to know your reports better',
+        description: 'questions to ask to get to know your reports better',
+        type: 'multiple',
     })
 
     testSettingsValues(stretch[1], [
@@ -303,6 +328,95 @@ test('Root store settings load is correct', () => {
             entryId: '1300',
             id: '32132148378945231894732',
             value: 'This is a deleted question',
+            deleted: 'true',
+        },
+    ])
+
+    //
+    // user uvwxyz
+    //
+    rootStore.initialize('uvwxyz')
+
+    persistence = rootStore._settingsStore.getByEntryName('persistence')
+    testSettingsEntry({
+        entry: persistence[0],
+        id: '1100',
+        name: 'persistence',
+        description:
+            'what type of persistence would you like to use [local/browser, server]',
+        type: 'select',
+    })
+    testSettingsValues(persistence[1], [
+        {
+            entryId: '1100',
+            id: '1100-10-2',
+            value: 'test',
+        },
+    ])
+
+    positions = rootStore._settingsStore.getByEntryName('positions')
+
+    testSettingsEntry({
+        entry: positions[0],
+        id: '1200',
+        name: 'positions',
+        description: 'employment-levels for software engineers',
+        type: 'multiple',
+    })
+    testSettingsValues(positions[1], [
+        {
+            entryId: '1200',
+            id: '1200-10-2',
+            value: 'Associate Software Engineer',
+            description:
+                '[xyz]Somebody just starting out. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
+        },
+        {
+            entryId: '1200',
+            id: '1200-20-2',
+            value: 'Software Engineer',
+            description:
+                '[xyz]Somebody who has been at it for a while. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
+        },
+        {
+            entryId: '1200',
+            id: '1200-30-2',
+            value: 'Senior Software Engineer',
+            description:
+                '[xyz]Should be well versed in a lot of stuff and a good programmer.  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        },
+    ])
+
+    stretch = rootStore._settingsStore.getByEntryName('stretch questions')
+
+    testSettingsEntry({
+        entry: stretch[0],
+        id: '1300',
+        name: 'stretch questions',
+        description: 'questions to ask to get to know your reports better',
+        type: 'multiple',
+    })
+
+    testSettingsValues(stretch[1], [
+        {
+            entryId: '1300',
+            id: '1300-10-2',
+            value: "[xyz]How do you debug a problem when you're really stuck?",
+        },
+        {
+            entryId: '1300',
+            id: '1300-20-2',
+            value: '[xyz]What initially got you into coding?',
+        },
+        {
+            entryId: '1300',
+            id: '1300-30-2',
+            value: '[xyz]Have you ever eaten Vegemite?',
+        },
+        {
+            entryId: '1300',
+            id: '32132148378945231894732-2',
+            value: '[xyz]This is a deleted question',
             deleted: 'true',
         },
     ])

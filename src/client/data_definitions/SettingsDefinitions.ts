@@ -2,6 +2,7 @@ export interface IDataSettingsEntry {
     _id: string
     _name: string
     _description: string
+    _type: string
     _potentialValues?: string[]
 }
 

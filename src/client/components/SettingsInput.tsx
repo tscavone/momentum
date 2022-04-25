@@ -13,8 +13,12 @@ import { SettingsValueWithDesc } from '../value_objects/SettingsValueWithDesc'
 
 export const SettingsInput = ({
     settingsEntryAndValues,
+    removeValue,
+    addValue,
 }: {
     settingsEntryAndValues: [SettingsEntry, SettingsValue[]]
+    removeValue: (event) => void
+    addValue: (event) => void
 }) => {
     const inputStyle = { width: '80%', margin: '10px' }
 
@@ -26,37 +30,52 @@ export const SettingsInput = ({
 
         if (settingsEntry.type === SettingsType.select) {
             return (
-                <Select>
+                <Select key={settingsEntry.id.id}>
                     {settingsEntry.potentialValues.map((potentialValue) => (
-                        <option value={potentialValue}>{potentialValue}</option>
+                        <option key={potentialValue} value={potentialValue}>
+                            {potentialValue}
+                        </option>
                     ))}
                 </Select>
             )
         } else if (settingsEntry.type === SettingsType.multiple) {
             return (
                 <>
-                    {settingsValues.map((settingsValue) => (
-                        <div key={settingsValue.id.id}>
-                            <HStack m="2">
-                                <Input
-                                    type="text"
-                                    readOnly
-                                    value={settingsValue.value}
-                                    style={inputStyle}
-                                />
-                                <Button size="xs">
-                                    <FiMinus />
-                                </Button>
-                            </HStack>
-                            {settingsValue instanceof SettingsValueWithDesc ? (
-                                <Textarea ml={5} width="78%" size={'sm'}>
-                                    {settingsValue.description}
-                                </Textarea>
-                            ) : (
-                                <></>
-                            )}
-                        </div>
-                    ))}
+                    {settingsValues
+                        .filter(
+                            (settingsValue) => settingsValue.deleted !== true
+                        )
+                        .map((settingsValue) => (
+                            <div key={settingsValue.id.id}>
+                                <HStack m="2">
+                                    <Input
+                                        type="text"
+                                        readOnly
+                                        value={settingsValue.value}
+                                        style={inputStyle}
+                                    />
+                                    <Button
+                                        size="xs"
+                                        value={settingsValue.id.id}
+                                        onClick={removeValue}
+                                    >
+                                        <FiMinus />
+                                    </Button>
+                                </HStack>
+                                {settingsValue instanceof
+                                SettingsValueWithDesc ? (
+                                    <Textarea
+                                        ml={5}
+                                        width="78%"
+                                        size={'sm'}
+                                        defaultValue={settingsValue.description}
+                                        readOnly
+                                    ></Textarea>
+                                ) : (
+                                    <></>
+                                )}
+                            </div>
+                        ))}
                     <HStack m="2">
                         <Input
                             placeholder="enter new value..."

@@ -2,12 +2,12 @@ import { SettingsValue } from '../value_objects/SettingsValue'
 import { SettingsEntry } from '../value_objects/SettingsEntry'
 import { IStore } from './IStore'
 import {
-    IDataSettings,
     IDataSettingsEntry,
     IDataSettingsValue,
 } from '../data_definitions/SettingsDefinitions'
 import { SettingsValueWithDesc } from '../value_objects/SettingsValueWithDesc'
 import { Id } from '../util/Id'
+import { makeAutoObservable } from 'mobx'
 
 export class SettingsStore implements IStore {
     //
@@ -20,6 +20,7 @@ export class SettingsStore implements IStore {
     //constructor
     //
     constructor() {
+        makeAutoObservable(this)
         this._settings = new Map<string, [SettingsEntry, SettingsValue[]]>()
     }
 
@@ -69,6 +70,23 @@ export class SettingsStore implements IStore {
         } else {
             throw `getValueById: value not found with id ${idStr}`
         }
+    }
+
+    deleteValue(id: Id | string) {
+        const idStr = Id.asString(id)
+
+        for (const [id, setting] of this._settings) {
+            let settingsValue = setting[1].find(
+                (settingsValue) => settingsValue.id.id === idStr
+            )
+
+            if (settingsValue) {
+                settingsValue.deleted = true
+                return
+            }
+        }
+
+        throw `deleteValue: value not found to be deleted: ${idStr}`
     }
 
     load(jsonObj: {

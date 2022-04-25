@@ -21,13 +21,20 @@ export const SettingsMenuItem = ({
 }: {
     settings: Map<string, [SettingsEntry, SettingsValue[]]>
 }) => {
-    //stores
-
     const {
         isOpen: isSettingsOpen,
         onOpen: onSettingsOpen,
         onClose: onSettingsClosed,
     } = useDisclosure()
+
+    const removeValue = (event) => {
+        event.preventDefault()
+        console.log('---- removing: ', event.target.value)
+    }
+    const addValue = (event) => {
+        event.preventDefault()
+        console.log(event)
+    }
 
     return (
         <>
@@ -48,11 +55,16 @@ export const SettingsMenuItem = ({
                             {Array.from(settings.entries()).map(
                                 (settingsEntry) => {
                                     return (
-                                        <Box p="2" key={settingsEntry[0]}>
+                                        <Box
+                                            p="2"
+                                            key={'box' + settingsEntry[0]}
+                                        >
                                             <SettingsInput
                                                 settingsEntryAndValues={
                                                     settingsEntry[1]
                                                 }
+                                                removeValue={removeValue}
+                                                addValue={addValue}
                                             ></SettingsInput>
                                         </Box>
                                     )

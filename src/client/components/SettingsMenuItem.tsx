@@ -2,7 +2,6 @@ import {
     Box,
     Button,
     FormControl,
-    FormLabel,
     MenuItem,
     Modal,
     ModalBody,
@@ -15,7 +14,6 @@ import {
 } from '@chakra-ui/react'
 import { SettingsEntry } from '../value_objects/SettingsEntry'
 import { SettingsValue } from '../value_objects/SettingsValue'
-import { useSettingsStore } from './RootStoreProvider'
 import { SettingsInput } from './SettingsInput'
 
 export const SettingsMenuItem = ({

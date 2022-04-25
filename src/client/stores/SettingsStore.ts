@@ -7,6 +7,7 @@ import {
     IDataSettingsValue,
 } from '../data_definitions/SettingsDefinitions'
 import { SettingsValueWithDesc } from '../value_objects/SettingsValueWithDesc'
+import { Id } from '../util/Id'
 
 export class SettingsStore implements IStore {
     //
@@ -49,6 +50,25 @@ export class SettingsStore implements IStore {
         }
 
         throw `getByEntryName: setting not found with name ${name}`
+    }
+
+    getValueById(id: Id | string): SettingsValue {
+        const idStr = Id.asString(id)
+        let foundSettingValue = null
+        for (const [id, setting] of this._settings) {
+            setting[1].forEach((settingValue) => {
+                console.log(settingValue)
+                if (settingValue.id.id === idStr) {
+                    foundSettingValue = settingValue
+                }
+            })
+        }
+
+        if (foundSettingValue !== null) {
+            return foundSettingValue
+        } else {
+            throw `getValueById: value not found with id ${idStr}`
+        }
     }
 
     load(jsonObj: {

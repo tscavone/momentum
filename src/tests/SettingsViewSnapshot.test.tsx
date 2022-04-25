@@ -1,6 +1,4 @@
-import { Box, ChakraProvider, Menu, MenuList } from '@chakra-ui/react'
-import React from 'react'
-import renderer from 'react-test-renderer'
+import { ChakraProvider, Menu, MenuList } from '@chakra-ui/react'
 import { SettingsMenuItem } from '../client/components/SettingsMenuItem'
 import { SettingsStore } from '../client/stores/SettingsStore'
 import { settingsTestData } from './testdata'

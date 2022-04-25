@@ -22,6 +22,7 @@ import {
     useNoteStore,
     useSelectedEmployeeStore,
     useEmployeeStore,
+    useStretchAnswerStore,
 } from '../RootStoreProvider'
 import { DateRange } from '../../util/DateRange'
 import { observer } from 'mobx-react'
@@ -29,6 +30,9 @@ import { IdentifiedObject } from '../../util/IdentifiedObject'
 import { ReactNode } from 'react'
 import { dateToString } from '../../util/utils'
 import { NoteReport } from './NoteReport'
+import { StretchAnswer } from '../../value_objects/StretchAnswer'
+import { StretchReport } from './StretchReport'
+import e from 'express'
 
 //
 // Date state
@@ -51,6 +55,7 @@ let reportDates = new ReportDates()
 
 export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
     const noteStore = useNoteStore()
+    const stretchAnswerStore = useStretchAnswerStore()
     const selectedEmployeeStore = useSelectedEmployeeStore()
     const selectedEmployee = useEmployeeStore().getEmployee(
         selectedEmployeeStore.selectedId
@@ -59,8 +64,7 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
     if (!selectedEmployee) {
         return <></>
     }
-    // Map<string, IReportable[]>
-    //rename all this stuff
+
     function getReportComponentsInRange(
         objectStore: ITemporalStore
     ): Map<string, IdentifiedObject[]> {
@@ -88,9 +92,6 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
         return reportObjects
     }
 
-    //write a function that gets all the maps, then get all the dates from all maps,
-    // create a Map<string, IdentifiedObject>
-    // move the creation of the report jsx obects into the value objects themsself?
     const renderObjectReports = (
         reportables: Map<string, IdentifiedObject[]>[]
     ): ReactNode => {
@@ -110,16 +111,23 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
 
         //for each date, render an array of report components and add it to the map
         //for that date
-        reportableDates.forEach((dateString) =>
+        reportableDates.forEach((dateString) => {
+            const reportComponentsForDate = []
+
             reportables.forEach((reportMap) => {
-                dateReportComponentMap.set(
-                    dateString,
+                //if this set of objects (i.e. notes, stretchAnswers) doesn't have any for this date, continue
+
+                if (!reportMap.get(dateString)) {
+                    return
+                }
+                reportComponentsForDate.push(
                     reportMap
                         .get(dateString)
                         .map((reportable) => renderReportComponent(reportable))
                 )
             })
-        )
+            dateReportComponentMap.set(dateString, reportComponentsForDate)
+        })
 
         //finally, make an array of rendered date components with their respective report components
         const dateReportComponents: ReactNode[] = []
@@ -151,6 +159,13 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
                     note={reportObject}
                 ></NoteReport>
             )
+        } else if (reportObject instanceof StretchAnswer) {
+            return (
+                <StretchReport
+                    key={reportObject.id.id}
+                    stretchAnswer={reportObject}
+                ></StretchReport>
+            )
         } else {
             throw Error(
                 `ReportDrawer:renderReportComponent reportObject not of any instance: ${reportObject}`
@@ -161,6 +176,7 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
     const renderReport = (): ReactNode => {
         const reportComponents = []
         reportComponents.push(getReportComponentsInRange(noteStore))
+        reportComponents.push(getReportComponentsInRange(stretchAnswerStore))
 
         return renderObjectReports(reportComponents)
     }

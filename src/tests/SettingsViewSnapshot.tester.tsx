@@ -24,7 +24,7 @@ it('renders correctly', () => {
         <ChakraProvider theme={theme}>
             <Menu>
                 <MenuList>
-                    <SettingsMenuItem settings={settingsStore.settings} />
+                    <SettingsMenuItem origSettings={settingsStore.settings} />
                 </MenuList>
             </Menu>
         </ChakraProvider>

@@ -150,7 +150,7 @@ export function TopNav({ children }: { children: ReactNode }) {
                             </MenuButton>
                             <MenuList>
                                 <SettingsMenuItem
-                                    settings={settingsStore.settings}
+                                    origSettings={settingsStore.settings}
                                 />
                                 <MenuDivider />
                                 <MenuItem

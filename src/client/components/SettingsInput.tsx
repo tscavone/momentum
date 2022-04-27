@@ -26,7 +26,6 @@ export const SettingsInput = ({
         settingsEntryAndValues: [SettingsEntry, SettingsValue[]]
     ) => {
         const settingsEntry = settingsEntryAndValues[0]
-        const settingsValues = settingsEntryAndValues[1]
 
         if (settingsEntry.type === SettingsType.select) {
             return (
@@ -41,7 +40,7 @@ export const SettingsInput = ({
         } else if (settingsEntry.type === SettingsType.multiple) {
             return (
                 <>
-                    {settingsValues
+                    {settingsEntryAndValues[1]
                         .filter(
                             (settingsValue) => settingsValue.deleted !== true
                         )
@@ -80,13 +79,24 @@ export const SettingsInput = ({
                         <Input
                             placeholder="enter new value..."
                             style={inputStyle}
+                            id={'newSettingName-' + settingsEntry.id.id}
                         />
-                        <Button size="xs">
+                        <Button
+                            onClick={addValue}
+                            size="xs"
+                            value={settingsEntry.id.id}
+                        >
                             <FiPlus />
                         </Button>
                     </HStack>
-                    {settingsValues[0] instanceof SettingsValueWithDesc ? (
-                        <Textarea ml={5} width="78%" size={'sm'}></Textarea>
+                    {settingsEntryAndValues[1][0] instanceof
+                    SettingsValueWithDesc ? (
+                        <Textarea
+                            ml={5}
+                            width="78%"
+                            size={'sm'}
+                            id={'newSettingDesc-' + settingsEntry.id.id}
+                        ></Textarea>
                     ) : (
                         <></>
                     )}

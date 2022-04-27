@@ -20,7 +20,6 @@ export class SettingsStore implements IStore {
     //constructor
     //
     constructor() {
-        makeAutoObservable(this)
         this._settings = new Map<string, [SettingsEntry, SettingsValue[]]>()
     }
 
@@ -136,5 +135,38 @@ export class SettingsStore implements IStore {
 
             this._settings.set(key, [entry, entryValues])
         })
+    }
+
+    static valuesFromSettings(
+        settings: Map<string, [SettingsEntry, SettingsValue[]]>
+    ) {
+        const settingsValues: SettingsValue[] = []
+
+        for (const entryAndValue of settings.values()) {
+            settingsValues.push(...entryAndValue[1])
+        }
+
+        return settingsValues
+    }
+
+    static removeValue(
+        id: Id | string,
+        settings: Map<string, [SettingsEntry, SettingsValue[]]>
+    ) {
+        const idStr = Id.asString(id)
+
+        for (const [id, setting] of settings) {
+            let settingsValueIndex = setting[1].findIndex(
+                (settingsValue) => settingsValue.id.id === idStr
+            )
+
+            if (settingsValueIndex) {
+                setting[1].splice(settingsValueIndex, 1)
+                settings.set(id, [setting[0], setting[1]])
+                return settings
+            }
+        }
+
+        throw `SettingsStore.deleteValue: value not found to be deleted: ${idStr}`
     }
 }

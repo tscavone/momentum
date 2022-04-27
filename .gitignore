@@ -24,5 +24,4 @@ yarn-error.log*
 
 debug.ts*
 server/.env
-.env
-.env
+/.env

@@ -17,6 +17,7 @@ import { SettingsStore } from '../stores/SettingsStore'
 import { SettingsEntry } from '../value_objects/SettingsEntry'
 import { SettingsValue } from '../value_objects/SettingsValue'
 import { SettingsValueWithDesc } from '../value_objects/SettingsValueWithDesc'
+import { useSettingsStore } from './RootStoreProvider'
 import { SettingsInput } from './SettingsInput'
 
 export const SettingsMenuItem = ({
@@ -24,6 +25,8 @@ export const SettingsMenuItem = ({
 }: {
     origSettings: Map<string, [SettingsEntry, SettingsValue[]]>
 }) => {
+    const settingsStore = useSettingsStore()
+
     const [settings, setSettings] = React.useState<
         [SettingsEntry, SettingsValue[]][]
     >(Array.from(origSettings.values()))
@@ -43,13 +46,13 @@ export const SettingsMenuItem = ({
         }
 
         for (const setting of newSettings) {
-            const foundIndex = setting[1].findIndex(
+            const foundValue = setting[1].find(
                 (settingValue) =>
                     settingValue.id.id === event.currentTarget.value
             )
 
-            if (foundIndex !== -1) {
-                setting[1].splice(foundIndex, 1)
+            if (foundValue) {
+                foundValue.deleted = true
                 setSettings(newSettings)
                 return
             }
@@ -129,6 +132,12 @@ export const SettingsMenuItem = ({
         )
     }
 
+    const saveSettings = (event) => {
+        settingsStore.saveSettings(settings)
+        console.log('Saved settings:  ', settings)
+        onSettingsClosed()
+    }
+
     return (
         <>
             <MenuItem
@@ -168,11 +177,13 @@ export const SettingsMenuItem = ({
                         <Button
                             colorScheme="green"
                             mr={3}
-                            onClick={onSettingsClosed}
+                            onClick={saveSettings}
                         >
                             save
                         </Button>
-                        <Button variant="ghost">close</Button>
+                        <Button variant="ghost" onClick={onSettingsClosed}>
+                            close
+                        </Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>

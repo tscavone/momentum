@@ -10,6 +10,7 @@ import { SettingsEntry, SettingsType } from '../value_objects/SettingsEntry'
 import { SettingsValue } from '../value_objects/SettingsValue'
 import { FiMinus, FiPlus } from 'react-icons/fi'
 import { SettingsValueWithDesc } from '../value_objects/SettingsValueWithDesc'
+import { MouseEventHandler } from 'react'
 
 export const SettingsInput = ({
     settingsEntryAndValues,
@@ -17,8 +18,8 @@ export const SettingsInput = ({
     addValue,
 }: {
     settingsEntryAndValues: [SettingsEntry, SettingsValue[]]
-    removeValue: (event) => void
-    addValue: (event) => void
+    removeValue: MouseEventHandler<HTMLButtonElement>
+    addValue: MouseEventHandler<HTMLButtonElement>
 }) => {
     const inputStyle = { width: '80%', margin: '10px' }
 

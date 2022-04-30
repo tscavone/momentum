@@ -49,6 +49,103 @@ export const valueTestData: IDataGlobal = {
                     },
                 ],
             },
+            _statusAndGoals: {
+                _temporalObjects: [
+                    {
+                        _obj: {
+                            _id: '1111sg',
+                            _status: 'Working on new UI for patients',
+                            _goals: [
+                                {
+                                    _id: '11111g',
+                                    _settingEntryId: '1400-20-1',
+                                    _details:
+                                        'give a presentation on react hooks so that my team can start using them',
+                                    _milestones: [],
+                                    _links: [
+                                        {
+                                            _id: '00000l',
+                                            _text: 'react hooks documentation',
+                                            _target:
+                                                'https://reactjs.org/docs/hooks-intro.html',
+                                        },
+                                        {
+                                            _id: '11111l',
+                                            _text: 'further hooks info',
+                                            _target:
+                                                'https://reactjs.org/docs/hooks-overview.html',
+                                        },
+                                    ],
+                                    _progress: 0,
+                                },
+                                {
+                                    _id: '22222g',
+                                    _settingEntryId: '1400-20-2',
+                                    _details: 'take a course on typescript',
+                                    _milestones: [],
+                                    _links: [
+                                        {
+                                            _id: '22222l',
+                                            _text: 'typescript full tutorial',
+                                            _target:
+                                                'https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiIup6D5Ln3AhXbhIkEHSDmC_kQyCl6BAgDEAM&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DBwuLxPH8IDs&usg=AOvVaw22ZOiiCMMvZo54bMSj42o5',
+                                        },
+                                    ],
+                                    _progress: 0,
+                                },
+                            ],
+                        },
+                        _date: '02/01/2022',
+                    },
+                    {
+                        _obj: {
+                            _id: '2222sg',
+                            _status:
+                                'good progress on UI for patients, also working with product on building out epics',
+                            _goals: [
+                                {
+                                    _id: '11111g-2',
+                                    _settingEntryId: '1400-20-1',
+                                    _details:
+                                        'give a presentation on react hooks so that my team can start using them',
+                                    _milestones: [],
+                                    _links: [
+                                        {
+                                            _id: '55555l',
+                                            _text: 'react hooks documentation',
+                                            _target:
+                                                'https://reactjs.org/docs/hooks-intro.html',
+                                        },
+                                        {
+                                            _id: '66666l',
+                                            _text: 'further hooks info',
+                                            _target:
+                                                'https://reactjs.org/docs/hooks-overview.html',
+                                        },
+                                    ],
+                                    _progress: 20,
+                                },
+                                {
+                                    _id: '22222g-2',
+                                    _settingEntryId: '1400-20-2',
+                                    _details: 'take a course on typescript',
+                                    _milestones: [],
+                                    _links: [
+                                        {
+                                            _id: '33333l',
+                                            _text: 'typescript full tutorial',
+                                            _target:
+                                                'https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiIup6D5Ln3AhXbhIkEHSDmC_kQyCl6BAgDEAM&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DBwuLxPH8IDs&usg=AOvVaw22ZOiiCMMvZo54bMSj42o5',
+                                        },
+                                    ],
+                                    _progress: 40,
+                                },
+                            ],
+                        },
+                        _date: '03/01/2022',
+                    },
+                ],
+            },
         },
         '2345': {
             _notes: {
@@ -76,6 +173,35 @@ export const valueTestData: IDataGlobal = {
                             _id: '99999b',
                             _answer: 'No, it sounds horrible!',
                             _questionId: '1300-30',
+                        },
+                        _date: '02/01/2022',
+                    },
+                ],
+            },
+            _statusAndGoals: {
+                _temporalObjects: [
+                    {
+                        _obj: {
+                            _id: '1111sg-2',
+                            _status:
+                                'Trying to come up to speed on new code base',
+                            _goals: [
+                                {
+                                    _id: '33333g',
+                                    _settingEntryId: '1400-20-3',
+                                    _details: 'planning a team lunch',
+                                    _milestones: [],
+                                    _links: [
+                                        {
+                                            _id: '44444l',
+                                            _text: 'kings bowling',
+                                            _target:
+                                                'https://www.kings-de.com/store-locator/',
+                                        },
+                                    ],
+                                    _progress: 0,
+                                },
+                            ],
                         },
                         _date: '02/01/2022',
                     },
@@ -124,6 +250,29 @@ export const valueTestData: IDataGlobal = {
                     },
                 ],
             },
+            _statusAndGoals: {
+                _temporalObjects: [
+                    {
+                        _obj: {
+                            _id: '1111sg-3',
+                            _status:
+                                'Writing kafka connector to be able to sync data between legacy databases',
+                            _goals: [
+                                {
+                                    _id: '44444g',
+                                    _settingEntryId: '1400-20-4',
+                                    _details:
+                                        'reading Code Complete because my manager says it is amazing',
+                                    _milestones: [],
+                                    _links: [],
+                                    _progress: 0,
+                                },
+                            ],
+                        },
+                        _date: '02/01/2022',
+                    },
+                ],
+            },
         },
     },
 }
@@ -149,6 +298,13 @@ export const settingsTestData: IDataSettings = {
             _id: '1300',
             _name: 'stretch questions',
             _description: 'questions to ask to get to know your reports better',
+            _type: 'multiple',
+        },
+        {
+            _id: '1400',
+            _name: 'goals',
+            _description:
+                'goals that employees can work towards for personal development',
             _type: 'multiple',
         },
     ],
@@ -201,6 +357,30 @@ export const settingsTestData: IDataSettings = {
                 _value: 'This is a deleted question',
                 _deleted: 'true',
             },
+            {
+                _entryId: '1400',
+                _id: '1400-10-1',
+                _value: 'give a presentation',
+                _deleted: 'false',
+            },
+            {
+                _entryId: '1400',
+                _id: '1400-10-2',
+                _value: 'take a course',
+                _deleted: 'false',
+            },
+            {
+                _entryId: '1400',
+                _id: '1400-10-3',
+                _value: 'plan an outing',
+                _deleted: 'false',
+            },
+            {
+                _entryId: '1400',
+                _id: '1400-10-4',
+                _value: 'read a technical book',
+                _deleted: 'false',
+            },
         ],
         uvwxyz: [
             {
@@ -250,11 +430,35 @@ export const settingsTestData: IDataSettings = {
                 _value: '[xyz]This is a deleted question',
                 _deleted: 'true',
             },
+            {
+                _entryId: '1400',
+                _id: '1400-20-1',
+                _value: 'give a presentation',
+                _deleted: 'false',
+            },
+            {
+                _entryId: '1400',
+                _id: '1400-20-2',
+                _value: 'take a course',
+                _deleted: 'false',
+            },
+            {
+                _entryId: '1400',
+                _id: '1400-20-3',
+                _value: 'plan an outing',
+                _deleted: 'false',
+            },
+            {
+                _entryId: '1400',
+                _id: '1400-20-4',
+                _value: 'read a technical book',
+                _deleted: 'false',
+            },
         ],
     },
 }
 
-//test employee data
+//test employee datak
 export const employeeTestData: IGlobalEmployeeData = {
     abcdef: {
         '1234': {

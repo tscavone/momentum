@@ -13,6 +13,7 @@ import { EmployeeStore } from '../stores/EmployeeStore'
 import { CurrentDateStore } from '../stores/CurrentDateStore'
 import { NoteStore } from '../stores/NoteStore'
 import { AuthedUserStore } from '../stores/AuthedUserStore'
+import { StatusAndGoalsStore } from '../stores/StatusAndGoalsStore'
 
 const StoreContext = React.createContext<RootStore | undefined>(undefined)
 
@@ -107,4 +108,13 @@ export function useAuthedUserStore(): AuthedUserStore {
     }
 
     return context._authedUserStore
+}
+
+export function useStatusAndGoalsStore(): StatusAndGoalsStore {
+    const context = React.useContext(StoreContext)
+    if (context === undefined) {
+        throw new Error('useRootStore must be used within RootStoreProvider')
+    }
+
+    return context._statusAndGoalsStore
 }

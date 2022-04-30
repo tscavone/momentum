@@ -1,47 +1,45 @@
 // a hyperlink
 //
 
-import { IdentifiedObject } from "../util/IdentifiedObject";
+import { IDataLink } from '../data_definitions/GlobalDefinitions'
+import { Id } from '../util/Id'
+import { IdentifiedObject } from '../util/IdentifiedObject'
 
 export class Link extends IdentifiedObject {
+    private _text: string
+    private _target: string
 
-    //
-    //members
-    //
-    private _text: string;
-    private _target: string;
-    
-    //
-    // constructors
-    //
-    constructor(text: string, target: string) {
-        super();
-        this._text = text
-        this._target = target
+    constructor() {
+        super()
+        this._text = ''
+        this._target = ''
     }
-    
-    //
-    //accessors
-    //
+
     public get text(): string {
-        return this._text;
+        return this._text
     }
     public set text(value: string) {
-        this._text = value;
+        this._text = value
     }
     public get target(): string {
-        return this._target;
+        return this._target
     }
     public set target(value: string) {
-        this._target = value;
+        this._target = value
     }
-    
-    //
-    //private methods
-    //
-    
-    //
-    //public methods
-    //
 
+    public deepClone(): Link {
+        let newLink = new Link()
+        newLink._target = this._target
+        newLink._text = this._text
+
+        return newLink
+    }
+
+    public static fromJson(jsonLink: IDataLink): Link {
+        let link = Object.assign(new Link(), jsonLink) as Link
+        link.id = Id.fromString(jsonLink._id)
+
+        return link
+    }
 }

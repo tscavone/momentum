@@ -13,6 +13,7 @@ import {
 } from '../../tests/testdata'
 import { CurrentDateStore } from './CurrentDateStore'
 import { AuthedUserStore } from './AuthedUserStore'
+import { StatusAndGoalsStore } from './StatusAndGoalsStore'
 
 //const UserData
 export class RootStore {
@@ -24,6 +25,7 @@ export class RootStore {
     //Temporal Object Stores
     _noteStore: NoteStore
     _stretchAnswerStore: StretchAnswerStore
+    _statusAndGoalsStore: StatusAndGoalsStore
 
     constructor() {
         this._settingsStore = new SettingsStore()
@@ -33,6 +35,7 @@ export class RootStore {
         this._authedUserStore = new AuthedUserStore()
         this._noteStore = new NoteStore()
         this._stretchAnswerStore = new StretchAnswerStore()
+        this._statusAndGoalsStore = new StatusAndGoalsStore()
     }
 
     initialize(userId: Id | string) {
@@ -40,35 +43,19 @@ export class RootStore {
         console.log('userId string', userIdString)
 
         this._selectedEmployeeStore.load(TestSelectedEmployeeData[userIdString])
-        console.log('store loaded', this._selectedEmployeeStore)
         this.loadTemporalObjects(userIdString)
         let userScopedSettingsTestData = {
             entries: settingsTestData['entries'],
             values: settingsTestData['values'][userIdString],
         }
         this._settingsStore.load(userScopedSettingsTestData)
-        console.log('store loaded', this._settingsStore)
         this._employeeStore.load(employeeTestData[userIdString])
-        console.log('store loaded', this._employeeStore)
         this._authedUserStore.load(TestAuthedUserData)
-        console.log('store loaded', this._authedUserStore)
-
-        console.log(
-            'loaded stores',
-            this._selectedEmployeeStore,
-            this._settingsStore,
-            this._employeeStore,
-            this._currentDateStore,
-            this._authedUserStore,
-            this._noteStore,
-            this._stretchAnswerStore
-        )
     }
 
     private loadTemporalObjects(userId: string): void {
         this._noteStore.load(valueTestData[userId])
-        console.log('store loaded', this._noteStore)
         this._stretchAnswerStore.load(valueTestData[userId])
-        console.log('store loaded', this._stretchAnswerStore)
+        this._statusAndGoalsStore.load(valueTestData[userId])
     }
 }

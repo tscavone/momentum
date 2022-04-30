@@ -1,6 +1,9 @@
+import { IDataGoal } from '../client/data_definitions/GlobalDefinitions'
 import { RootStore } from '../client/stores/RootStore'
 import { DatedObject } from '../client/util/DatedObject'
 import { Id } from '../client/util/Id'
+import { Goal } from '../client/value_objects/Goal'
+import { Link } from '../client/value_objects/Link'
 import { Note } from '../client/value_objects/Note'
 import {
     SettingsEntry,
@@ -8,6 +11,7 @@ import {
 } from '../client/value_objects/SettingsEntry'
 import { SettingsValue } from '../client/value_objects/SettingsValue'
 import { SettingsValueWithDesc } from '../client/value_objects/SettingsValueWithDesc'
+import { StatusAndGoals } from '../client/value_objects/StatusAndGoals'
 import { StretchAnswer } from '../client/value_objects/StretchAnswer'
 
 test('Root store constructs', () => {
@@ -67,6 +71,75 @@ const testDatedAnswer = ({
     expect(stretchAnswer.questionId).toBeInstanceOf(Id)
     expect(stretchAnswer.questionId.id).toBe(questionId)
     expect(stretchAnswer.answer).toBe(answer)
+}
+
+const testDatedGoal = ({
+    datedStatusAndGoals,
+    date,
+    id,
+    status,
+    goals,
+}: {
+    datedStatusAndGoals: DatedObject<StatusAndGoals>
+    date: Date
+    id: Id
+    status: string
+    goals: IDataGoal
+}) => {
+    expect(datedStatusAndGoals).toBeInstanceOf(DatedObject)
+    expect(datedStatusAndGoals.date).toBeInstanceOf(Date)
+    expect(datedStatusAndGoals.date.getTime()).toBe(new Date(date).getTime())
+
+    const statusAndGoals = datedStatusAndGoals.obj as StatusAndGoals
+    expect(statusAndGoals).toBeInstanceOf(StatusAndGoals)
+
+    expect(statusAndGoals.id).toBeInstanceOf(Id)
+    expect(statusAndGoals.id.id).toBeInstanceOf(id)
+    expect(statusAndGoals.status).toBe(status)
+
+    for (let i = 0; i < statusAndGoals.goals.length; i++) {
+        const goalTarget = goals[i]
+        testGoal({
+            goal: statusAndGoals.goals[i],
+            id: goalTarget.id,
+            settingEntryId: goalTarget.settingEntryId,
+            details: goalTarget.details,
+            progress: goalTarget.progress,
+            links: goalTarget.links,
+        })
+    }
+}
+
+const testGoal = ({
+    goal,
+    id,
+    settingEntryId,
+    details,
+    progress,
+    links,
+}: {
+    goal: Goal
+    id: Id
+    settingEntryId: Id
+    details: string
+    progress: number
+    links: Link[]
+}) => {
+    expect(goal).toBeInstanceOf(Goal)
+    expect(goal.id).toBeInstanceOf(Id)
+    expect(goal.id.id).toBe(id)
+    expect(goal.settingEntryId).toBeInstanceOf(Id)
+    expect(goal.settingEntryId).toBe(settingEntryId)
+    expect(goal.details).toBe(details)
+    expect(goal.progress).toBe(progress)
+    expect(goal.links.length).toBe(links.length)
+
+    for (const link of links) {
+        expect(link).toBeInstanceOf(Link)
+        expect(link.id).toBeInstanceOf(Id)
+        expect(link.target).toBeDefined
+        expect(link.text).toBeDefined
+    }
 }
 
 test('Root store noteStore load is correct with multiple users', () => {
@@ -189,6 +262,15 @@ test('Root store stretchAnswerStore load is correct', () => {
         questionId: '32132148378945231894732-2',
         answer: 'other user - Here is an answer to a deleted question',
     })
+})
+
+test('Root store statusAndGoalStore load is correct', () => {
+    const rootStore = new RootStore()
+    rootStore.initialize('abcdef')
+
+    let allSavedStatusAndGoals = rootStore._statusAndGoalsStore.getAllSaved(
+        '1234'
+    ) as DatedObject<StatusAndGoals>[]
 })
 
 const testSettingsEntry = ({

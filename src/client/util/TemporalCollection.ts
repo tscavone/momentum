@@ -50,8 +50,6 @@ export class TemporalCollection<T extends IdentifiedObject> {
         this.clearMilestoneCache()
     }
 
-    //public methods
-
     //returns null if there is no milestone for that date. Else returns a list of all milestones
     //  that match <targetDate>.  <targetDate> time values are ignored
     getSavedByDate(targetDate: Date): DatedObject<IdentifiedObject>[] {
@@ -95,6 +93,11 @@ export class TemporalCollection<T extends IdentifiedObject> {
         }
 
         return null
+    }
+
+    getLatestSaved(): T {
+        let latestDate = this._milestoneCache[0]
+        return this._temporalObjects.get(latestDate)
     }
 
     get current(): T {

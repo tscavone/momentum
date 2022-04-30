@@ -1,56 +1,39 @@
 // a goal for an employee
 //
 
+import { IDataGoal } from '../data_definitions/GlobalDefinitions'
+import { Id } from '../util/Id'
 import { IdentifiedObject } from '../util/IdentifiedObject'
-import { GoalType } from './GoalType'
 import { Link } from './Link'
-import { Note } from './Note'
 import { Milestone } from './Milestone'
 
 export class Goal extends IdentifiedObject {
-    //
-    //members
-    //
-    private _name: string
-    private _description: string
-    private _milestones: Milestone[]
-    private _types: GoalType[]
+    private _settingEntryId: Id
+    private _details: string
+    private _milestones: Milestone[] //currently unused
     private _links: Link[]
     private _progress: number
 
-    //
-    //constructors
-    //
     constructor() {
         super()
-        this._name = ''
-        this._description = ''
+        this._settingEntryId = new Id()
+        this._details = ''
         this._milestones = [] //unused
-        this._types = []
         this._links = []
         this._progress = 0
     }
 
-    //
-    //accessors
-    //
-    public get name(): string {
-        return this._name
+    public get settingEntryId(): Id {
+        return this._settingEntryId
     }
-    public set name(value: string) {
-        this._name = value
+    public set settingEntryId(value: Id) {
+        this._settingEntryId = value
     }
-    public get description(): string {
-        return this._description
+    public get details(): string {
+        return this._details
     }
-    public set description(value: string) {
-        this._description = value
-    }
-    public get type(): GoalType[] {
-        return this._types
-    }
-    public set type(value: GoalType[]) {
-        this._types = value
+    public set details(value: string) {
+        this._details = value
     }
     public get links(): Link[] {
         return this._links
@@ -65,11 +48,30 @@ export class Goal extends IdentifiedObject {
         this._progress = value
     }
 
-    //
-    //private methods
-    //
+    public deepClone(): Goal {
+        let newGoal = new Goal()
 
-    //
-    //public methods
-    //
+        newGoal._details = this._details
+        newGoal._milestones = []
+        newGoal._progress = this._progress
+        newGoal._settingEntryId = this._settingEntryId
+
+        for (const link of this._links) {
+            newGoal._links.push(link.deepClone())
+        }
+
+        return newGoal
+    }
+
+    public static fromJson(jsonGoal: IDataGoal): Goal {
+        let goal = Object.assign(new Goal(), jsonGoal) as Goal
+        goal.id = Id.fromString(jsonGoal._id)
+        goal._settingEntryId = Id.fromString(jsonGoal._settingEntryId)
+        goal.links = []
+
+        for (const jsonLink of jsonGoal._links) {
+            goal.links.push(Link.fromJSON(jsonLink) as Link)
+        }
+        return goal
+    }
 }

@@ -63,7 +63,7 @@ export class Goal extends IdentifiedObject {
         return newGoal
     }
 
-    public static fromJson(jsonGoal: IDataGoal): Goal {
+    public static fromJSON(jsonGoal: IDataGoal): Goal {
         let goal = Object.assign(new Goal(), jsonGoal) as Goal
         goal.id = Id.fromString(jsonGoal._id)
         goal._settingEntryId = Id.fromString(jsonGoal._settingEntryId)

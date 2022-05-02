@@ -27,9 +27,7 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
 
         this._allEmployeeObjects.set(
             employeeId,
-            new TemporalCollection<StatusAndGoals>(
-                StatusAndGoals.instantiate(this.getEmployeeObjects(employeeId))
-            )
+            new TemporalCollection<StatusAndGoals>(StatusAndGoals.instantiate())
         )
     }
 
@@ -44,7 +42,7 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
             let statusAndGoals: TemporalCollection<StatusAndGoals> =
                 this.getEmployeeObjects(employeeId)
 
-            statusAndGoals.clear(StatusAndGoals.instantiate(statusAndGoals))
+            statusAndGoals.clear(StatusAndGoals.instantiate())
 
             //currently we're not saving the current object of a temporal collection, but we might want to in the future
             // to preserve people's work

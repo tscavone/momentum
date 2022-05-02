@@ -36,7 +36,7 @@ export class Link extends IdentifiedObject {
         return newLink
     }
 
-    public static fromJson(jsonLink: IDataLink): Link {
+    public static fromJSON(jsonLink: IDataLink): Link {
         let link = Object.assign(new Link(), jsonLink) as Link
         link.id = Id.fromString(jsonLink._id)
 

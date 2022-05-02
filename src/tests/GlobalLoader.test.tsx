@@ -1,4 +1,7 @@
-import { IDataGoal } from '../client/data_definitions/GlobalDefinitions'
+import {
+    IDataGoal,
+    IDataLink,
+} from '../client/data_definitions/GlobalDefinitions'
 import { RootStore } from '../client/stores/RootStore'
 import { DatedObject } from '../client/util/DatedObject'
 import { Id } from '../client/util/Id'
@@ -82,9 +85,9 @@ const testDatedGoal = ({
 }: {
     datedStatusAndGoals: DatedObject<StatusAndGoals>
     date: Date
-    id: Id
+    id: string
     status: string
-    goals: IDataGoal
+    goals: IDataGoal[]
 }) => {
     expect(datedStatusAndGoals).toBeInstanceOf(DatedObject)
     expect(datedStatusAndGoals.date).toBeInstanceOf(Date)
@@ -101,11 +104,11 @@ const testDatedGoal = ({
         const goalTarget = goals[i]
         testGoal({
             goal: statusAndGoals.goals[i],
-            id: goalTarget.id,
-            settingEntryId: goalTarget.settingEntryId,
-            details: goalTarget.details,
-            progress: goalTarget.progress,
-            links: goalTarget.links,
+            id: goalTarget._id,
+            settingEntryId: goalTarget._settingEntryId,
+            details: goalTarget._details,
+            progress: goalTarget._progress,
+            links: goalTarget._links,
         })
     }
 }
@@ -119,22 +122,22 @@ const testGoal = ({
     links,
 }: {
     goal: Goal
-    id: Id
-    settingEntryId: Id
+    id: string
+    settingEntryId: string
     details: string
     progress: number
-    links: Link[]
+    links: IDataLink[]
 }) => {
     expect(goal).toBeInstanceOf(Goal)
     expect(goal.id).toBeInstanceOf(Id)
     expect(goal.id.id).toBe(id)
     expect(goal.settingEntryId).toBeInstanceOf(Id)
-    expect(goal.settingEntryId).toBe(settingEntryId)
+    expect(goal.settingEntryId.id).toBe(settingEntryId)
     expect(goal.details).toBe(details)
     expect(goal.progress).toBe(progress)
     expect(goal.links.length).toBe(links.length)
 
-    for (const link of links) {
+    for (const link of goal.links) {
         expect(link).toBeInstanceOf(Link)
         expect(link.id).toBeInstanceOf(Id)
         expect(link.target).toBeDefined
@@ -271,6 +274,50 @@ test('Root store statusAndGoalStore load is correct', () => {
     let allSavedStatusAndGoals = rootStore._statusAndGoalsStore.getAllSaved(
         '1234'
     ) as DatedObject<StatusAndGoals>[]
+
+    testDatedGoal({
+        datedStatusAndGoals: allSavedStatusAndGoals[0],
+        date: new Date('02/01/2022'),
+        id: '1111sg',
+        status: 'Working on new UI for patients',
+        goals: [
+            {
+                _id: '11111g',
+                _settingEntryId: '1400-20-1',
+                _details:
+                    'give a presentation on react hooks so that my team can start using them',
+                _milestones: [],
+                _links: [
+                    {
+                        _id: '00000l',
+                        _text: 'react hooks documentation',
+                        _target: 'https://reactjs.org/docs/hooks-intro.html',
+                    },
+                    {
+                        _id: '11111l',
+                        _text: 'further hooks info',
+                        _target: 'https://reactjs.org/docs/hooks-overview.html',
+                    },
+                ],
+                _progress: 0,
+            },
+            {
+                _id: '22222g',
+                _settingEntryId: '1400-20-2',
+                _details: 'take a course on typescript',
+                _milestones: [],
+                _links: [
+                    {
+                        _id: '22222l',
+                        _text: 'typescript full tutorial',
+                        _target:
+                            'https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiIup6D5Ln3AhXbhIkEHSDmC_kQyCl6BAgDEAM&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DBwuLxPH8IDs&usg=AOvVaw22ZOiiCMMvZo54bMSj42o5',
+                    },
+                ],
+                _progress: 0,
+            },
+        ],
+    })
 })
 
 const testSettingsEntry = ({

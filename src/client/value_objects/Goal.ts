@@ -8,7 +8,7 @@ import { Link } from './Link'
 import { Milestone } from './Milestone'
 
 export class Goal extends IdentifiedObject {
-    private _settingEntryId: Id
+    private _settingValueId: Id
     private _details: string
     private _milestones: Milestone[] //currently unused
     private _links: Link[]
@@ -16,18 +16,18 @@ export class Goal extends IdentifiedObject {
 
     constructor() {
         super()
-        this._settingEntryId = new Id()
+        this._settingValueId = new Id()
         this._details = ''
         this._milestones = [] //unused
         this._links = []
         this._progress = 0
     }
 
-    public get settingEntryId(): Id {
-        return this._settingEntryId
+    public get settingValueId(): Id {
+        return this._settingValueId
     }
-    public set settingEntryId(value: Id) {
-        this._settingEntryId = value
+    public set settingValueId(value: Id) {
+        this._settingValueId = value
     }
     public get details(): string {
         return this._details
@@ -54,7 +54,7 @@ export class Goal extends IdentifiedObject {
         newGoal._details = this._details
         newGoal._milestones = []
         newGoal._progress = this._progress
-        newGoal._settingEntryId = this._settingEntryId
+        newGoal._settingValueId = this._settingValueId
 
         for (const link of this._links) {
             newGoal._links.push(link.deepClone())
@@ -66,7 +66,7 @@ export class Goal extends IdentifiedObject {
     public static fromJSON(jsonGoal: IDataGoal): Goal {
         let goal = Object.assign(new Goal(), jsonGoal) as Goal
         goal.id = Id.fromString(jsonGoal._id)
-        goal._settingEntryId = Id.fromString(jsonGoal._settingEntryId)
+        goal._settingValueId = Id.fromString(jsonGoal._settingValueId)
         goal.links = []
 
         for (const jsonLink of jsonGoal._links) {

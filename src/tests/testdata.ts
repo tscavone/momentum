@@ -58,7 +58,7 @@ export const valueTestData: IDataGlobal = {
                             _goals: [
                                 {
                                     _id: '11111g',
-                                    _settingEntryId: '1400-20-1',
+                                    _settingValueId: '1400-10-1',
                                     _details:
                                         'give a presentation on react hooks so that my team can start using them',
                                     _milestones: [],
@@ -80,7 +80,7 @@ export const valueTestData: IDataGlobal = {
                                 },
                                 {
                                     _id: '22222g',
-                                    _settingEntryId: '1400-20-2',
+                                    _settingValueId: '1400-10-2',
                                     _details: 'take a course on typescript',
                                     _milestones: [],
                                     _links: [
@@ -105,7 +105,7 @@ export const valueTestData: IDataGlobal = {
                             _goals: [
                                 {
                                     _id: '11111g-2',
-                                    _settingEntryId: '1400-20-1',
+                                    _settingValueId: '1400-10-1',
                                     _details:
                                         'give a presentation on react hooks so that my team can start using them',
                                     _milestones: [],
@@ -127,7 +127,7 @@ export const valueTestData: IDataGlobal = {
                                 },
                                 {
                                     _id: '22222g-2',
-                                    _settingEntryId: '1400-20-2',
+                                    _settingValueId: '1400-10-2',
                                     _details: 'take a course on typescript',
                                     _milestones: [],
                                     _links: [
@@ -188,7 +188,7 @@ export const valueTestData: IDataGlobal = {
                             _goals: [
                                 {
                                     _id: '33333g',
-                                    _settingEntryId: '1400-20-3',
+                                    _settingValueId: '1400-20-3',
                                     _details: 'planning a team lunch',
                                     _milestones: [],
                                     _links: [
@@ -260,7 +260,7 @@ export const valueTestData: IDataGlobal = {
                             _goals: [
                                 {
                                     _id: '44444g',
-                                    _settingEntryId: '1400-20-4',
+                                    _settingValueId: '1400-20-4',
                                     _details:
                                         'reading Code Complete because my manager says it is amazing',
                                     _milestones: [],

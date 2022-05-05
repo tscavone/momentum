@@ -96,7 +96,8 @@ export class TemporalCollection<T extends IdentifiedObject> {
     }
 
     getLatestSaved(): T {
-        let latestDate = this._milestoneCache[0]
+        const cache = this.milestoneCache()
+        let latestDate = cache[cache.length - 1]
         return this._temporalObjects.get(latestDate)
     }
 

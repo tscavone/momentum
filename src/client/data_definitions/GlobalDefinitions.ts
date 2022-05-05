@@ -17,7 +17,7 @@ export interface IDataLink extends IDataIdentifiedObject {
 }
 
 export interface IDataGoal extends IDataIdentifiedObject {
-    _settingEntryId: string
+    _settingValueId: string
     _details: string
     _milestones: []
     _links: IDataLink[]

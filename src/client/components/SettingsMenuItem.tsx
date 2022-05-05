@@ -13,7 +13,6 @@ import {
     useDisclosure,
 } from '@chakra-ui/react'
 import React from 'react'
-import { SettingsStore } from '../stores/SettingsStore'
 import { SettingsEntry } from '../value_objects/SettingsEntry'
 import { SettingsValue } from '../value_objects/SettingsValue'
 import { SettingsValueWithDesc } from '../value_objects/SettingsValueWithDesc'

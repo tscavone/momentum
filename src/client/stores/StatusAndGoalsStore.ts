@@ -27,7 +27,11 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
 
         this._allEmployeeObjects.set(
             employeeId,
-            new TemporalCollection<StatusAndGoals>(StatusAndGoals.instantiate())
+            new TemporalCollection<StatusAndGoals>(
+                StatusAndGoals.instantiate(
+                    this.getCollectionForEmployee(employeeId)
+                )
+            )
         )
     }
 
@@ -40,25 +44,30 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
             this.addEmployee(employeeId)
 
             let statusAndGoals: TemporalCollection<StatusAndGoals> =
-                this.getEmployeeObjects(employeeId)
+                this.getCollectionForEmployee(employeeId)
 
-            statusAndGoals.clear(StatusAndGoals.instantiate())
-
-            //currently we're not saving the current object of a temporal collection, but we might want to in the future
-            // to preserve people's work
-            if (statusAndGoalsData._current)
-                statusAndGoals.current = StatusAndGoals.fromJSON(
-                    statusAndGoalsData._current
-                )
+            statusAndGoals.clear(StatusAndGoals.instantiate(statusAndGoals))
 
             statusAndGoalsData._temporalObjects.forEach(
                 //todo: check for obj and date members
                 (obj) =>
-                    this.getEmployeeObjects(employeeId).put(
+                    this.getCollectionForEmployee(employeeId).put(
                         StatusAndGoals.fromJSON(obj._obj),
                         new Date(obj._date)
                     )
             )
+
+            //currently we're not saving the current object of a temporal collection, but we might want to in the future
+            // to preserve people's work
+            // also - we want to load / create current after we load everything so it can copy the latest goals
+            if (statusAndGoalsData._current)
+                statusAndGoals.current = StatusAndGoals.fromJSON(
+                    statusAndGoalsData._current
+                )
+            else {
+                statusAndGoals.current =
+                    StatusAndGoals.instantiate(statusAndGoals)
+            }
         }
     }
 }

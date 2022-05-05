@@ -30,7 +30,7 @@ export abstract class AbstractTemporalStore<T extends TemporalObject>
     //
     //private methods
     //
-    protected getEmployeeObjects(id: Id | string): TemporalCollection<T> {
+    protected getCollectionForEmployee(id: Id | string): TemporalCollection<T> {
         let stringId = Id.asString(id)
 
         return this._allEmployeeObjects.get(stringId)
@@ -59,7 +59,7 @@ export abstract class AbstractTemporalStore<T extends TemporalObject>
     getSaved(id: Id | string, dateRange: DateRange): DatedObject<T>[] {
         const stringId = id instanceof Id ? id.id : id
 
-        return this.getEmployeeObjects(stringId)?.getSaved(dateRange)
+        return this.getCollectionForEmployee(stringId)?.getSaved(dateRange)
     }
 
     getAllSavedWithCurrent(id: Id | string): T[] {

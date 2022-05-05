@@ -40,7 +40,7 @@ export class NoteStore extends AbstractTemporalStore<Note> {
             this.addEmployee(employeeId)
 
             let notes: TemporalCollection<Note> =
-                this.getEmployeeObjects(employeeId)
+                this.getCollectionForEmployee(employeeId)
 
             notes.clear(new Note())
 
@@ -52,7 +52,7 @@ export class NoteStore extends AbstractTemporalStore<Note> {
             notesData._temporalObjects.forEach(
                 //todo: check for obj and date members
                 (obj) =>
-                    this.getEmployeeObjects(employeeId).put(
+                    this.getCollectionForEmployee(employeeId).put(
                         Note.fromJSON(obj._obj),
                         new Date(obj._date)
                     )

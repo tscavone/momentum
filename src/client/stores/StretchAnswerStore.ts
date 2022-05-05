@@ -35,7 +35,7 @@ export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
         let questionIdStr = Id.asString(questionId)
         let employeeIdStr = Id.asString(employeeId)
 
-        return this.getEmployeeObjects(employeeIdStr).getSavedById(
+        return this.getCollectionForEmployee(employeeIdStr).getSavedById(
             questionIdStr
         )
     }
@@ -49,7 +49,7 @@ export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
             this.addEmployee(employeeId)
 
             let stretchAnswers: TemporalCollection<StretchAnswer> =
-                this.getEmployeeObjects(employeeId)
+                this.getCollectionForEmployee(employeeId)
 
             //currently we're not saving the current object of a temporal collection, but we might want to in the future
             // to preserve people's work
@@ -59,7 +59,7 @@ export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
                 )
 
             stretchData._temporalObjects.forEach((obj) =>
-                this.getEmployeeObjects(employeeId).put(
+                this.getCollectionForEmployee(employeeId).put(
                     StretchAnswer.fromJSON(obj._obj),
                     new Date(obj._date)
                 )

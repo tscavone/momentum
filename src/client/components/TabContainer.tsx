@@ -12,16 +12,20 @@ import { StretchQuesitonTab } from './tabs/StretchQuestionTab'
 import {
     useNoteStore,
     useSelectedEmployeeStore,
+    useStatusAndGoalsStore,
     useStretchAnswerStore,
 } from './RootStoreProvider'
 import { observer } from 'mobx-react'
 import { TabButton } from './TabButton'
 import { GoalsTab } from './tabs/GoalsTab'
+import { StatusAndGoalsStore } from '../stores/StatusAndGoalsStore'
+import { FiAlertTriangle } from 'react-icons/fi'
 
 export const TabContainer = observer(() => {
     const noteStore = useNoteStore()
     const stretchAnswerStore = useStretchAnswerStore()
     const selectedEmployeeStore = useSelectedEmployeeStore()
+    const statusAndGoalsStore = useStatusAndGoalsStore()
     const iconStyle = {
         marginRight: '5px',
     }
@@ -29,11 +33,19 @@ export const TabContainer = observer(() => {
     return (
         <Tabs size="md" variant="enclosed" colorScheme={'green'}>
             <TabList>
+                <Tab>
+                    <TimeIcon style={iconStyle} />
+                    Follow Ups
+                </Tab>
                 <TabButton
-                    infoStore={noteStore}
-                    name={'notes'}
-                    icon={<EditIcon style={iconStyle}></EditIcon>}
+                    infoStore={statusAndGoalsStore}
+                    name={'goals'}
+                    icon={<CheckIcon style={iconStyle} />}
                 />
+                <Tab>
+                    <FiAlertTriangle style={iconStyle} />
+                    Issues
+                </Tab>
                 <TabButton
                     infoStore={stretchAnswerStore}
                     name={'stretch'}
@@ -43,15 +55,11 @@ export const TabContainer = observer(() => {
                         ></QuestionOutlineIcon>
                     }
                 />
-
-                <Tab>
-                    <TimeIcon style={iconStyle} />
-                    Follow Ups
-                </Tab>
-                <Tab>
-                    <CheckIcon style={iconStyle} />
-                    Goals
-                </Tab>
+                <TabButton
+                    infoStore={noteStore}
+                    name={'notes'}
+                    icon={<EditIcon style={iconStyle}></EditIcon>}
+                />
                 <Tab>
                     <ExternalLinkIcon style={iconStyle} />
                     Integration
@@ -62,16 +70,18 @@ export const TabContainer = observer(() => {
                 </Tab>
             </TabList>
             <TabPanels>
-                <TabPanel>
-                    <NotesTab />
-                </TabPanel>
-                <TabPanel>
-                    <StretchQuesitonTab />
-                </TabPanel>
-                <TabPanel></TabPanel>
+                <TabPanel />
                 <TabPanel>
                     <GoalsTab />
                 </TabPanel>
+                <TabPanel />
+                <TabPanel>
+                    <StretchQuesitonTab />
+                </TabPanel>
+                <TabPanel>
+                    <NotesTab />
+                </TabPanel>
+                <TabPanel></TabPanel>
             </TabPanels>
         </Tabs>
     )

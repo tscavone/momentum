@@ -97,7 +97,7 @@ const testDatedGoal = ({
     expect(statusAndGoals).toBeInstanceOf(StatusAndGoals)
 
     expect(statusAndGoals.id).toBeInstanceOf(Id)
-    expect(statusAndGoals.id.id).toBeInstanceOf(id)
+    expect(statusAndGoals.id.id).toBe(id)
     expect(statusAndGoals.status).toBe(status)
 
     for (let i = 0; i < statusAndGoals.goals.length; i++) {
@@ -105,7 +105,7 @@ const testDatedGoal = ({
         testGoal({
             goal: statusAndGoals.goals[i],
             id: goalTarget._id,
-            settingEntryId: goalTarget._settingEntryId,
+            settingValueId: goalTarget._settingValueId,
             details: goalTarget._details,
             progress: goalTarget._progress,
             links: goalTarget._links,
@@ -116,14 +116,14 @@ const testDatedGoal = ({
 const testGoal = ({
     goal,
     id,
-    settingEntryId,
+    settingValueId,
     details,
     progress,
     links,
 }: {
     goal: Goal
     id: string
-    settingEntryId: string
+    settingValueId: string
     details: string
     progress: number
     links: IDataLink[]
@@ -131,8 +131,8 @@ const testGoal = ({
     expect(goal).toBeInstanceOf(Goal)
     expect(goal.id).toBeInstanceOf(Id)
     expect(goal.id.id).toBe(id)
-    expect(goal.settingEntryId).toBeInstanceOf(Id)
-    expect(goal.settingEntryId.id).toBe(settingEntryId)
+    expect(goal.settingValueId).toBeInstanceOf(Id)
+    expect(goal.settingValueId.id).toBe(settingValueId)
     expect(goal.details).toBe(details)
     expect(goal.progress).toBe(progress)
     expect(goal.links.length).toBe(links.length)
@@ -283,7 +283,7 @@ test('Root store statusAndGoalStore load is correct', () => {
         goals: [
             {
                 _id: '11111g',
-                _settingEntryId: '1400-20-1',
+                _settingValueId: '1400-20-1',
                 _details:
                     'give a presentation on react hooks so that my team can start using them',
                 _milestones: [],
@@ -303,7 +303,7 @@ test('Root store statusAndGoalStore load is correct', () => {
             },
             {
                 _id: '22222g',
-                _settingEntryId: '1400-20-2',
+                _settingValueId: '1400-20-2',
                 _details: 'take a course on typescript',
                 _milestones: [],
                 _links: [
@@ -364,7 +364,7 @@ const testSettingsValues = (
             expect(value.description).toBe(check.description)
         }
         if (value.deleted) {
-            expect(value.deleted).toBe('true')
+            expect(value.deleted).toBe(true)
         }
     }
 }

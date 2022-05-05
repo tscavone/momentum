@@ -40,7 +40,6 @@ export class RootStore {
 
     initialize(userId: Id | string) {
         const userIdString = Id.asString(userId)
-        console.log('userId string', userIdString)
 
         this._selectedEmployeeStore.load(TestSelectedEmployeeData[userIdString])
         this.loadTemporalObjects(userIdString)
@@ -57,5 +56,6 @@ export class RootStore {
         this._noteStore.load(valueTestData[userId])
         this._stretchAnswerStore.load(valueTestData[userId])
         this._statusAndGoalsStore.load(valueTestData[userId])
+        console.log('--- statusAndGoalsStore! ', this._statusAndGoalsStore)
     }
 }

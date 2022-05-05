@@ -39,15 +39,16 @@ export class StatusAndGoals extends TemporalObject {
     //this is the first instance of the temporal collection in which we instantiate them
     //as an empty array
     static instantiate(
-        statusAndGoalsHistory?: TemporalCollection<StatusAndGoals>
+        statusAndGoalsHistory: TemporalCollection<StatusAndGoals>
     ) {
         let newStatusAndGoals = new StatusAndGoals()
 
         //only copy previous goals if this is not the first statusAndGoals object
-        if (statusAndGoalsHistory) {
-            const latestStatusAndGoals = statusAndGoalsHistory.getLatestSaved()
+        if (statusAndGoalsHistory && statusAndGoalsHistory.getLatestSaved()) {
+            const latestSavedStatusAndGoals =
+                statusAndGoalsHistory.getLatestSaved()
 
-            for (const goal of latestStatusAndGoals._goals) {
+            for (const goal of latestSavedStatusAndGoals._goals) {
                 newStatusAndGoals._goals.push(goal.deepClone())
             }
         } else {

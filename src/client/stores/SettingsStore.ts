@@ -58,7 +58,6 @@ export class SettingsStore implements IStore {
         let foundSettingValue = null
         for (const [id, setting] of this._settings) {
             setting[1].forEach((settingValue) => {
-                console.log(settingValue)
                 if (settingValue.id.id === idStr) {
                     foundSettingValue = settingValue
                 }

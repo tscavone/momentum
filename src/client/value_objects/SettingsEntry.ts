@@ -1,6 +1,7 @@
 // a type of setting with description of what that setting is for
 //
 
+import { IDataIdentifiedObject } from '../data_definitions/GlobalDefinitions'
 import { IDataSettingsEntry } from '../data_definitions/SettingsDefinitions'
 import { Id } from '../util/Id'
 import { IdentifiedObject } from '../util/IdentifiedObject'
@@ -103,5 +104,39 @@ export class SettingsEntry extends IdentifiedObject {
         }
 
         return entry
+    }
+
+    public serialize(): IDataSettingsEntry {
+        let type = ''
+
+        switch (this._type) {
+            case SettingsType.select:
+                type = 'select'
+                break
+            case SettingsType.multiple:
+                type = 'multiple'
+                break
+            case SettingsType.single:
+                type = 'single'
+                break
+            case SettingsType.range:
+                type = 'range'
+                break
+            case SettingsType.multiple:
+                type = 'multiple'
+                break
+            default:
+                throw Error(
+                    'incorrect type loaded in SettingsEntry:  ' + this._type
+                )
+        }
+
+        return {
+            _id: this.id.id,
+            _name: this._name,
+            _description: this._description,
+            _potentialValues: [...this._potentialValues],
+            _type: type,
+        }
     }
 }

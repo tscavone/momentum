@@ -53,13 +53,11 @@ class SelectedQuestionStore {
         stretchAnswerStore: StretchAnswerStore,
         selectedEmployeeStore: SelectedEmployeeStore
     ): StretchAnswer {
-        console.log('getting selected answer with id', this.selectedQuestionId)
         if (this.selectedQuestionId === null) return null
 
         const stretchAnswer = stretchAnswerStore
             .getAllSaved(selectedEmployeeStore.selectedId)
             .filter((answer: DatedObject<StretchAnswer>) => {
-                console.log('\tchecking against', answer.obj.questionId.id)
                 return answer.obj.questionId.id === this.selectedQuestionId
             })[0]
 
@@ -188,7 +186,6 @@ export const StretchQuesitonTab = observer(() => {
     }
 
     const getValue = () => {
-        console.log('Get Value called')
         let newValue = selectedQuestionStore.getSelectedAnswer(
             stretchAnswerStore,
             selectedEmployeeStore
@@ -233,10 +230,6 @@ export const StretchQuesitonTab = observer(() => {
                 <Select
                     w={[250, 500, 750]}
                     value={(function () {
-                        console.log(
-                            'value for select: ',
-                            selectedQuestionStore.selectedQuestionId
-                        )
                         return selectedQuestionStore.selectedQuestionId
                     })()}
                     placeholder="Select a stretch question"

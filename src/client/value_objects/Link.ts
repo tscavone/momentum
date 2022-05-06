@@ -42,4 +42,12 @@ export class Link extends IdentifiedObject {
 
         return link
     }
+
+    public serialize(): IDataLink {
+        return {
+            _id: this.id.id,
+            _target: this._target,
+            _text: this._text,
+        }
+    }
 }

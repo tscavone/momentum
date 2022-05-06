@@ -27,4 +27,14 @@ export class SettingsValueWithDesc extends SettingsValue {
     public set description(value: string) {
         this._description = value
     }
+
+    public serialize(): IDataSettingsValue {
+        return {
+            _id: this.id.id,
+            _entryId: this.entryId.id,
+            _value: this.value,
+            _deleted: this.deleted ? 'true' : 'false',
+            _description: this._description,
+        }
+    }
 }

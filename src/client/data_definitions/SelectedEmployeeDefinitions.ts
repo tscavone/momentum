@@ -1,3 +1,3 @@
-export interface ISelectedEmployeeData {
+export interface IDataSelectedEmployee {
     [key: string]: { _selectedId: string }
 }

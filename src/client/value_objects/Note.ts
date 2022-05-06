@@ -42,4 +42,11 @@ export class Note extends TemporalObject {
 
         return note
     }
+
+    public serialize(): IDataNote {
+        return {
+            _text: this._text,
+            _id: this.id.id,
+        }
+    }
 }

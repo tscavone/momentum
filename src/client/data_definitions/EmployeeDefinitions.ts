@@ -1,4 +1,4 @@
-export interface IEmployeeData {
+export interface IDataEmployee {
     _id: string
     _first: string
     _last: string
@@ -6,6 +6,6 @@ export interface IEmployeeData {
 
 export interface IGlobalEmployeeData {
     [key: string]: {
-        [key: string]: IEmployeeData
+        [key: string]: IDataEmployee
     }
 }

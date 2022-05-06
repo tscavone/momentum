@@ -74,4 +74,15 @@ export class Goal extends IdentifiedObject {
         }
         return goal
     }
+
+    public serialize(): IDataGoal {
+        return {
+            _id: this.id.id,
+            _settingValueId: this._settingValueId.id,
+            _details: this._details,
+            _progress: this._progress,
+            _links: this._links.map((link) => link.serialize()),
+            _milestones: [],
+        }
+    }
 }

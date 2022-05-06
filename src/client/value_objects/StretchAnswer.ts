@@ -5,24 +5,15 @@ import { Id } from '../util/Id'
 import { TemporalObject } from '../util/TemporalObject'
 
 export class StretchAnswer extends TemporalObject {
-    //
-    //members
-    //
     private _answer: string
     private _questionId: Id
 
-    //
-    // constructors
-    //
     constructor() {
         super()
         this._answer = ''
         this._questionId = null
     }
 
-    //
-    //accessors
-    //
     public get answer(): string {
         return this._answer
     }
@@ -52,6 +43,14 @@ export class StretchAnswer extends TemporalObject {
         answer.id = Id.fromString(jsonObj._id)
 
         return answer
+    }
+
+    public serialize(): IDataStretchAnswer {
+        return {
+            _id: this.id.id,
+            _answer: this._answer,
+            _questionId: this._questionId.id,
+        }
     }
 
     isNewlyMinted(): boolean {

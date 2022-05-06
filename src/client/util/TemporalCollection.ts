@@ -112,7 +112,6 @@ export class TemporalCollection<T extends IdentifiedObject> {
     save(date?: Date) {
         date = date ? date : new Date()
         this.put(clone(this._current), date)
-        console.log('new temporal object added', this._temporalObjects)
     }
 
     clear(newCurrent: T) {

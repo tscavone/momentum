@@ -4,7 +4,10 @@
 import { TemporalCollection } from '../util/TemporalCollection'
 import { Note } from '../value_objects/Note'
 import { Id } from '../util/Id'
-import { IDataEmployees } from '../data_definitions/GlobalDefinitions'
+import {
+    IDataEmployees,
+    IDataNote,
+} from '../data_definitions/GlobalDefinitions'
 import { AbstractTemporalStore } from './AbstractTemporalStore'
 
 export class NoteStore extends AbstractTemporalStore<Note> {
@@ -51,10 +54,10 @@ export class NoteStore extends AbstractTemporalStore<Note> {
 
             notesData._temporalObjects.forEach(
                 //todo: check for obj and date members
-                (obj) =>
+                (datedObject) =>
                     this.getCollectionForEmployee(employeeId).put(
-                        Note.fromJSON(obj._obj),
-                        new Date(obj._date)
+                        Note.fromJSON(datedObject._obj as IDataNote),
+                        new Date(datedObject._date)
                     )
             )
         }

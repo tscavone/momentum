@@ -2,7 +2,7 @@ import { IDataGlobal } from '../client/data_definitions/GlobalDefinitions'
 import { IDataSettings } from '../client/data_definitions/SettingsDefinitions'
 import { IGlobalEmployeeData } from '../client/data_definitions/EmployeeDefinitions'
 import { IAuthedUserData } from '../client/data_definitions/AuthedUserDefinitions'
-import { ISelectedEmployeeData } from '../client/data_definitions/SelectedEmployeeDefinitions'
+import { IDataSelectedEmployee } from '../client/data_definitions/SelectedEmployeeDefinitions'
 
 //test global business logic data
 export const valueTestData: IDataGlobal = {
@@ -488,7 +488,7 @@ export const TestAuthedUserData: IAuthedUserData = {
 }
 
 //test user selction
-export const TestSelectedEmployeeData: ISelectedEmployeeData = {
+export const TestSelectedEmployeeData: IDataSelectedEmployee = {
     abcdef: { _selectedId: '1234' },
     uvwxyz: { _selectedId: '9876' },
 }

@@ -40,4 +40,13 @@ export class SettingsValue extends IdentifiedObject {
         entry._deleted = Boolean(jsonObj._deleted)
         return entry
     }
+
+    public serialize(): IDataSettingsValue {
+        return {
+            _id: this.id.id,
+            _entryId: this.entryId.id,
+            _value: this.value,
+            _deleted: this.deleted ? 'true' : 'false',
+        }
+    }
 }

@@ -54,8 +54,11 @@ export class RootStore {
 
     private loadTemporalObjects(userId: string): void {
         this._noteStore.load(valueTestData[userId])
+        console.log(
+            '--- NOTESTORE DATA STORE TO JSON:   ',
+            JSON.stringify(this._noteStore)
+        )
         this._stretchAnswerStore.load(valueTestData[userId])
         this._statusAndGoalsStore.load(valueTestData[userId])
-        console.log('--- statusAndGoalsStore! ', this._statusAndGoalsStore)
     }
 }

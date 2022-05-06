@@ -1,12 +1,14 @@
 // value object for holding a temporal value of an employee's status and goals
 //
 
-import { IDataStatusAndGoals } from '../data_definitions/GlobalDefinitions'
+import {
+    IDataIdentifiedObject,
+    IDataStatusAndGoals,
+} from '../data_definitions/GlobalDefinitions'
 import { Id } from '../util/Id'
 import { TemporalCollection } from '../util/TemporalCollection'
 import { TemporalObject } from '../util/TemporalObject'
 import { Goal } from './Goal'
-import { Link } from './Link'
 
 export class StatusAndGoals extends TemporalObject {
     private _status: string
@@ -70,5 +72,13 @@ export class StatusAndGoals extends TemporalObject {
         }
 
         return statusAndGoals
+    }
+
+    public serialize(): IDataStatusAndGoals {
+        return {
+            _id: this.id.id,
+            _status: this._status,
+            _goals: this._goals.map((goal) => goal.serialize()),
+        }
     }
 }

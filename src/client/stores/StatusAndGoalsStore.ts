@@ -3,7 +3,7 @@
 
 import { TemporalCollection } from '../util/TemporalCollection'
 import { Id } from '../util/Id'
-import { IDataEmployees } from '../data_definitions/GlobalDefinitions'
+import { IDataMomentum } from '../data_definitions/GlobalDefinitions'
 import { AbstractTemporalStore } from './AbstractTemporalStore'
 import { StatusAndGoals } from '../value_objects/StatusAndGoals'
 
@@ -35,7 +35,7 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
         )
     }
 
-    load(employeeData: IDataEmployees): void {
+    load(employeeData: IDataMomentum): void {
         //clear all existing data
         this._allEmployeeObjects.clear()
 

@@ -45,10 +45,10 @@ export interface IDataEmployee {
     _statusAndGoals: IDataTemporalObject<IDataStatusAndGoals>
 }
 
-export interface IDataEmployees {
+export interface IDataMomentum {
     [key: string]: IDataEmployee
 }
 
-export interface IDataGlobal {
-    [key: string]: IDataEmployees
+export interface IDataMultiuserTest {
+    [key: string]: IDataMomentum
 }

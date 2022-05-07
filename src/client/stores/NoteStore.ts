@@ -4,10 +4,7 @@
 import { TemporalCollection } from '../util/TemporalCollection'
 import { Note } from '../value_objects/Note'
 import { Id } from '../util/Id'
-import {
-    IDataEmployees,
-    IDataNote,
-} from '../data_definitions/GlobalDefinitions'
+import { IDataMomentum, IDataNote } from '../data_definitions/GlobalDefinitions'
 import { AbstractTemporalStore } from './AbstractTemporalStore'
 
 export class NoteStore extends AbstractTemporalStore<Note> {
@@ -34,7 +31,7 @@ export class NoteStore extends AbstractTemporalStore<Note> {
         )
     }
 
-    load(employeeData: IDataEmployees): void {
+    load(employeeData: IDataMomentum): void {
         //clear all existing data
         this._allEmployeeObjects.clear()
 

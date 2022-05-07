@@ -4,8 +4,12 @@ export interface IDataEmployee {
     _last: string
 }
 
-export interface IGlobalEmployeeData {
+export interface IDataEmployeeDetails {
     [key: string]: {
         [key: string]: IDataEmployee
     }
+}
+
+export interface IDataAllEmployees {
+    [key: string]: IDataEmployee
 }

@@ -20,3 +20,8 @@ export interface IDataSettings {
         [key: string]: IDataSettingsValue[]
     }
 }
+
+export interface IDataUserScopedSettings {
+    entries: IDataSettingsEntry[]
+    values: IDataSettingsValue[]
+}

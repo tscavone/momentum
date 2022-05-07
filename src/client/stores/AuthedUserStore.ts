@@ -1,7 +1,7 @@
 // The store that contains the selected employee at the global level
 //
 import { makeAutoObservable } from 'mobx'
-import { IAuthedUserData } from '../data_definitions/AuthedUserDefinitions'
+import { IDataAuthedUser } from '../data_definitions/AuthedUserDefinitions'
 import { Id } from '../util/Id'
 import { IStore } from './IStore'
 
@@ -42,7 +42,7 @@ export class AuthedUserStore implements IStore {
     //
     //public methods
     //
-    load(jsonObj: IAuthedUserData, employeeId?: Id): void {
+    load(jsonObj: IDataAuthedUser, employeeId?: Id): void {
         //the loaded data itself is a selected employee id, so there shouldn't be a passed one
         if (employeeId)
             throw "AuthedUserStore doesn't use employeeId so this was most likely called in error"

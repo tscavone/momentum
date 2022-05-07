@@ -5,7 +5,7 @@ import { Id } from '../util/Id'
 import { DateRange } from '../util/DateRange'
 import { DatedObject } from '../util/DatedObject'
 import { ITemporalStore } from './ITemporalStore'
-import { IDataEmployees } from '../data_definitions/GlobalDefinitions'
+import { IDataMomentum } from '../data_definitions/GlobalDefinitions'
 import { clone } from 'lodash'
 import { TemporalObject } from '../util/TemporalObject'
 
@@ -79,5 +79,5 @@ export abstract class AbstractTemporalStore<T extends TemporalObject>
         return this.getSaved(id, DateRange.upTo(DateRange.AFTER_TIMES))
     }
 
-    abstract load(jsonObj: IDataEmployees, employeeId?: Id): void
+    abstract load(jsonObj: IDataMomentum, employeeId?: Id): void
 }

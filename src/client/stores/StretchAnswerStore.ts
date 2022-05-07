@@ -5,7 +5,7 @@ import { TemporalCollection } from '../util/TemporalCollection'
 import { Id } from '../util/Id'
 import { AbstractTemporalStore } from './AbstractTemporalStore'
 import { StretchAnswer } from '../value_objects/StretchAnswer'
-import { IDataEmployees } from '../data_definitions/GlobalDefinitions'
+import { IDataMomentum } from '../data_definitions/GlobalDefinitions'
 
 export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
     //
@@ -40,7 +40,7 @@ export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
         )
     }
 
-    load(employeeData: IDataEmployees): void {
+    load(employeeData: IDataMomentum): void {
         //clear all existing data
         this._allEmployeeObjects.clear()
 

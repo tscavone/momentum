@@ -1,4 +1,4 @@
-export interface IAuthedUserData {
+export interface IDataAuthedUser {
     _userId: string
     _token: string
 }

@@ -1,11 +1,11 @@
-import { IDataGlobal } from '../client/data_definitions/GlobalDefinitions'
+import { IDataMultiuserTest } from '../client/data_definitions/GlobalDefinitions'
 import { IDataSettings } from '../client/data_definitions/SettingsDefinitions'
-import { IGlobalEmployeeData } from '../client/data_definitions/EmployeeDefinitions'
-import { IAuthedUserData } from '../client/data_definitions/AuthedUserDefinitions'
-import { IDataSelectedEmployee } from '../client/data_definitions/SelectedEmployeeDefinitions'
+import { IDataEmployeeDetails } from '../client/data_definitions/EmployeeDefinitions'
+import { IDataAuthedUser } from '../client/data_definitions/AuthedUserDefinitions'
+import { IDataAllEmployeeSelections } from '../client/data_definitions/SelectedEmployeeDefinitions'
 
 //test global business logic data
-export const valueTestData: IDataGlobal = {
+export const valueTestData: IDataMultiuserTest = {
     abcdef: {
         //IDataEmployees
         '1234': {
@@ -459,7 +459,7 @@ export const settingsTestData: IDataSettings = {
 }
 
 //test employee datak
-export const employeeTestData: IGlobalEmployeeData = {
+export const employeeTestData: IDataEmployeeDetails = {
     abcdef: {
         '1234': {
             _id: '1234',
@@ -482,13 +482,13 @@ export const employeeTestData: IGlobalEmployeeData = {
 }
 
 //auto login user for now...
-export const TestAuthedUserData: IAuthedUserData = {
+export const TestAuthedUserData: IDataAuthedUser = {
     _userId: 'abcdef',
     _token: 'abc123',
 }
 
 //test user selction
-export const TestSelectedEmployeeData: IDataSelectedEmployee = {
+export const TestSelectedEmployeeData: IDataAllEmployeeSelections = {
     abcdef: { _selectedId: '1234' },
     uvwxyz: { _selectedId: '9876' },
 }

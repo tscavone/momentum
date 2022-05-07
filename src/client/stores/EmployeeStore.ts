@@ -5,8 +5,9 @@ import { Id } from '../util/Id'
 import { Employee } from '../value_objects/Employee'
 import { IStore } from './IStore'
 import {
+    IDataAllEmployees,
     IDataEmployee,
-    IGlobalEmployeeData,
+    IDataEmployeeDetails,
 } from '../data_definitions/EmployeeDefinitions'
 
 export class EmployeeStore implements IStore {
@@ -41,7 +42,7 @@ export class EmployeeStore implements IStore {
         return this._employees.get(id)
     }
 
-    load(jsonObj: { [key: string]: IDataEmployee }): void {
+    load(jsonObj: IDataAllEmployees): void {
         //clear all existing data
         this._employees.clear()
 

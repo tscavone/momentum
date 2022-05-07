@@ -4,6 +4,7 @@ import { IStore } from './IStore'
 import {
     IDataSettingsEntry,
     IDataSettingsValue,
+    IDataUserScopedSettings,
 } from '../data_definitions/SettingsDefinitions'
 import { SettingsValueWithDesc } from '../value_objects/SettingsValueWithDesc'
 import { Id } from '../util/Id'
@@ -88,10 +89,7 @@ export class SettingsStore implements IStore {
         throw `deleteValue: value not found to be deleted: ${idStr}`
     }
 
-    load(jsonObj: {
-        entries: IDataSettingsEntry[]
-        values: IDataSettingsValue[]
-    }): void {
+    load(jsonObj: IDataUserScopedSettings): void {
         //clear all existing data
         this._settings.clear()
 

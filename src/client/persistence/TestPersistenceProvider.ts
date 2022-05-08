@@ -8,41 +8,43 @@ import { IDataAllEmployees } from '../data_definitions/EmployeeDefinitions'
 import { IDataMomentum } from '../data_definitions/GlobalDefinitions'
 import { IDataSelectedEmployee } from '../data_definitions/SelectedEmployeeDefinitions'
 import { IDataUserScopedSettings } from '../data_definitions/SettingsDefinitions'
-import { Id } from '../util/Id'
 import { IPersistenceProvider } from './IPersistenceProvider'
 
 export class TestPersistenceProvider implements IPersistenceProvider {
-    private _userId: Id
+    private _userId: string
 
-    constructor(userId: Id) {
+    constructor(userId: string) {
         this._userId = userId
     }
 
     getMomentumData(): IDataMomentum {
-        return valueTestData[this._userId.id]
+        return valueTestData[this._userId]
     }
     getEmployeeData(): IDataAllEmployees {
-        return employeeTestData[this._userId.id]
+        return employeeTestData[this._userId]
     }
     getSettingsData(): IDataUserScopedSettings {
         return {
             entries: settingsTestData['entries'],
-            values: settingsTestData['values'][this._userId.id],
+            values: settingsTestData['values'][this._userId],
         }
     }
     getSelectedEmployeeData(): IDataSelectedEmployee {
-        return TestSelectedEmployeeData[this._userId.id]
+        return TestSelectedEmployeeData[this._userId]
     }
-    writeMomentumData(IDataGlobal: any) {
-        throw new Error('Method not implemented.')
+    writeMomentumData(momentumData: IDataMomentum) {
+        console.log('\tWRITE:  << momentum >> data:  ', momentumData)
     }
-    writeEmployeeData(IDataEmployeeDetails: any) {
-        throw new Error('Method not implemented.')
+    writeEmployeeData(employeeData: IDataAllEmployees) {
+        console.log('\tWRITE:  << employee >> data:  ', employeeData)
     }
-    writeSettingsData(IDataSettings: any) {
-        throw new Error('Method not implemented.')
+    writeSettingsData(settingsData: IDataUserScopedSettings) {
+        console.log('\tWRITE:  << settings >> data:  ', settingsData)
     }
-    writeSelectedEmployeeData(IDataSelectedEmployee: any) {
-        throw new Error('Method not implemented.')
+    writeSelectedEmployeeData(selectedEmployee: IDataSelectedEmployee) {
+        console.log(
+            '\tWRITE:  << selected Employee >>  data:  ',
+            selectedEmployee
+        )
     }
 }

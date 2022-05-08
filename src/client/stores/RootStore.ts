@@ -4,16 +4,12 @@ import { SettingsStore } from './SettingsStore'
 import { EmployeeStore } from './EmployeeStore'
 import { SelectedEmployeeStore } from './SelectedEmployeeStore'
 import { StretchAnswerStore } from './StretchAnswerStore'
-import {
-    employeeTestData,
-    settingsTestData,
-    valueTestData,
-    TestSelectedEmployeeData,
-    TestAuthedUserData,
-} from '../../tests/testdata'
+import { settingsTestData, TestAuthedUserData } from '../../tests/testdata'
 import { CurrentDateStore } from './CurrentDateStore'
 import { AuthedUserStore } from './AuthedUserStore'
 import { StatusAndGoalsStore } from './StatusAndGoalsStore'
+import { IPersistenceProvider } from '../persistence/IPersistenceProvider'
+import { PersistenceProviderFactory } from '../persistence/PersistenceProviderFactory'
 
 //const UserData
 export class RootStore {
@@ -27,6 +23,8 @@ export class RootStore {
     _stretchAnswerStore: StretchAnswerStore
     _statusAndGoalsStore: StatusAndGoalsStore
 
+    _persistenceProvider: IPersistenceProvider
+
     constructor() {
         this._settingsStore = new SettingsStore()
         this._employeeStore = new EmployeeStore()
@@ -36,29 +34,36 @@ export class RootStore {
         this._noteStore = new NoteStore()
         this._stretchAnswerStore = new StretchAnswerStore()
         this._statusAndGoalsStore = new StatusAndGoalsStore()
+
+        this._persistenceProvider = null
     }
 
     initialize(userId: Id | string) {
         const userIdString = Id.asString(userId)
 
-        this._selectedEmployeeStore.load(TestSelectedEmployeeData[userIdString])
-        this.loadTemporalObjects(userIdString)
+        this._persistenceProvider =
+            PersistenceProviderFactory.getPersistenceProvider(
+                userIdString,
+                this._settingsStore
+            )
+
+        this._selectedEmployeeStore.load(
+            this._persistenceProvider.getSelectedEmployeeData()
+        )
+        this.loadTemporalObjects()
         let userScopedSettingsTestData = {
             entries: settingsTestData['entries'],
             values: settingsTestData['values'][userIdString],
         }
-        this._settingsStore.load(userScopedSettingsTestData)
-        this._employeeStore.load(employeeTestData[userIdString])
+        this._settingsStore.load(this._persistenceProvider.getSettingsData())
+        this._employeeStore.load(this._persistenceProvider.getEmployeeData())
         this._authedUserStore.load(TestAuthedUserData)
     }
 
-    private loadTemporalObjects(userId: string): void {
-        this._noteStore.load(valueTestData[userId])
-        console.log(
-            '--- NOTESTORE DATA STORE TO JSON:   ',
-            JSON.stringify(this._noteStore)
-        )
-        this._stretchAnswerStore.load(valueTestData[userId])
-        this._statusAndGoalsStore.load(valueTestData[userId])
+    private loadTemporalObjects(): void {
+        const momentumData = this._persistenceProvider.getMomentumData()
+        this._noteStore.load(momentumData)
+        this._stretchAnswerStore.load(momentumData)
+        this._statusAndGoalsStore.load(momentumData)
     }
 }

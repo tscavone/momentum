@@ -2,20 +2,13 @@
 //
 
 import { IDataEmployee } from '../data_definitions/EmployeeDefinitions'
-import { IDataIdentifiedObject } from '../data_definitions/GlobalDefinitions'
 import { Id } from '../util/Id'
 import { IdentifiedObject } from '../util/IdentifiedObject'
 
 export class Employee extends IdentifiedObject {
-    //
-    //members
-    //
     private _first: string
     private _last: string
 
-    //
-    //constructors
-    //
     constructor() {
         super()
 
@@ -23,9 +16,6 @@ export class Employee extends IdentifiedObject {
         this._last = ''
     }
 
-    //
-    //accessors
-    //
     public get first(): string {
         return this._first
     }
@@ -39,13 +29,6 @@ export class Employee extends IdentifiedObject {
         this._last = value
     }
 
-    //
-    //private methods
-    //
-
-    //
-    //public methods
-    //
     public static fromJSON(jsonObj: IDataEmployee): Employee {
         let employee = Object.assign(new Employee(), jsonObj) as Employee
         employee.id = Id.fromString(jsonObj._id)

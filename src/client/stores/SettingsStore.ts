@@ -1,28 +1,25 @@
 import { SettingsValue } from '../value_objects/SettingsValue'
 import { SettingsEntry } from '../value_objects/SettingsEntry'
 import { IStore } from './IStore'
-import {
-    IDataSettingsEntry,
-    IDataSettingsValue,
-    IDataUserScopedSettings,
-} from '../data_definitions/SettingsDefinitions'
 import { SettingsValueWithDesc } from '../value_objects/SettingsValueWithDesc'
 import { Id } from '../util/Id'
 import { makeAutoObservable } from 'mobx'
+import { IPersistenceProvider } from '../persistence/IPersistenceProvider'
+import { IWriteable } from '../persistence/IWriteable'
+import {
+    IDataSettingsEntry,
+    IDataSettingsValue,
+} from '../data_definitions/SettingsDefinitions'
 
-export class SettingsStore implements IStore {
-    //
-    //members
-    //
+export class SettingsStore implements IStore, IWriteable {
     // keyed by id
     private _settings: Map<string, [SettingsEntry, SettingsValue[]]>
+    _persistenceProvider: IPersistenceProvider
 
-    //
-    //constructor
-    //
     constructor() {
         makeAutoObservable(this)
         this._settings = new Map<string, [SettingsEntry, SettingsValue[]]>()
+        this._persistenceProvider = null
     }
 
     public get settings(): Map<string, [SettingsEntry, SettingsValue[]]> {
@@ -30,6 +27,36 @@ export class SettingsStore implements IStore {
     }
     public set settings(value: Map<string, [SettingsEntry, SettingsValue[]]>) {
         this._settings = value
+    }
+
+    get persistenceProvider(): IPersistenceProvider {
+        return this._persistenceProvider
+    }
+
+    set persistenceProvider(value: IPersistenceProvider) {
+        this._persistenceProvider = value
+    }
+
+    write(): void {
+        if (this._persistenceProvider === null)
+            throw new Error('peristenceProvider null in SettingsStore')
+
+        let entries: IDataSettingsEntry[] = []
+        for (const [id, settingsEntry] of this._settings) {
+            entries.push(settingsEntry[0].serialize())
+        }
+
+        let values: IDataSettingsValue[] = []
+        for (const [id, SettingsEntry] of this._settings) {
+            for (const settingsValue of SettingsEntry[1]) {
+                values.push(settingsValue.serialize())
+            }
+        }
+
+        this._persistenceProvider.writeSettingsData({
+            entries,
+            values,
+        })
     }
 
     getByEntryId(entryId: string): [SettingsEntry, SettingsValue[]] {
@@ -89,7 +116,9 @@ export class SettingsStore implements IStore {
         throw `deleteValue: value not found to be deleted: ${idStr}`
     }
 
-    load(jsonObj: IDataUserScopedSettings): void {
+    load(): void {
+        const jsonSettingsData = this._persistenceProvider.getSettingsData()
+
         //clear all existing data
         this._settings.clear()
 
@@ -97,13 +126,13 @@ export class SettingsStore implements IStore {
         const values = new Map<string, SettingsValue[]>()
 
         //load entries
-        for (const jsonEntry of jsonObj['entries']) {
+        for (const jsonEntry of jsonSettingsData['entries']) {
             const entry = SettingsEntry.fromJSON(jsonEntry)
             entries.set(entry.id.id, entry)
         }
 
         //load values
-        for (const jsonValue of jsonObj['values']) {
+        for (const jsonValue of jsonSettingsData['values']) {
             let value = null
 
             if (jsonValue._description) {

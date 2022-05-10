@@ -4,8 +4,16 @@
 import { TemporalCollection } from '../util/TemporalCollection'
 import { Note } from '../value_objects/Note'
 import { Id } from '../util/Id'
-import { IDataMomentum, IDataNote } from '../data_definitions/GlobalDefinitions'
+import {
+    IDataNote,
+    IDataNotesLoad,
+    IDataTemporalObject,
+    IDatedObject,
+} from '../data_definitions/GlobalDefinitions'
 import { AbstractTemporalStore } from './AbstractTemporalStore'
+import { DateRange } from '../util/DateRange'
+import { DatedObject } from '../util/DatedObject'
+import { dateToString } from '../util/utils'
 
 export class NoteStore extends AbstractTemporalStore<Note> {
     //
@@ -31,12 +39,14 @@ export class NoteStore extends AbstractTemporalStore<Note> {
         )
     }
 
-    load(employeeData: IDataMomentum): void {
+    load(): void {
+        const employeeNotesData = this._persistenceProvider.getNotesData()
+
         //clear all existing data
         this._allEmployeeObjects.clear()
 
-        for (let employeeId in employeeData) {
-            const notesData = employeeData[employeeId]._notes
+        for (let employeeId in employeeNotesData) {
+            const notesData = employeeNotesData[employeeId]
             this.addEmployee(employeeId)
 
             let notes: TemporalCollection<Note> =
@@ -58,5 +68,35 @@ export class NoteStore extends AbstractTemporalStore<Note> {
                     )
             )
         }
+    }
+
+    write(): void {
+        if (this._persistenceProvider === null)
+            throw new Error('peristenceProvider null in noteStore')
+
+        let notesData: IDataNotesLoad = {}
+
+        for (const [employeeID, temporalNotes] of this._allEmployeeObjects) {
+            let serializedTemportalNote: IDataTemporalObject<IDataNote> = {
+                _temporalObjects: [],
+            }
+            serializedTemportalNote._current = temporalNotes.current.serialize()
+
+            for (const temporalNote of temporalNotes.getSaved(
+                new DateRange(DateRange.BEFORE_TIMES, DateRange.AFTER_TIMES)
+            )) {
+                let datedNote: IDatedObject<IDataNote> = {
+                    _obj: null,
+                    _date: null,
+                }
+                datedNote._obj = temporalNote.obj.serialize()
+                datedNote._date = dateToString(temporalNote.date)
+
+                serializedTemportalNote._temporalObjects.push(datedNote)
+            }
+
+            notesData[employeeID] = serializedTemportalNote
+        }
+        this.persistenceProvider.writeNotesData(notesData)
     }
 }

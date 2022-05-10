@@ -13,22 +13,22 @@ const config = {
     useSystemColorMode: true,
 }
 
-it('renders correctly', () => {
-    let settingsStore = new SettingsStore()
-    settingsStore.load({
-        entries: settingsTestData['entries'],
-        values: settingsTestData['values']['abcdef'],
-    })
+// it('renders correctly', () => {
+//     let settingsStore = new SettingsStore()
+//     settingsStore.load({
+//         entries: settingsTestData['entries'],
+//         values: settingsTestData['values']['abcdef'],
+//     })
 
-    const menuItemComponent = renderer.create(
-        <ChakraProvider theme={theme}>
-            <Menu>
-                <MenuList>
-                    <SettingsMenuItem origSettings={settingsStore.settings} />
-                </MenuList>
-            </Menu>
-        </ChakraProvider>
-    )
+//     const menuItemComponent = renderer.create(
+//         <ChakraProvider theme={theme}>
+//             <Menu>
+//                 <MenuList>
+//                     <SettingsMenuItem origSettings={settingsStore.settings} />
+//                 </MenuList>
+//             </Menu>
+//         </ChakraProvider>
+//     )
 
-    expect(menuItemComponent).toMatchSnapshot()
-})
+//     expect(menuItemComponent).toMatchSnapshot()
+// })

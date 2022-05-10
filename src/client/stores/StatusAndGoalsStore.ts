@@ -3,9 +3,16 @@
 
 import { TemporalCollection } from '../util/TemporalCollection'
 import { Id } from '../util/Id'
-import { IDataMomentum } from '../data_definitions/GlobalDefinitions'
 import { AbstractTemporalStore } from './AbstractTemporalStore'
 import { StatusAndGoals } from '../value_objects/StatusAndGoals'
+import {
+    IDataStatusAndGoals,
+    IDataStatusAndGoalsLoad,
+    IDataTemporalObject,
+    IDatedObject,
+} from '../data_definitions/GlobalDefinitions'
+import { DateRange } from '../util/DateRange'
+import { dateToString } from '../util/utils'
 
 export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
     //
@@ -35,12 +42,14 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
         )
     }
 
-    load(employeeData: IDataMomentum): void {
+    load(): void {
+        const employeeStatusAndGoalData =
+            this._persistenceProvider.getStatusAndGoalData()
         //clear all existing data
         this._allEmployeeObjects.clear()
 
-        for (let employeeId in employeeData) {
-            const statusAndGoalsData = employeeData[employeeId]._statusAndGoals
+        for (let employeeId in employeeStatusAndGoalData) {
+            const statusAndGoalsData = employeeStatusAndGoalData[employeeId]
             this.addEmployee(employeeId)
 
             let statusAndGoals: TemporalCollection<StatusAndGoals> =
@@ -69,5 +78,34 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
                     StatusAndGoals.instantiate(statusAndGoals)
             }
         }
+    }
+
+    write(): void {
+        if (this._persistenceProvider === null)
+            throw new Error('peristenceProvider null in StatusAndGoalStore')
+
+        let statusAndGoalsData: IDataStatusAndGoalsLoad = {}
+
+        for (const [employeeID, temporalSAndGs] of this._allEmployeeObjects) {
+            let serializedSAndGObject: IDataTemporalObject<IDataStatusAndGoals> =
+                { _temporalObjects: [] }
+            serializedSAndGObject._current = temporalSAndGs.current.serialize()
+
+            for (const temporalSAndG of temporalSAndGs.getSaved(
+                new DateRange(DateRange.BEFORE_TIMES, DateRange.AFTER_TIMES)
+            )) {
+                let datedNote: IDatedObject<IDataStatusAndGoals> = {
+                    _obj: null,
+                    _date: null,
+                }
+                datedNote._obj = temporalSAndG.obj.serialize()
+                datedNote._date = dateToString(temporalSAndG.date)
+
+                serializedSAndGObject._temporalObjects.push(datedNote)
+            }
+
+            statusAndGoalsData[employeeID] = serializedSAndGObject
+        }
+        this._persistenceProvider.writeStatusAndGoalData(statusAndGoalsData)
     }
 }

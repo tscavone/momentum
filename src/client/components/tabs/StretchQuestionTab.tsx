@@ -173,15 +173,8 @@ export const StretchQuesitonTab = observer(() => {
     const saveStretchAnswer = () => {
         stretchAnswerStore.save(
             selectedEmployeeStore.selectedId,
-            currentDateStore.date
-        )
-        stretchAnswerStore.setCurrent(
-            selectedEmployeeStore.selectedId,
+            currentDateStore.date,
             new StretchAnswer()
-        )
-        console.log(
-            'saved stretch answers: ',
-            stretchAnswerStore.getAllSaved(selectedEmployeeStore.selectedId)
         )
     }
 

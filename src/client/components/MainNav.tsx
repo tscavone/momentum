@@ -218,65 +218,67 @@ const MobileNav = ({ onSidebarOpen, ...rest }: MobileProps) => {
                 momentum
             </Text>
 
-            <HStack spacing={{ base: '0', md: '6' }}>
-                <Flex alignItems={'center'}>
-                    <Box>
-                        <Select
-                            maxWidth="300px"
-                            colorScheme={'green'}
-                            onChange={updateUserSelector}
-                            defaultValue={selectedEmployeeStore.selectedId}
+            <Flex
+                justifyContent={'flex-end'}
+                alignItems={'center'}
+                width={'100%'}
+                gap={'4'}
+            >
+                <Box>
+                    <Select
+                        maxWidth="300px"
+                        colorScheme={'green'}
+                        onChange={updateUserSelector}
+                        defaultValue={selectedEmployeeStore.selectedId}
+                    >
+                        {getEmployeeSelectorOptions()}
+                    </Select>
+                </Box>
+                <Box>
+                    <Menu>
+                        <MenuButton
+                            py={2}
+                            transition="all 0.3s"
+                            _focus={{ boxShadow: 'none' }}
+                            minWidth="150px"
                         >
-                            {getEmployeeSelectorOptions()}
-                        </Select>
-                    </Box>
-                    <Spacer />
-                    <Box>
-                        <Menu>
-                            <MenuButton
-                                py={2}
-                                transition="all 0.3s"
-                                _focus={{ boxShadow: 'none' }}
-                                minWidth="150px"
-                            >
-                                <HStack>
-                                    <Avatar
-                                        size={'sm'}
-                                        src={
-                                            'https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                                        }
-                                    />
-                                    <VStack
-                                        display={{ base: 'none', md: 'flex' }}
-                                        alignItems="flex-start"
-                                        spacing="1px"
-                                        ml="2"
-                                    >
-                                        <Text fontSize="sm">Justina Clark</Text>
-                                        <Text fontSize="xs" color="green.600">
-                                            Admin
-                                        </Text>
-                                    </VStack>
-                                    <Box display={{ base: 'none', md: 'flex' }}>
-                                        <FiChevronDown />
-                                    </Box>
-                                </HStack>
-                            </MenuButton>
-                            <MenuList
-                                bg={useColorModeValue('white', 'green.900')}
-                                borderColor={useColorModeValue(
-                                    'green.200',
-                                    'green.700'
-                                )}
-                            >
-                                <MenuItem>profile</MenuItem>
-                                <MenuDivider />
-                                <MenuItem>sign out</MenuItem>
-                            </MenuList>
-                        </Menu>
-                    </Box>
-                </Flex>
-            </HStack>
+                            <HStack>
+                                <Avatar
+                                    size={'sm'}
+                                    src={
+                                        'https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+                                    }
+                                />
+                                <VStack
+                                    display={{ base: 'none', md: 'flex' }}
+                                    alignItems="flex-start"
+                                    spacing="1px"
+                                    ml="2"
+                                >
+                                    <Text fontSize="sm">Justina Clark</Text>
+                                    <Text fontSize="xs" color="green.600">
+                                        Admin
+                                    </Text>
+                                </VStack>
+                                <Box display={{ base: 'none', md: 'flex' }}>
+                                    <FiChevronDown />
+                                </Box>
+                            </HStack>
+                        </MenuButton>
+                        <MenuList
+                            bg={useColorModeValue('white', 'green.900')}
+                            borderColor={useColorModeValue(
+                                'green.200',
+                                'green.700'
+                            )}
+                        >
+                            <MenuItem>profile</MenuItem>
+                            <MenuDivider />
+                            <MenuItem>sign out</MenuItem>
+                        </MenuList>
+                    </Menu>
+                </Box>
+            </Flex>
         </Flex>
     )
 }

@@ -32,7 +32,6 @@ export const NotesTab = observer(() => {
 
         var parser = new DOMParser()
         var el = parser.parseFromString(newNote.text, 'text/html')
-        let deserialized = deserialize(el.body)
 
         noteStore.setCurrent(selectedEmployeeStore.selectedId, newNote)
     }
@@ -40,7 +39,8 @@ export const NotesTab = observer(() => {
     const updateNotes = () => {
         noteStore.save(
             selectedEmployeeStore.selectedId,
-            currentDateStore.date ? currentDateStore.date : new Date()
+            currentDateStore.date ? currentDateStore.date : new Date(),
+            new Note()
         )
     }
 

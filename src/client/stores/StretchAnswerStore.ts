@@ -5,19 +5,20 @@ import { TemporalCollection } from '../util/TemporalCollection'
 import { Id } from '../util/Id'
 import { AbstractTemporalStore } from './AbstractTemporalStore'
 import { StretchAnswer } from '../value_objects/StretchAnswer'
-import { IDataMomentum } from '../data_definitions/GlobalDefinitions'
+import {
+    IDataStretchAnswer,
+    IDataStretchLoad,
+    IDataTemporalObject,
+    IDatedObject,
+} from '../data_definitions/GlobalDefinitions'
+import { DateRange } from '../util/DateRange'
+import { dateToString } from '../util/utils'
 
 export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
-    //
-    //constructors
-    //
     constructor() {
         super()
     }
 
-    //
-    //public methods
-    //
     addEmployee(newEmployeeId: Id | string): void {
         const employeeId = Id.asString(newEmployeeId)
 
@@ -40,12 +41,14 @@ export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
         )
     }
 
-    load(employeeData: IDataMomentum): void {
+    load(): void {
+        const employeeStretchData = this._persistenceProvider.getStretchData()
+
         //clear all existing data
         this._allEmployeeObjects.clear()
 
-        for (let employeeId in employeeData) {
-            const stretchData = employeeData[employeeId]._stretchAnswers
+        for (let employeeId in employeeStretchData) {
+            const stretchData = employeeStretchData[employeeId]
             this.addEmployee(employeeId)
 
             let stretchAnswers: TemporalCollection<StretchAnswer> =
@@ -65,5 +68,38 @@ export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
                 )
             )
         }
+    }
+
+    write(): void {
+        if (this._persistenceProvider === null)
+            throw new Error('peristenceProvider null in StretchStore')
+
+        let stretchData: IDataStretchLoad = {}
+
+        for (const [employeeID, temporalStretchAnswers] of this
+            ._allEmployeeObjects) {
+            let serializedTemportalStretch: IDataTemporalObject<IDataStretchAnswer> =
+                { _temporalObjects: [] }
+
+            serializedTemportalStretch._current =
+                temporalStretchAnswers.current.serialize()
+
+            for (const temporalStretchAnswer of temporalStretchAnswers.getSaved(
+                new DateRange(DateRange.BEFORE_TIMES, DateRange.AFTER_TIMES)
+            )) {
+                let datedNote: IDatedObject<IDataStretchAnswer> = {
+                    _obj: null,
+                    _date: null,
+                }
+                datedNote._obj = temporalStretchAnswer.obj.serialize()
+                datedNote._date = dateToString(temporalStretchAnswer.date)
+
+                serializedTemportalStretch._temporalObjects.push(datedNote)
+            }
+
+            stretchData[employeeID] = serializedTemportalStretch
+        }
+
+        this.persistenceProvider.writeStretchData(stretchData)
     }
 }

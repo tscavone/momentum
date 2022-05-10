@@ -109,9 +109,12 @@ export class TemporalCollection<T extends IdentifiedObject> {
         this._current = newCurrent
     }
 
-    save(date?: Date) {
+    save(newCurrent: T, date?: Date) {
+        if (!newCurrent) throw new Error('null newCurrent passed to save!')
+
         date = date ? date : new Date()
         this.put(clone(this._current), date)
+        this.current = newCurrent
     }
 
     clear(newCurrent: T) {

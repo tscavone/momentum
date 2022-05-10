@@ -8,38 +8,33 @@ import { ITemporalStore } from './ITemporalStore'
 import { IDataMomentum } from '../data_definitions/GlobalDefinitions'
 import { clone } from 'lodash'
 import { TemporalObject } from '../util/TemporalObject'
+import { IPersistenceProvider } from '../persistence/IPersistenceProvider'
+import { IWriteable } from '../persistence/IWriteable'
 
 export abstract class AbstractTemporalStore<T extends TemporalObject>
-    implements ITemporalStore
+    implements ITemporalStore<T>, IWriteable
 {
-    //
-    //members
-    //
     protected _allEmployeeObjects: Map<string, TemporalCollection<T>>
+    _persistenceProvider: IPersistenceProvider
 
-    //
-    //constructors
-    //
     constructor() {
         this._allEmployeeObjects = new Map<string, TemporalCollection<T>>()
+        this._persistenceProvider = null
     }
-    //
-    //accessors
-    //
 
-    //
-    //private methods
-    //
+    get persistenceProvider(): IPersistenceProvider {
+        return this._persistenceProvider
+    }
+
+    set persistenceProvider(value: IPersistenceProvider) {
+        this._persistenceProvider = value
+    }
+
     protected getCollectionForEmployee(id: Id | string): TemporalCollection<T> {
         let stringId = Id.asString(id)
 
         return this._allEmployeeObjects.get(stringId)
     }
-
-    //
-    //public methods
-    //
-    abstract addEmployee(newEmployeeId: Id | string): void
 
     getCurrent(employeeId: Id | string): T {
         const id = Id.asString(employeeId)
@@ -51,9 +46,10 @@ export abstract class AbstractTemporalStore<T extends TemporalObject>
         this._allEmployeeObjects.get(id).current = clone(newValue)
     }
 
-    save(employeeId: Id | string, date: Date) {
+    save(employeeId: Id | string, date: Date, newCurrent: T) {
         const id = Id.asString(employeeId)
-        this._allEmployeeObjects.get(id)!.save(date)
+        this._allEmployeeObjects.get(id).save(newCurrent, date)
+        this.write()
     }
 
     getSaved(id: Id | string, dateRange: DateRange): DatedObject<T>[] {
@@ -79,5 +75,9 @@ export abstract class AbstractTemporalStore<T extends TemporalObject>
         return this.getSaved(id, DateRange.upTo(DateRange.AFTER_TIMES))
     }
 
+    abstract addEmployee(newEmployeeId: Id | string): void
+
     abstract load(jsonObj: IDataMomentum, employeeId?: Id): void
+
+    abstract write(): void
 }

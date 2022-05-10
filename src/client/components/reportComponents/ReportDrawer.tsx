@@ -32,7 +32,6 @@ import { dateToString } from '../../util/utils'
 import { NoteReport } from './NoteReport'
 import { StretchAnswer } from '../../value_objects/StretchAnswer'
 import { StretchReport } from './StretchReport'
-import e from 'express'
 
 //
 // Date state
@@ -65,8 +64,8 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
         return <></>
     }
 
-    function getReportComponentsInRange(
-        objectStore: ITemporalStore
+    function getReportComponentsInRange<T>(
+        objectStore: ITemporalStore<T>
     ): Map<string, IdentifiedObject[]> {
         const reportObjectsArray: DatedObject<IdentifiedObject>[] =
             objectStore.getSaved(
@@ -175,8 +174,10 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
 
     const renderReport = (): ReactNode => {
         const reportComponents = []
-        reportComponents.push(getReportComponentsInRange(noteStore))
-        reportComponents.push(getReportComponentsInRange(stretchAnswerStore))
+        reportComponents.push(getReportComponentsInRange<Note>(noteStore))
+        reportComponents.push(
+            getReportComponentsInRange<StretchAnswer>(stretchAnswerStore)
+        )
 
         return renderObjectReports(reportComponents)
     }

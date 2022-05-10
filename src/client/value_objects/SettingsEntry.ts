@@ -1,7 +1,6 @@
 // a type of setting with description of what that setting is for
 //
 
-import { IDataIdentifiedObject } from '../data_definitions/GlobalDefinitions'
 import { IDataSettingsEntry } from '../data_definitions/SettingsDefinitions'
 import { Id } from '../util/Id'
 import { IdentifiedObject } from '../util/IdentifiedObject'
@@ -15,17 +14,11 @@ export enum SettingsType {
 }
 
 export class SettingsEntry extends IdentifiedObject {
-    //
-    //members
-    //
     private _name: string
     private _description: string
     private _potentialValues: string[]
     private _type: SettingsType
 
-    //
-    //
-    //
     constructor() {
         super()
 
@@ -35,9 +28,6 @@ export class SettingsEntry extends IdentifiedObject {
         this._type = SettingsType.single
     }
 
-    //
-    //accessors
-    //
     public get name(): string {
         return this._name
     }
@@ -64,13 +54,6 @@ export class SettingsEntry extends IdentifiedObject {
         this._type = value
     }
 
-    //
-    //private methods
-    //
-
-    //
-    //public methods
-    //
     public static fromJSON(jsonObj: IDataSettingsEntry): SettingsEntry {
         let entry = Object.assign(new SettingsEntry(), jsonObj) as SettingsEntry
         entry.id = Id.fromString(jsonObj._id)

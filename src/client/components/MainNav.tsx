@@ -23,6 +23,7 @@ import {
     MenuList,
     Select,
     Spacer,
+    background,
 } from '@chakra-ui/react'
 import {
     FiSettings,
@@ -62,9 +63,15 @@ export function MainNav({ children }: { children: ReactNode }) {
             <SidebarContent
                 onSidebarClose={() => onSidebarClose}
                 display={{ base: 'none', md: 'block' }}
+                background={'green.700'}
+                color={'white'}
             />
             {/* mobilenav */}
-            <MobileNav onSidebarOpen={onSidebarOpen} />
+            <MobileNav
+                onSidebarOpen={onSidebarOpen}
+                background={'green.700'}
+                color={'white'}
+            />
             <Box ml={{ base: 0, md: 60 }}>{children}</Box>
         </Box>
     )

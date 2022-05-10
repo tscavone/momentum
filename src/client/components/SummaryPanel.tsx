@@ -4,6 +4,7 @@ import {
     AccordionPanel,
     Box,
     Grid,
+    Text,
 } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { DatePicker } from './DatePicker'
@@ -24,15 +25,13 @@ export const SummaryPanel = observer(() => {
     return (
         <>
             <h2>
-                <AccordionButton height={'2px'}>
+                <AccordionButton height={'2px'} p={'12px 12px 16px 12px'}>
                     <AccordionIcon />
+                    <Text size="l">activity summary</Text>
                 </AccordionButton>
             </h2>
-            <AccordionPanel pb={4} shadow={'xl'} m={1}>
+            <AccordionPanel pb={4} m={1}>
                 <Grid>
-                    <Box flex="1" textAlign="left">
-                        {`${employeeData.first} ${employeeData.last}'s Summary`}
-                    </Box>
                     <DatePicker
                         value={
                             currentDateStore.date

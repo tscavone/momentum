@@ -24,6 +24,7 @@ import {
     Select,
     Spacer,
     background,
+    Button,
 } from '@chakra-ui/react'
 import {
     FiSettings,
@@ -32,6 +33,7 @@ import {
     FiUserPlus,
     FiLink2,
     FiInfo,
+    FiEye,
 } from 'react-icons/fi'
 import { IconType } from 'react-icons'
 import { ReactText } from 'react'
@@ -40,6 +42,7 @@ import {
     useEmployeeStore,
     useSelectedEmployeeStore,
 } from './RootStoreProvider'
+import { ReportDrawer } from './reportComponents/ReportDrawer'
 
 interface LinkItemProps {
     name: string
@@ -59,7 +62,7 @@ export function MainNav({ children }: { children: ReactNode }) {
         onClose: onSidebarClose,
     } = useDisclosure()
     return (
-        <Box minH="70vh">
+        <Box minH="90vh">
             <SidebarContent
                 onSidebarClose={() => onSidebarClose}
                 display={{ base: 'none', md: 'block' }}
@@ -180,6 +183,7 @@ const MobileNav = ({ onSidebarOpen, ...rest }: MobileProps) => {
         employeeStore.employees.forEach((employee, id) => {
             returnValues.push(
                 <option
+                    style={{ backgroundColor: '#6ba05f' }}
                     key={id}
                     value={id}
                 >{`${employee.first} ${employee.last}`}</option>
@@ -189,96 +193,118 @@ const MobileNav = ({ onSidebarOpen, ...rest }: MobileProps) => {
         return returnValues
     }
     return (
-        <Flex
-            ml={{ base: 0, md: 60 }}
-            px={{ base: 4, md: 4 }}
-            height="20"
-            alignItems="center"
-            bg={useColorModeValue('white', 'green.900')}
-            borderBottomWidth="1px"
-            borderBottomColor={useColorModeValue('green.200', 'green.700')}
-            //            justifyContent={{ base: 'space-between', md: 'flex-end' }}
-            justifyContent={{ base: 'space-between' }}
-            {...rest}
-        >
-            <IconButton
-                display={{ base: 'flex', md: 'none' }}
-                onClick={onOpen}
-                variant="outline"
-                aria-label="open menu"
-                icon={<FiMenu />}
-            />
-
-            <Text
-                display={{ base: 'flex', md: 'none' }}
-                fontSize="2xl"
-                fontFamily="monospace"
-                fontWeight="bold"
-            >
-                momentum
-            </Text>
-
+        <>
             <Flex
-                justifyContent={'flex-end'}
-                alignItems={'center'}
-                width={'100%'}
-                gap={'4'}
+                ml={{ base: 0, md: 60 }}
+                px={{ base: 4, md: 4 }}
+                height="16"
+                alignItems="center"
+                bg={useColorModeValue('white', 'green.900')}
+                borderBottomWidth="1px"
+                borderBottomColor={useColorModeValue('green.200', 'green.700')}
+                //            justifyContent={{ base: 'space-between', md: 'flex-end' }}
+                justifyContent={{ base: 'space-between' }}
+                {...rest}
             >
-                <Box>
-                    <Select
-                        maxWidth="300px"
-                        colorScheme={'green'}
-                        onChange={updateUserSelector}
-                        defaultValue={selectedEmployeeStore.selectedId}
-                    >
-                        {getEmployeeSelectorOptions()}
-                    </Select>
-                </Box>
-                <Box>
-                    <Menu>
-                        <MenuButton
-                            py={2}
-                            transition="all 0.3s"
-                            _focus={{ boxShadow: 'none' }}
-                            minWidth="150px"
+                <IconButton
+                    display={{ base: 'flex', md: 'none' }}
+                    onClick={onOpen}
+                    variant="outline"
+                    aria-label="open menu"
+                    icon={<FiMenu />}
+                />
+
+                <Text
+                    display={{ base: 'flex', md: 'none' }}
+                    fontSize="2xl"
+                    fontFamily="monospace"
+                    fontWeight="bold"
+                >
+                    momentum
+                </Text>
+
+                <Flex
+                    justifyContent={'flex-end'}
+                    alignItems={'center'}
+                    width={'100%'}
+                    gap={'10'}
+                >
+                    <Box>
+                        <Select
+                            maxWidth="300px"
+                            colorScheme={'green'}
+                            onChange={updateUserSelector}
+                            defaultValue={selectedEmployeeStore.selectedId}
+                            backgroundColor={'green.500'}
                         >
-                            <HStack>
-                                <Avatar
-                                    size={'sm'}
-                                    src={
-                                        'https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                                    }
-                                />
-                                <VStack
-                                    display={{ base: 'none', md: 'flex' }}
-                                    alignItems="flex-start"
-                                    spacing="1px"
-                                    ml="2"
-                                >
-                                    <Text fontSize="sm">Justina Clark</Text>
-                                    <Text fontSize="xs" color="green.600">
-                                        Admin
-                                    </Text>
-                                </VStack>
-                                <Box display={{ base: 'none', md: 'flex' }}>
-                                    <FiChevronDown />
-                                </Box>
-                            </HStack>
-                        </MenuButton>
-                        <MenuList
-                            bg={useColorModeValue('white', 'green.900')}
-                            borderColor={useColorModeValue(
-                                'green.200',
-                                'green.700'
-                            )}
+                            {getEmployeeSelectorOptions()}
+                        </Select>
+                    </Box>
+                    <Box>
+                        {' '}
+                        <Button
+                            variant={'solid'}
+                            colorScheme={'green'}
+                            mr={4}
+                            leftIcon={<FiEye />}
+                            ref={reportButtonRef}
+                            onClick={onDrawerOpen}
+                            margin={4}
+                            padding={5}
                         >
-                            <MenuItem>profile</MenuItem>
-                            <MenuDivider />
-                            <MenuItem>sign out</MenuItem>
-                        </MenuList>
-                    </Menu>
-                </Box>
+                            Report
+                        </Button>
+                    </Box>
+                    <Box>
+                        <Menu colorScheme={'green'}>
+                            <MenuButton
+                                p={1}
+                                transition="all 0.3s"
+                                _focus={{ boxShadow: 'none' }}
+                                minWidth="150px"
+                                borderRadius={'md'}
+                            >
+                                <HStack>
+                                    <Avatar
+                                        size={'sm'}
+                                        src={
+                                            'https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+                                        }
+                                    />
+                                    <VStack
+                                        display={{ base: 'none', md: 'flex' }}
+                                        alignItems="flex-start"
+                                        spacing="1px"
+                                        ml="2"
+                                    >
+                                        <Text fontSize="sm">Justina Clark</Text>
+                                    </VStack>
+                                    <Box display={{ base: 'none', md: 'flex' }}>
+                                        <FiChevronDown />
+                                    </Box>
+                                </HStack>
+                            </MenuButton>
+                            <MenuList
+                                bg={'green.500'}
+                                borderColor={useColorModeValue(
+                                    'green.200',
+                                    'green.700'
+                                )}
+                            >
+                                <MenuItem>profile</MenuItem>
+                                <MenuDivider />
+                                <MenuItem>sign out</MenuItem>
+                            </MenuList>
+                        </Menu>
+                    </Box>
+                </Flex>
             </Flex>
-        </Flex>
+
+            <ReportDrawer
+                isOpen={isDrawerOpen}
+                onOpen={onDrawerOpen}
+                onClose={onDrawerClose}
+            />
+        </>
     )
 }

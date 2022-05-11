@@ -12,16 +12,12 @@ import {
     Heading,
 } from '@chakra-ui/react'
 import React, { ReactElement } from 'react'
+import { FiCode, FiBold, FiItalic, FiList, FiUnderline } from 'react-icons/fi'
 import {
-    MdCode,
-    MdFormatBold,
-    MdFormatItalic,
-    MdFormatListBulleted,
-    MdFormatListNumbered,
-    MdFormatQuote,
-    MdFormatUnderlined,
     MdLooksOne,
     MdLooksTwo,
+    MdFormatListNumbered,
+    MdFormatQuote,
 } from 'react-icons/md'
 import {
     useSlate,
@@ -146,10 +142,10 @@ export const Toolbar = () => {
             spacing={'5px'}
             wrap={'wrap'}
         >
-            <MarkButton format="bold" icon={<MdFormatBold />} />
-            <MarkButton format="italic" icon={<MdFormatItalic />} />
-            <MarkButton format="underline" icon={<MdFormatUnderlined />} />
-            <MarkButton format="code" icon={<MdCode />} />
+            <MarkButton format="bold" icon={<FiBold />} />
+            <MarkButton format="italic" icon={<FiItalic />} />
+            <MarkButton format="underline" icon={<FiUnderline />} />
+            <MarkButton format="code" icon={<FiCode />} />
             <BlockButton format="heading-one" icon={<MdLooksOne />} />
             <BlockButton format="heading-two" icon={<MdLooksTwo />} />
             <BlockButton format="block-quote" icon={<MdFormatQuote />} />
@@ -157,10 +153,7 @@ export const Toolbar = () => {
                 format="numbered-list"
                 icon={<MdFormatListNumbered />}
             />
-            <BlockButton
-                format="bulleted-list"
-                icon={<MdFormatListBulleted />}
-            />
+            <BlockButton format="bulleted-list" icon={<FiList />} />
         </HStack>
     )
 }

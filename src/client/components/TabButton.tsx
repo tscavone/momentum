@@ -1,21 +1,4 @@
-import {
-    Tabs,
-    TabList,
-    Tab,
-    TabPanels,
-    TabPanel,
-    Tooltip,
-} from '@chakra-ui/react'
-import {
-    CheckIcon,
-    ChevronUpIcon,
-    EditIcon,
-    ExternalLinkIcon,
-    InfoOutlineIcon,
-    QuestionOutlineIcon,
-    TimeIcon,
-} from '@chakra-ui/icons'
-import { StretchQuesitonTab } from './tabs/StretchQuestionTab'
+import { Tab, Tooltip, Text } from '@chakra-ui/react'
 import { useSelectedEmployeeStore } from './RootStoreProvider'
 import { observer } from 'mobx-react'
 
@@ -32,7 +15,9 @@ export const TabButton = observer(({ name, icon, infoStore }) => {
                 <></>
             ) : (
                 <Tooltip label="This tab has changes that need saving">
-                    <ChevronUpIcon marginLeft="5px" />
+                    <Text size="3xl" marginLeft={'5px'}>
+                        *
+                    </Text>
                 </Tooltip>
             )}
         </Tab>

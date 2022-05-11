@@ -1,13 +1,13 @@
 import { NotesTab } from './tabs/NotesTab'
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react'
 import {
-    CheckIcon,
-    EditIcon,
-    ExternalLinkIcon,
-    InfoOutlineIcon,
-    QuestionOutlineIcon,
-    TimeIcon,
-} from '@chakra-ui/icons'
+    FiCheckSquare,
+    FiEdit,
+    FiExternalLink,
+    FiInfo,
+    FiMessageCircle,
+    FiClock,
+} from 'react-icons/fi'
 import { StretchQuesitonTab } from './tabs/StretchQuestionTab'
 import {
     useNoteStore,
@@ -18,7 +18,6 @@ import {
 import { observer } from 'mobx-react'
 import { TabButton } from './TabButton'
 import { GoalsTab } from './tabs/GoalsTab'
-import { StatusAndGoalsStore } from '../stores/StatusAndGoalsStore'
 import { FiAlertTriangle } from 'react-icons/fi'
 
 export const TabContainer = observer(() => {
@@ -34,13 +33,13 @@ export const TabContainer = observer(() => {
         <Tabs size="md" variant="enclosed" colorScheme={'green'}>
             <TabList>
                 <Tab>
-                    <TimeIcon style={iconStyle} />
+                    <FiClock style={iconStyle} />
                     Follow Ups
                 </Tab>
                 <TabButton
                     infoStore={statusAndGoalsStore}
                     name={'goals'}
-                    icon={<CheckIcon style={iconStyle} />}
+                    icon={<FiCheckSquare style={iconStyle} />}
                 />
                 <Tab>
                     <FiAlertTriangle style={iconStyle} />
@@ -49,23 +48,19 @@ export const TabContainer = observer(() => {
                 <TabButton
                     infoStore={stretchAnswerStore}
                     name={'stretch'}
-                    icon={
-                        <QuestionOutlineIcon
-                            style={iconStyle}
-                        ></QuestionOutlineIcon>
-                    }
+                    icon={<FiMessageCircle style={iconStyle}></FiMessageCircle>}
                 />
                 <TabButton
                     infoStore={noteStore}
                     name={'notes'}
-                    icon={<EditIcon style={iconStyle}></EditIcon>}
+                    icon={<FiEdit style={iconStyle}></FiEdit>}
                 />
                 <Tab>
-                    <ExternalLinkIcon style={iconStyle} />
+                    <FiExternalLink style={iconStyle} />
                     Integration
                 </Tab>
                 <Tab>
-                    <InfoOutlineIcon style={iconStyle} />
+                    <FiInfo style={iconStyle} />
                     Details
                 </Tab>
             </TabList>

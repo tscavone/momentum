@@ -22,7 +22,7 @@ import {
     Heading,
     Select,
 } from '@chakra-ui/react'
-import { HamburgerIcon, CloseIcon, ViewIcon } from '@chakra-ui/icons'
+import { FiMenu, FiX, FiEye } from 'react-icons/fi'
 import { ReportDrawer } from './reportComponents/ReportDrawer'
 import {
     useAuthedUserStore,
@@ -94,7 +94,7 @@ export function TopNav({ children }: { children: ReactNode }) {
                 >
                     <IconButton
                         size={'md'}
-                        icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+                        icon={isOpen ? <FiX /> : <FiMenu />}
                         aria-label={'Open Menu'}
                         display={{ md: 'none' }}
                         onClick={isOpen ? onClose : onOpen}
@@ -125,7 +125,7 @@ export function TopNav({ children }: { children: ReactNode }) {
                             variant={'solid'}
                             colorScheme={'green'}
                             mr={4}
-                            leftIcon={<ViewIcon />}
+                            leftIcon={<FiEye />}
                             ref={reportButtonRef}
                             onClick={onDrawerOpen}
                             margin={4}

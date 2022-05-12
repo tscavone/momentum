@@ -14,10 +14,14 @@ export interface IPersistenceProvider {
     getNotesData(): IDataNotesLoad
     getStretchData(): IDataStretchLoad
     getStatusAndGoalData(): IDataStatusAndGoalsLoad
-    writeNotesData(noteData: IDataNotesLoad)
-    writeStretchData(stretchData: IDataStretchLoad)
-    writeStatusAndGoalData(statusAndGoalData: IDataStatusAndGoalsLoad)
-    writeEmployeeData(employeeData: IDataAllEmployees)
-    writeSettingsData(settingsData: IDataUserScopedSettings)
-    writeSelectedEmployeeData(selectedEmployee: IDataSelectedEmployee)
+    writeNotesData(noteData: IDataNotesLoad): Promise<string>
+    writeStretchData(stretchData: IDataStretchLoad): Promise<string>
+    writeStatusAndGoalData(
+        statusAndGoalData: IDataStatusAndGoalsLoad
+    ): Promise<string>
+    writeEmployeeData(employeeData: IDataAllEmployees): Promise<string>
+    writeSettingsData(settingsData: IDataUserScopedSettings): Promise<string>
+    writeSelectedEmployeeData(
+        selectedEmployee: IDataSelectedEmployee
+    ): Promise<string>
 }

@@ -1,6 +1,20 @@
 import React, { useState } from 'react'
 import { Id } from '../util/Id'
 import { useAuthedUserStore, useRootStore } from './RootStoreProvider'
+import {
+    Flex,
+    Box,
+    FormControl,
+    FormLabel,
+    Input,
+    Checkbox,
+    Stack,
+    Link,
+    Button,
+    Heading,
+    Text,
+    useColorModeValue,
+} from '@chakra-ui/react'
 
 async function loginUser(credentials) {
     console.log('credentials: ', JSON.stringify(credentials))
@@ -40,27 +54,101 @@ export default function Login() {
     }
 
     return (
-        <div className="login-wrapper">
-            <h1>Please Log In</h1>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    <p>Username</p>
-                    <input
-                        type="text"
-                        onChange={(e) => setUserName(e.target.value)}
-                    />
-                </label>
-                <label>
-                    <p>Password</p>
-                    <input
-                        type="password"
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </label>
-                <div>
-                    <button type="submit">Submit</button>
-                </div>
-            </form>
-        </div>
+        // <div className="login-wrapper">
+        //     <h1>Please Log In</h1>
+        //     <form onSubmit={handleSubmit}>
+        //         <label>
+        //             <p>Username</p>
+        //             <input
+        //                 type="text"
+        //                 onChange={(e) => setUserName(e.target.value)}
+        //             />
+        //         </label>
+        //         <label>
+        //             <p>Password</p>
+        //             <input
+        //                 type="password"
+        //                 onChange={(e) => setPassword(e.target.value)}
+        //             />
+        //         </label>
+        //         <div>
+        //             <button type="submit">Submit</button>
+        //         </div>
+        //     </form>
+        // </div>
+        <Flex
+            minH={'100vh'}
+            align={'center'}
+            justify={'center'}
+            bg={useColorModeValue('green.50', 'green.800')}
+        >
+            <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+                <Stack align={'center'}>
+                    <Heading fontSize={'4xl'}>
+                        welcome to {'  '}
+                        <Text
+                            fontSize="sxl"
+                            fontFamily="monospace"
+                            fontWeight="bold"
+                            color={'green.600'}
+                            display={'inline'}
+                            fontStyle={'italic'}
+                        >
+                            momentum
+                        </Text>
+                    </Heading>
+                    <Text fontSize={'lg'} color={'gray.500'}>
+                        login below or <Link color={'green.800'}>register</Link>{' '}
+                        here
+                    </Text>
+                </Stack>
+                <Box
+                    rounded={'lg'}
+                    bg={useColorModeValue('white', 'gray.700')}
+                    boxShadow={'lg'}
+                    p={8}
+                >
+                    <Stack spacing={4}>
+                        <FormControl id="email" colorScheme={'green'}>
+                            <FormLabel>Email address</FormLabel>
+                            <Input
+                                onChange={(e) => setUserName(e.target.value)}
+                            />
+                        </FormControl>
+                        <FormControl id="password" colorScheme={'green'}>
+                            <FormLabel>Password</FormLabel>
+                            <Input
+                                type="password"
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                        </FormControl>
+                        <Stack spacing={10}>
+                            <Stack
+                                direction={{ base: 'column', sm: 'row' }}
+                                align={'start'}
+                                justify={'space-between'}
+                            >
+                                <Checkbox colorScheme={'green'}>
+                                    Remember me
+                                </Checkbox>
+                                <Link color={'green.600'}>
+                                    Forgot password?
+                                </Link>
+                            </Stack>
+                            <Button
+                                bg={'green.600'}
+                                color={'white'}
+                                _hover={{
+                                    bg: 'green.500',
+                                }}
+                                onClick={handleSubmit}
+                            >
+                                Sign in
+                            </Button>
+                        </Stack>
+                    </Stack>
+                </Box>
+            </Stack>
+        </Flex>
     )
 }

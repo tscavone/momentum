@@ -15,6 +15,7 @@ import {
     Flex,
     Heading,
     Spacer,
+    useToast,
     VStack,
 } from '@chakra-ui/react'
 import { Note } from '../../value_objects/Note'
@@ -24,6 +25,7 @@ export const NotesTab = observer(() => {
     const noteStore = useNoteStore()
     const selectedEmployeeStore = useSelectedEmployeeStore()
     const currentDateStore = useCurrentDateStore()
+    const toast = useToast()
 
     const updateCurrentNote = (newValue) => {
         let newNote = new Note()
@@ -37,11 +39,29 @@ export const NotesTab = observer(() => {
     }
 
     const updateNotes = () => {
-        noteStore.save(
-            selectedEmployeeStore.selectedId,
-            currentDateStore.date ? currentDateStore.date : new Date(),
-            new Note()
-        )
+        noteStore
+            .save(
+                selectedEmployeeStore.selectedId,
+                currentDateStore.date ? currentDateStore.date : new Date(),
+                new Note()
+            )
+            .then((successfulMessage) =>
+                toast({
+                    title: successfulMessage,
+                    status: 'success',
+                    duration: 2000,
+                    isClosable: true,
+                })
+            )
+            .catch((failureMessage) =>
+                toast({
+                    title: 'save failed',
+                    description: failureMessage,
+                    status: 'error',
+                    duration: 2000,
+                    isClosable: true,
+                })
+            )
     }
 
     const getDeserialized = () => {

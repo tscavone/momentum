@@ -5,6 +5,7 @@ import {
     useSelectedEmployeeStore,
     useSettingsStore,
     useStatusAndGoalsStore,
+    useCurrentDateStore,
 } from '../RootStoreProvider'
 import {
     Box,
@@ -21,6 +22,7 @@ import {
     VStack,
     Text,
     Flex,
+    useToast,
 } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { GoalComponent } from '../GoalComponent'
@@ -28,11 +30,14 @@ import { Goal } from '../../value_objects/Goal'
 import React from 'react'
 import { FiPlus } from 'react-icons/fi'
 import { Id } from '../../util/Id'
+import { StatusAndGoals } from '../../value_objects/StatusAndGoals'
 
 export const GoalsTab = observer(() => {
     const selectedEmployeeStore = useSelectedEmployeeStore()
     const settingsStore = useSettingsStore()
     const statusAndGoalStore = useStatusAndGoalsStore()
+    const currentDateStore = useCurrentDateStore()
+    const toast = useToast()
 
     const [goals, setGoals] = React.useState<Goal[]>(
         statusAndGoalStore.getCurrent(selectedEmployeeStore.selectedId).goals
@@ -40,6 +45,7 @@ export const GoalsTab = observer(() => {
     const [status, setStatus] = React.useState<string>('')
     const [name, setName] = React.useState<string>('')
     const [details, setDetails] = React.useState<string>('')
+
     const [progress, setProgress] = React.useState<number>(0)
 
     const updateStatus = (event) => {
@@ -47,22 +53,45 @@ export const GoalsTab = observer(() => {
     }
 
     const updateGoals = () => {
-        // noteStore.save(
-        //     selectedEmployeeStore.selectedId,
-        //     currentDateStore.date ? currentDateStore.date : new Date()
-        // )
+        let current = StatusAndGoals.instantiate(
+            statusAndGoalStore.getCollectionForEmployee(
+                selectedEmployeeStore.selectedId
+            )
+        )
+
+        current.status = status
+        current.goals = goals
+        statusAndGoalStore.setCurrent(selectedEmployeeStore.selectedId, current)
+        statusAndGoalStore
+            .save(
+                selectedEmployeeStore.selectedId,
+                currentDateStore.date ? currentDateStore.date : new Date(),
+                StatusAndGoals.instantiate(
+                    statusAndGoalStore.getCollectionForEmployee(
+                        selectedEmployeeStore.selectedId
+                    )
+                )
+            )
+            .then((successfulMessage) =>
+                toast({
+                    title: successfulMessage,
+                    status: 'success',
+                    duration: 2000,
+                    isClosable: true,
+                })
+            )
+            .catch((failureMessage) =>
+                toast({
+                    title: 'save failed',
+                    description: failureMessage,
+                    status: 'error',
+                    duration: 2000,
+                    isClosable: true,
+                })
+            )
     }
 
-    const getValue = () => {
-        // return newValue
-        //     ? newValue
-        //     : stretchAnswerStore.getCurrent(
-        //           selectedEmployeeStore.selectedId
-        //       ).answer
-        return 'foo'
-    }
-
-    const addGoal = (event) => {
+    const addGoal = () => {
         const newGoals = [...goals]
         let newGoal = new Goal()
 
@@ -84,75 +113,6 @@ export const GoalsTab = observer(() => {
         setDetails('')
         setProgress(0)
         setName(null)
-        /*
-            let settingEntryId = event.currentTarget.value
-
-            const newNameField: HTMLInputElement | null =
-                document.getElementById(
-                    'newSettingName-' + settingEntryId
-                ) as HTMLInputElement
-
-            if (newNameField === null)
-                throw new Error(
-                    'SettingsMenuItem: did not find text ID:' +
-                        'newSettingName-' +
-                        settingEntryId
-                )
-            const newValueName = newNameField.value
-            //clear field so that when this operation is over, the
-            //new field is empty
-            newNameField.value = ''
-
-            //Not every new dynamic setting will have a description
-            //so sometimes this will be null
-            let newValueDesc = null
-            const newDescField: HTMLTextAreaElement | null =
-                document.getElementById(
-                    'newSettingDesc-' + settingEntryId
-                ) as HTMLTextAreaElement
-
-            if (newDescField !== null) {
-                newValueDesc = newDescField.value
-
-                //clear field so that when this operation is over, the
-                //new field is empty
-                newDescField.value = ''
-            }
-
-            let newSettings: [SettingsEntry, SettingsValue[]][] = []
-            //create array copy for react
-            for (const setting of settings) {
-                newSettings.push([setting[0], [...setting[1]]])
-            }
-
-            for (const [index, setting] of newSettings.entries()) {
-                if (setting[0].id.id === settingEntryId) {
-                    let newSettingsValue: any = null
-                    if (setting[1][0] instanceof SettingsValueWithDesc) {
-                        newSettingsValue = new SettingsValueWithDesc()
-                        newSettingsValue.description = newValueDesc
-                    } else {
-                        newSettingsValue = new SettingsValue()
-                    }
-                    newSettingsValue.value = newValueName
-
-                    setting[1].push(newSettingsValue)
-                    newSettings[index] = [setting[0], [...setting[1]]]
-
-                    setSettings(newSettings)
-                    return
-                }
-            }
-
-            console.log(
-                'Adding new settings went wrong: ',
-                event.currentTarget.value,
-                newSettings
-            )
-            throw new Error(
-                'Adding new settings went wrong: ' + event.currentTarget.value
-            )
-            */
     }
     return (
         <VStack>

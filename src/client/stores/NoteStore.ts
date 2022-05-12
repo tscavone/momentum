@@ -70,7 +70,7 @@ export class NoteStore extends AbstractTemporalStore<Note> {
         }
     }
 
-    write(): void {
+    write(): Promise<string> {
         if (this._persistenceProvider === null)
             throw new Error('peristenceProvider null in noteStore')
 
@@ -97,6 +97,6 @@ export class NoteStore extends AbstractTemporalStore<Note> {
 
             notesData[employeeID] = serializedTemportalNote
         }
-        this.persistenceProvider.writeNotesData(notesData)
+        return this.persistenceProvider.writeNotesData(notesData)
     }
 }

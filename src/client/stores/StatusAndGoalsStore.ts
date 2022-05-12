@@ -80,7 +80,7 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
         }
     }
 
-    write(): void {
+    write(): Promise<string> {
         if (this._persistenceProvider === null)
             throw new Error('peristenceProvider null in StatusAndGoalStore')
 
@@ -106,6 +106,9 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
 
             statusAndGoalsData[employeeID] = serializedSAndGObject
         }
-        this._persistenceProvider.writeStatusAndGoalData(statusAndGoalsData)
+
+        return this._persistenceProvider.writeStatusAndGoalData(
+            statusAndGoalsData
+        )
     }
 }

@@ -7,6 +7,7 @@ import Login from './components/Login'
 import { MainContent } from './components/MainContent'
 import { useAuthedUserStore } from './components/RootStoreProvider'
 import { TopNav } from './components/TopNav'
+
 const DateState = observable({
     currentDate: null,
 })

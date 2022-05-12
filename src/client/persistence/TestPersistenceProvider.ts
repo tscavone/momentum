@@ -57,23 +57,29 @@ export class TestPersistenceProvider implements IPersistenceProvider {
     }
     writeNotesData(noteData: IDataNotesLoad) {
         console.log('\tWRITE:  << note >> data:  ', noteData)
+        return Promise.resolve('save successful')
     }
     writeStretchData(stretchData: IDataStretchLoad) {
         console.log('\tWRITE:  << stretch >> data:  ', stretchData)
+        return Promise.resolve('save successful')
     }
     writeStatusAndGoalData(statusAndGoalData: IDataStatusAndGoalsLoad) {
         console.log('\tWRITE:  << status&goal >> data:  ', statusAndGoalData)
+        return Promise.resolve('save successful')
     }
     writeEmployeeData(employeeData: IDataAllEmployees) {
         console.log('\tWRITE:  << employee >> data:  ', employeeData)
+        return Promise.resolve('save successful')
     }
     writeSettingsData(settingsData: IDataUserScopedSettings) {
         console.log('\tWRITE:  << settings >> data:  ', settingsData)
+        return Promise.resolve('save successful')
     }
     writeSelectedEmployeeData(selectedEmployee: IDataSelectedEmployee) {
         console.log(
             '\tWRITE:  << selected Employee >>  data:  ',
             selectedEmployee
         )
+        return Promise.resolve('save successful')
     }
 }

@@ -10,8 +10,6 @@ import {
     Icon,
     useColorModeValue,
     Link,
-    Drawer,
-    DrawerContent,
     Text,
     useDisclosure,
     BoxProps,
@@ -22,8 +20,6 @@ import {
     MenuItem,
     MenuList,
     Select,
-    Spacer,
-    background,
     Button,
 } from '@chakra-ui/react'
 import {
@@ -102,7 +98,11 @@ const SidebarContent = ({ onSidebarClose, ...rest }: SidebarProps) => {
                 mx="8"
                 justifyContent="space-between"
             >
-                <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
+                <Text
+                    fontSize="2xl"
+                    fontFamily="monospace"
+                    fontStyle={'italic'}
+                >
                     momentum
                 </Text>
                 <CloseButton

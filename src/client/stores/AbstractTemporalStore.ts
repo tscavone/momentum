@@ -30,7 +30,7 @@ export abstract class AbstractTemporalStore<T extends TemporalObject>
         this._persistenceProvider = value
     }
 
-    protected getCollectionForEmployee(id: Id | string): TemporalCollection<T> {
+    getCollectionForEmployee(id: Id | string): TemporalCollection<T> {
         let stringId = Id.asString(id)
 
         return this._allEmployeeObjects.get(stringId)
@@ -43,13 +43,13 @@ export abstract class AbstractTemporalStore<T extends TemporalObject>
 
     setCurrent(employeeId: Id | string, newValue: T) {
         const id = Id.asString(employeeId)
-        this._allEmployeeObjects.get(id).current = clone(newValue)
+        this._allEmployeeObjects.get(id).current = newValue
     }
 
-    save(employeeId: Id | string, date: Date, newCurrent: T) {
+    save(employeeId: Id | string, date: Date, newCurrent: T): Promise<string> {
         const id = Id.asString(employeeId)
         this._allEmployeeObjects.get(id).save(newCurrent, date)
-        this.write()
+        return this.write()
     }
 
     getSaved(id: Id | string, dateRange: DateRange): DatedObject<T>[] {
@@ -79,5 +79,5 @@ export abstract class AbstractTemporalStore<T extends TemporalObject>
 
     abstract load(jsonObj: IDataMomentum, employeeId?: Id): void
 
-    abstract write(): void
+    abstract write(): Promise<string>
 }

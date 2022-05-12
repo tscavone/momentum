@@ -6,6 +6,7 @@ import {
     Heading,
     Select,
     Textarea,
+    useToast,
     VStack,
 } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
@@ -74,6 +75,7 @@ export const StretchQuesitonTab = observer(() => {
     const stretchAnswerStore = useStretchAnswerStore()
     const selectedEmployeeStore = useSelectedEmployeeStore()
     const currentDateStore = useCurrentDateStore()
+    const toast = useToast()
 
     const shouldBeReadOnly = (): boolean => {
         const selectedAnswer = selectedQuestionStore.getSelectedAnswer(
@@ -171,11 +173,29 @@ export const StretchQuesitonTab = observer(() => {
     }
 
     const saveStretchAnswer = () => {
-        stretchAnswerStore.save(
-            selectedEmployeeStore.selectedId,
-            currentDateStore.date,
-            new StretchAnswer()
-        )
+        stretchAnswerStore
+            .save(
+                selectedEmployeeStore.selectedId,
+                currentDateStore.date,
+                new StretchAnswer()
+            )
+            .then((successfulMessage) =>
+                toast({
+                    title: successfulMessage,
+                    status: 'success',
+                    duration: 2000,
+                    isClosable: true,
+                })
+            )
+            .catch((failureMessage) =>
+                toast({
+                    title: 'save failed',
+                    description: failureMessage,
+                    status: 'error',
+                    duration: 2000,
+                    isClosable: true,
+                })
+            )
     }
 
     const getValue = () => {

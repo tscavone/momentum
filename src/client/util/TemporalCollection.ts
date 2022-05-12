@@ -5,7 +5,6 @@
 
 import { DateRange } from './DateRange'
 import { DatedObject } from './DatedObject'
-import { clone } from 'lodash'
 import { makeAutoObservable } from 'mobx'
 import { IdentifiedObject } from './IdentifiedObject'
 import { Id } from './Id'
@@ -113,7 +112,7 @@ export class TemporalCollection<T extends IdentifiedObject> {
         if (!newCurrent) throw new Error('null newCurrent passed to save!')
 
         date = date ? date : new Date()
-        this.put(clone(this._current), date)
+        this.put(this._current, date)
         this.current = newCurrent
     }
 

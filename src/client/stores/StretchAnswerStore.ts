@@ -70,7 +70,7 @@ export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
         }
     }
 
-    write(): void {
+    write(): Promise<string> {
         if (this._persistenceProvider === null)
             throw new Error('peristenceProvider null in StretchStore')
 
@@ -100,6 +100,6 @@ export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
             stretchData[employeeID] = serializedTemportalStretch
         }
 
-        this.persistenceProvider.writeStretchData(stretchData)
+        return this.persistenceProvider.writeStretchData(stretchData)
     }
 }

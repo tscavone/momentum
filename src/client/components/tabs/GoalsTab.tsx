@@ -91,6 +91,9 @@ export const GoalsTab = observer(() => {
             )
     }
 
+    const updateExistingGoalProgress = (event) => {
+        console.log(event)
+    }
     const addGoal = () => {
         const newGoals = [...goals]
         let newGoal = new Goal()
@@ -114,6 +117,7 @@ export const GoalsTab = observer(() => {
         setProgress(0)
         setName(null)
     }
+
     return (
         <VStack>
             <Heading as="h4" size="md">
@@ -160,7 +164,9 @@ export const GoalsTab = observer(() => {
                                         updateName={null}
                                         updateDetails={null}
                                         updateLink={null}
-                                        updateProgress={null}
+                                        updateProgress={
+                                            updateExistingGoalProgress
+                                        }
                                     />
                                     <VStack w={100}>
                                         <VStack>

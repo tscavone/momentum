@@ -8,6 +8,38 @@ import { IdentifiedObject } from '../util/IdentifiedObject'
 export class Employee extends IdentifiedObject {
     private _first: string
     private _last: string
+    private _email: string
+    private _startDate: Date
+    private _skills: Id[] // settings entry ids
+    private _position: Id // settings entry id
+    private _interests: string[]
+    private _pets: string[]
+    private _details: string
+
+    public get email(): string {
+        return this._email
+    }
+    public set email(value: string) {
+        this._email = value
+    }
+    public get skills(): Id[] {
+        return this._skills
+    }
+    public set skills(value: Id[]) {
+        this._skills = value
+    }
+    public get startDate(): Date {
+        return this._startDate
+    }
+    public set startDate(value: Date) {
+        this._startDate = value
+    }
+    public get position(): Id {
+        return this._position
+    }
+    public set position(value: Id) {
+        this._position = value
+    }
 
     constructor() {
         super()

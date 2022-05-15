@@ -30,7 +30,7 @@ export const TabContainer = observer(() => {
     }
 
     return (
-        <Tabs size="md" variant="enclosed" colorScheme={'green'}>
+        <Tabs size="md" variant="enclosed" colorScheme={'green'} isLazy>
             <TabList>
                 <Tab>
                     <FiClock style={iconStyle} />

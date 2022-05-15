@@ -34,7 +34,7 @@ export const GoalComponent = ({
     updateName: ChangeEventHandler<HTMLInputElement> | null
     updateDetails: ChangeEventHandler<HTMLTextAreaElement> | null
     updateLink: Dispatch<SetStateAction<string>> | null
-    updateProgress: Dispatch<SetStateAction<number>> | null
+    updateProgress: (event) => void
 }) => {
     const settingsStore = useSettingsStore()
 
@@ -72,7 +72,8 @@ export const GoalComponent = ({
                 <HStack style={{ marginTop: '10px', marginLeft: '15px' }}>
                     <Text>progress:</Text>
                     <Slider
-                        id="newGoalSlider"
+                        aria-checked
+                        id={goal ? goal.id.id : 'newGoalSlider'}
                         pl={'15px'}
                         w={'87%'}
                         aria-label="slider-ex-6"

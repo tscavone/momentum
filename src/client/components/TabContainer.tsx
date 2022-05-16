@@ -7,11 +7,11 @@ import {
     FiInfo,
     FiMessageCircle,
     FiClock,
+    FiUser,
 } from 'react-icons/fi'
 import { StretchQuesitonTab } from './tabs/StretchQuestionTab'
 import {
     useNoteStore,
-    useSelectedEmployeeStore,
     useStatusAndGoalsStore,
     useStretchAnswerStore,
 } from './RootStoreProvider'
@@ -19,32 +19,41 @@ import { observer } from 'mobx-react'
 import { TabButton } from './TabButton'
 import { GoalsTab } from './tabs/GoalsTab'
 import { FiAlertTriangle } from 'react-icons/fi'
+import { DetailsTab } from './tabs/DetailsTab'
+import { FollowUpsTab } from './tabs/FollowUpsTab'
+import { IntegrationTab } from './tabs/IntegrationTab'
+import { IssuesTab } from './tabs/IssuesTab'
 
 export const TabContainer = observer(() => {
     const noteStore = useNoteStore()
     const stretchAnswerStore = useStretchAnswerStore()
-    const selectedEmployeeStore = useSelectedEmployeeStore()
     const statusAndGoalsStore = useStatusAndGoalsStore()
     const iconStyle = {
         marginRight: '5px',
     }
 
     return (
-        <Tabs size="md" variant="enclosed" colorScheme={'green'} isLazy>
+        <Tabs
+            size="md"
+            variant="enclosed"
+            colorScheme={'green'}
+            isLazy
+            defaultIndex={2}
+        >
             <TabList>
                 <Tab>
                     <FiClock style={iconStyle} />
                     Follow Ups
+                </Tab>
+                <Tab>
+                    <FiAlertTriangle style={iconStyle} />
+                    Issues
                 </Tab>
                 <TabButton
                     infoStore={statusAndGoalsStore}
                     name={'goals'}
                     icon={<FiCheckSquare style={iconStyle} />}
                 />
-                <Tab>
-                    <FiAlertTriangle style={iconStyle} />
-                    Issues
-                </Tab>
                 <TabButton
                     infoStore={stretchAnswerStore}
                     name={'stretch'}
@@ -60,23 +69,32 @@ export const TabContainer = observer(() => {
                     Integration
                 </Tab>
                 <Tab>
-                    <FiInfo style={iconStyle} />
+                    <FiUser style={iconStyle} />
                     Details
                 </Tab>
             </TabList>
             <TabPanels>
-                <TabPanel />
+                <TabPanel>
+                    <FollowUpsTab />
+                </TabPanel>
+                <TabPanel>
+                    <IssuesTab />
+                </TabPanel>
                 <TabPanel>
                     <GoalsTab />
                 </TabPanel>
-                <TabPanel />
                 <TabPanel>
                     <StretchQuesitonTab />
                 </TabPanel>
                 <TabPanel>
                     <NotesTab />
                 </TabPanel>
-                <TabPanel></TabPanel>
+                <TabPanel>
+                    <IntegrationTab />
+                </TabPanel>
+                <TabPanel>
+                    <DetailsTab />
+                </TabPanel>
             </TabPanels>
         </Tabs>
     )

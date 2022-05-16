@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Id } from '../util/Id'
 import { useAuthedUserStore, useRootStore } from './RootStoreProvider'
 import {
@@ -30,17 +30,26 @@ async function loginUser(credentials) {
 export default function Login() {
     const authedUserStore = useAuthedUserStore()
     const rootStore = useRootStore()
-    const [username, setUserName] = useState<string>()
-    const [password, setPassword] = useState<string>()
+    const [username, setUserName] = useState<string>('dardenfall')
+    const [password, setPassword] = useState<string>('coro')
+    useEffect(() => {
+        var input = document.getElementById('password')
 
+        input.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault()
+                document.getElementById('submit').click()
+            }
+        })
+    })
     const handleSubmit = async (e) => {
         e.preventDefault()
         let responseData: { userId: string; token: string } = null
 
         try {
             responseData = await loginUser({
-                username,
-                password,
+                username: username.trim(),
+                password: password.trim(),
             })
             console.log('------> logged in')
             rootStore.initialize(Id.fromString(responseData.userId))
@@ -52,30 +61,7 @@ export default function Login() {
             return
         }
     }
-
     return (
-        // <div className="login-wrapper">
-        //     <h1>Please Log In</h1>
-        //     <form onSubmit={handleSubmit}>
-        //         <label>
-        //             <p>Username</p>
-        //             <input
-        //                 type="text"
-        //                 onChange={(e) => setUserName(e.target.value)}
-        //             />
-        //         </label>
-        //         <label>
-        //             <p>Password</p>
-        //             <input
-        //                 type="password"
-        //                 onChange={(e) => setPassword(e.target.value)}
-        //             />
-        //         </label>
-        //         <div>
-        //             <button type="submit">Submit</button>
-        //         </div>
-        //     </form>
-        // </div>
         <Flex
             minH={'100vh'}
             align={'center'}
@@ -142,6 +128,7 @@ export default function Login() {
                                     bg: 'green.500',
                                 }}
                                 onClick={handleSubmit}
+                                id="submit"
                             >
                                 Sign in
                             </Button>

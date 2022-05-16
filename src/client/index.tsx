@@ -10,16 +10,59 @@ import { extendTheme } from '@chakra-ui/react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import SideMenuApp from './SideMenuApp'
 
-const theme = extendTheme(customTheme)
-
+const theme = extendTheme({
+    ...customTheme,
+    shadows: {
+        outline: '0 0 0 3px #55804C',
+    },
+    components: {
+        Form: {
+            variants: {
+                floating500: {
+                    container: {
+                        label: {
+                            top: 0,
+                            left: 0,
+                            zIndex: 2,
+                            position: 'absolute',
+                            backgroundColor: 'green.500',
+                            pointerEvents: 'none',
+                            mx: 3,
+                            px: 1,
+                            my: 2,
+                            transform: 'scale(0.85) translateY(-24px)',
+                        },
+                    },
+                },
+                floating: {
+                    container: {
+                        label: {
+                            top: 0,
+                            left: 0,
+                            zIndex: 2,
+                            position: 'absolute',
+                            backgroundColor: 'white',
+                            pointerEvents: 'none',
+                            mx: 3,
+                            px: 1,
+                            my: 2,
+                            transform: 'scale(0.85) translateY(-24px)',
+                        },
+                    },
+                },
+            },
+        },
+    },
+})
+theme.shadows.outline = 'green'
 ReactDOM.render(
     <React.StrictMode>
         <ChakraProvider theme={theme}>
             <RootStoreProvider>
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/" element={<App />} />
-                        <Route path="side" element={<SideMenuApp />} />
+                        <Route path="top" element={<App />} />
+                        <Route path="/" element={<SideMenuApp />} />
                     </Routes>
                 </BrowserRouter>
             </RootStoreProvider>

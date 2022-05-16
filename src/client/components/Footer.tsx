@@ -24,7 +24,6 @@ export function Footer() {
                 align={{ base: 'center', md: 'center' }}
             >
                 <Stack direction={'row'} spacing={6}>
-                    <Link href={'#'}>about</Link>\{' '}
                     <Link href={'#'}>contact</Link>
                 </Stack>
                 <Box>
@@ -32,17 +31,5 @@ export function Footer() {
                 </Box>
             </Container>
         </Box>
-        // <Flex direction={'row'}>
-        //         <Box p={8}>
-        //             <Link href={'#'}>about</Link>
-        //         </Box>
-        //         <Box p={8}>
-        //             <Link href={'#'}>contact</Link>
-        //         </Box>
-        //         <Spacer />
-        //         <Box p={16}>
-        //             <Button>save all</Button>
-        //         </Box>
-        //     </Flex>
     )
 }

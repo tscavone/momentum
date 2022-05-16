@@ -1,7 +1,6 @@
 import { Box } from '@chakra-ui/react'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'
-import { useState } from 'react'
 import { Footer } from './components/Footer'
 import Login from './components/Login'
 import { MainContent } from './components/MainContent'

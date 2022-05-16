@@ -1,14 +1,4 @@
-import {
-    Box,
-    Button,
-    Divider,
-    Flex,
-    Heading,
-    Select,
-    Textarea,
-    useToast,
-    VStack,
-} from '@chakra-ui/react'
+import { Box, Button, Flex, Select, Textarea, useToast } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { makeAutoObservable, observable } from 'mobx'
 import { ReactNode } from 'react'
@@ -23,6 +13,7 @@ import {
 } from '../RootStoreProvider'
 import { StretchAnswerStore } from '../../stores/StretchAnswerStore'
 import { SelectedEmployeeStore } from '../../stores/SelectedEmployeeStore'
+import { TabPanelContainer } from './TabPanelContainer'
 
 class SelectedQuestionStore {
     _selectedQuestionId: string
@@ -234,61 +225,55 @@ export const StretchQuesitonTab = observer(() => {
     //     return currentAnswer ? currentAnswer : ''
     // }
     return (
-        <Box>
-            <VStack>
-                <Heading as="h4" size="md">
-                    stretch questions
-                </Heading>
-                <Divider orientation="horizontal" />
-                <Select
-                    w={[250, 500, 750]}
-                    value={(function () {
-                        return selectedQuestionStore.selectedQuestionId
-                    })()}
-                    placeholder="Select a stretch question"
-                    onChange={(event) => {
-                        selectedQuestionStore.selectedQuestionId =
-                            event.target.value
+        <TabPanelContainer title="stretch questions" helpText="" tag="stretch">
+            <Select
+                w={[250, 500, 750]}
+                value={(function () {
+                    return selectedQuestionStore.selectedQuestionId
+                })()}
+                placeholder="Select a stretch question"
+                onChange={(event) => {
+                    selectedQuestionStore.selectedQuestionId =
+                        event.target.value
 
-                        stretchAnswerStore.getCurrent(
-                            selectedEmployeeStore.selectedId
-                        ).questionId.id = event.target.value
-                    }}
-                >
-                    {populateStretchQuestions()}
-                </Select>
-                <Box w={[250, 500, 750]}>
-                    <Textarea
-                        colorScheme={'green'}
-                        value={getValue()}
-                        onChange={updateCurrentAnswer}
-                        isReadOnly={shouldBeReadOnly()}
-                        className={
-                            shouldBeReadOnly()
-                                ? 'readonly-textarea'
-                                : 'editable-textarea'
-                        }
-                    ></Textarea>
+                    stretchAnswerStore.getCurrent(
+                        selectedEmployeeStore.selectedId
+                    ).questionId.id = event.target.value
+                }}
+            >
+                {populateStretchQuestions()}
+            </Select>
+            <Box w={[250, 500, 750]}>
+                <Textarea
+                    colorScheme={'green'}
+                    value={getValue()}
+                    onChange={updateCurrentAnswer}
+                    isReadOnly={shouldBeReadOnly()}
+                    className={
+                        shouldBeReadOnly()
+                            ? 'readonly-textarea'
+                            : 'editable-textarea'
+                    }
+                ></Textarea>
+            </Box>
+            <Flex
+                alignItems={'center'}
+                justifyContent={'flex-end'}
+                direction={'row'}
+                w={[250, 500, 750]}
+            >
+                <Box p={2}>
+                    <Button
+                        onClick={saveStretchAnswer}
+                        disabled={stretchAnswerStore
+                            .getCurrent(selectedEmployeeStore.selectedId)
+                            .isNewlyMinted()}
+                        colorScheme="green"
+                    >
+                        save answer
+                    </Button>
                 </Box>
-                <Flex
-                    alignItems={'center'}
-                    justifyContent={'flex-end'}
-                    direction={'row'}
-                    w={[250, 500, 750]}
-                >
-                    <Box p={2}>
-                        <Button
-                            onClick={saveStretchAnswer}
-                            disabled={stretchAnswerStore
-                                .getCurrent(selectedEmployeeStore.selectedId)
-                                .isNewlyMinted()}
-                            colorScheme="green"
-                        >
-                            save answer
-                        </Button>
-                    </Box>
-                </Flex>
-            </VStack>
-        </Box>
+            </Flex>
+        </TabPanelContainer>
     )
 })

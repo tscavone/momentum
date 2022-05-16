@@ -31,6 +31,7 @@ import React from 'react'
 import { FiPlus } from 'react-icons/fi'
 import { Id } from '../../util/Id'
 import { StatusAndGoals } from '../../value_objects/StatusAndGoals'
+import { TabPanelContainer } from './TabPanelContainer'
 
 export const GoalsTab = observer(() => {
     const selectedEmployeeStore = useSelectedEmployeeStore()
@@ -119,11 +120,7 @@ export const GoalsTab = observer(() => {
     }
 
     return (
-        <VStack>
-            <Heading as="h4" size="md">
-                status and goals
-            </Heading>
-            <Divider orientation="horizontal" />
+        <TabPanelContainer title="status and goals" helpText="" tag="goals">
             <Box w={[250, 500, 750]}>
                 <FormControl>
                     <FormLabel fontSize="2xl" htmlFor="status">
@@ -172,7 +169,9 @@ export const GoalsTab = observer(() => {
                                         <VStack>
                                             <Checkbox>complete</Checkbox>
                                             <Checkbox
-                                                style={{ marginLeft: '-21px' }}
+                                                style={{
+                                                    marginLeft: '-21px',
+                                                }}
                                             >
                                                 cancel
                                             </Checkbox>
@@ -234,6 +233,6 @@ export const GoalsTab = observer(() => {
                     </Button>
                 </Box>
             </Flex>
-        </VStack>
+        </TabPanelContainer>
     )
 })

@@ -2,28 +2,15 @@
 // this component represents the notes tab in the main application
 //
 import { useSelectedEmployeeStore } from '../RootStoreProvider'
-import {
-    Box,
-    Button,
-    Divider,
-    Flex,
-    FormControl,
-    FormLabel,
-    Heading,
-    HStack,
-    Input,
-    useToast,
-    VStack,
-} from '@chakra-ui/react'
+import { Box, Button, Flex, useToast } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { TabPanelContainer } from './TabPanelContainer'
-import { DetailsForm } from '../DetailsForm'
 
-export const DetailsTab = observer(() => {
+export const FollowUpsTab = observer(() => {
     const selectedEmployeeStore = useSelectedEmployeeStore()
     const toast = useToast()
 
-    const updateDetails = () => {
+    const updateFollowUps = () => {
         // noteStore
         //     .save(
         //         selectedEmployeeStore.selectedId,
@@ -50,10 +37,8 @@ export const DetailsTab = observer(() => {
     }
 
     return (
-        <TabPanelContainer title="details" helpText="" tag="details">
-            <Box w={[250, 500, 750]}>
-                <DetailsForm />
-            </Box>
+        <TabPanelContainer title="follow ups" helpText="" tag="follow ups">
+            <Box w={[250, 500, 750]}>{/* main content */}</Box>
 
             <Flex
                 alignItems={'center'}
@@ -62,8 +47,8 @@ export const DetailsTab = observer(() => {
                 w={[250, 500, 750]}
             >
                 <Box p={2}>
-                    <Button onClick={updateDetails} colorScheme="green">
-                        save details
+                    <Button onClick={updateFollowUps} colorScheme="green">
+                        save follow ups
                     </Button>
                 </Box>
             </Flex>

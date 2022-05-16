@@ -550,3 +550,8 @@ test('Root store settings load is correct', () => {
         },
     ])
 })
+
+test('Root store employee load is correct', () => {
+    const rootStore = new RootStore()
+    rootStore.initialize('abcdef')
+})

@@ -12,7 +12,7 @@ export class Employee extends IdentifiedObject {
     private _email: string
     private _startDate: Date
     private _position: Id // settings entry id
-    private _skills: Id[] // settings entry ids
+    private _skills: string[] // settings entry ids
     private _interests: string[]
     private _college: string
     private _hometown: string
@@ -56,10 +56,10 @@ export class Employee extends IdentifiedObject {
     public set email(value: string) {
         this._email = value
     }
-    public get skills(): Id[] {
+    public get skills(): string[] {
         return this._skills
     }
-    public set skills(value: Id[]) {
+    public set skills(value: string[]) {
         this._skills = value
     }
     public get startDate(): Date {
@@ -121,7 +121,9 @@ export class Employee extends IdentifiedObject {
     public static fromJSON(jsonEmployee: IDataEmployee): Employee {
         let employee = Object.assign(new Employee(), jsonEmployee) as Employee
         employee.id = Id.fromString(jsonEmployee._id)
-        employee.startDate = new Date(jsonEmployee._startDate)
+        employee.startDate = jsonEmployee._startDate
+            ? null
+            : new Date(jsonEmployee._startDate)
         employee.position = Id.fromString(jsonEmployee._position)
         if (jsonEmployee._skills.length === 0) {
             employee.skills = []
@@ -130,7 +132,9 @@ export class Employee extends IdentifiedObject {
                 Id.fromString(skill)
             )
         }
-        employee.birthMonthDay = new Date(jsonEmployee._birthMonthDay)
+        employee.birthMonthDay = jsonEmployee._birthMonthDay
+            ? new Date(jsonEmployee._birthMonthDay)
+            : null
 
         return employee
     }
@@ -141,14 +145,16 @@ export class Employee extends IdentifiedObject {
             _first: this._first,
             _last: this._last,
             _email: this._email,
-            _startDate: dateToString(this._startDate),
+            _startDate: this.startDate ? dateToString(this.startDate) : '',
             _position: this.position.id,
-            _skills: this.skills.map((skill) => skill.id),
+            _skills: [...this.skills],
             _interests: [...this.interests],
             _college: this.college,
             _hometown: this.hometown,
             _townOfResidence: this.townOfResidence,
-            _birthMonthDay: dateToString(this.birthMonthDay),
+            _birthMonthDay: this.birthMonthDay
+                ? dateToString(this.birthMonthDay)
+                : '',
             _pets: this.pets,
             _additionalDetails: this._additionalDetails,
         }

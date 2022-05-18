@@ -37,7 +37,7 @@ export class SettingsStore implements IStore, IWriteable {
         this._persistenceProvider = value
     }
 
-    write(): void {
+    write(): Promise<string> {
         if (this._persistenceProvider === null)
             throw new Error('peristenceProvider null in SettingsStore')
 
@@ -53,7 +53,7 @@ export class SettingsStore implements IStore, IWriteable {
             }
         }
 
-        this._persistenceProvider.writeSettingsData({
+        return this._persistenceProvider.writeSettingsData({
             entries,
             values,
         })

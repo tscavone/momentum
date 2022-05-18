@@ -1,29 +1,25 @@
 //
 // this component represents the notes tab in the main application
 //
-import { useSelectedEmployeeStore } from '../RootStoreProvider'
 import {
-    Box,
-    Button,
-    Divider,
-    Flex,
-    FormControl,
-    FormLabel,
-    Heading,
-    HStack,
-    Input,
-    useToast,
-    VStack,
-} from '@chakra-ui/react'
+    useEmployeeStore,
+    useSelectedEmployeeStore,
+} from '../RootStoreProvider'
+import { useToast } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { TabPanelContainer } from './TabPanelContainer'
 import { DetailsForm } from '../DetailsForm'
+import { Employee } from '../../value_objects/Employee'
 
 export const DetailsTab = observer(() => {
     const selectedEmployeeStore = useSelectedEmployeeStore()
+    const employeeStore = useEmployeeStore()
+
     const toast = useToast()
 
-    const updateDetails = () => {
+    const updateDetails = (employee: Employee): Promise<string> => {
+        employeeStore.save(employee)
+        return employeeStore.write()
         // noteStore
         //     .save(
         //         selectedEmployeeStore.selectedId,
@@ -51,22 +47,12 @@ export const DetailsTab = observer(() => {
 
     return (
         <TabPanelContainer title="details" helpText="" tag="details">
-            <Box w={[250, 500, 750]}>
-                <DetailsForm />
-            </Box>
-
-            <Flex
-                alignItems={'center'}
-                justifyContent={'flex-end'}
-                direction={'row'}
-                w={[250, 500, 750]}
-            >
-                <Box p={2}>
-                    <Button onClick={updateDetails} colorScheme="green">
-                        save details
-                    </Button>
-                </Box>
-            </Flex>
+            <DetailsForm
+                employee={employeeStore.getEmployee(
+                    selectedEmployeeStore.selectedId
+                )}
+                setEmployee={updateDetails}
+            />
         </TabPanelContainer>
     )
 })

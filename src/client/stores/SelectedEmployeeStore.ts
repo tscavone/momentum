@@ -17,10 +17,9 @@ export class SelectedEmployeeStore implements IStore, IWriteable {
     //constructor
     //
     constructor() {
+        makeAutoObservable(this)
         this._selectedId = new Id()
         this._persistenceProvider = null
-
-        makeAutoObservable(this)
     }
 
     public get persistenceProvider(): IPersistenceProvider {
@@ -49,11 +48,11 @@ export class SelectedEmployeeStore implements IStore, IWriteable {
         this._selectedId = Id.fromString(selectedJsonData._selectedId)
     }
 
-    write(): void {
+    write(): Promise<string> {
         if (this._persistenceProvider === null)
             throw new Error('peristenceProvider null in SelectedEmployeeStore')
 
-        this._persistenceProvider.writeSelectedEmployeeData({
+        return this._persistenceProvider.writeSelectedEmployeeData({
             _selectedId: this._selectedId.id,
         })
     }

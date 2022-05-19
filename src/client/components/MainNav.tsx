@@ -37,17 +37,19 @@ import {
     useAuthedUserStore,
     useEmployeeStore,
     useSelectedEmployeeStore,
+    useSettingsStore,
 } from './RootStoreProvider'
 import { ReportDrawer } from './reportComponents/ReportDrawer'
+import { SettingsDialog } from './SettingsDialog'
+import { NewEmployeeDialog } from './NewEmployeeDialog'
+import { observer } from 'mobx-react'
 
 interface LinkItemProps {
     name: string
     icon: IconType
 }
 const LinkItems: Array<LinkItemProps> = [
-    { name: 'new employee', icon: FiUserPlus },
     { name: 'links', icon: FiLink2 },
-    { name: 'settings', icon: FiSettings },
     { name: 'about', icon: FiInfo },
 ]
 
@@ -81,6 +83,19 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onSidebarClose, ...rest }: SidebarProps) => {
+    const settingsStore = useSettingsStore()
+
+    const {
+        isOpen: isSettingsOpen,
+        onOpen: onSettingsOpen,
+        onClose: onSettingsClosed,
+    } = useDisclosure()
+
+    const {
+        isOpen: isDialogOpen,
+        onOpen: onDialogOpen,
+        onClose: onDialogClosed,
+    } = useDisclosure()
     return (
         <Box
             transition="3s ease"
@@ -110,11 +125,34 @@ const SidebarContent = ({ onSidebarClose, ...rest }: SidebarProps) => {
                     onClick={onSidebarClose}
                 />
             </Flex>
+            <NavItem
+                key={'settings'}
+                icon={FiSettings}
+                onClick={onSettingsOpen}
+            >
+                settings
+            </NavItem>
+            <NavItem
+                key={'newEmployee'}
+                icon={FiUserPlus}
+                onClick={onDialogOpen}
+            >
+                new employee
+            </NavItem>
             {LinkItems.map((link) => (
                 <NavItem key={link.name} icon={link.icon}>
                     {link.name}
                 </NavItem>
             ))}
+            <SettingsDialog
+                isSettingsOpen={isSettingsOpen}
+                onSettingsClosed={onSettingsClosed}
+                origSettings={settingsStore.settings}
+            />
+            <NewEmployeeDialog
+                isDialogOpen={isDialogOpen}
+                onDialogClosed={onDialogClosed}
+            />
         </Box>
     )
 }
@@ -162,7 +200,7 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
 interface MobileProps extends FlexProps {
     onSidebarOpen: () => void
 }
-const MobileNav = ({ onSidebarOpen, ...rest }: MobileProps) => {
+const MobileNav = observer(({ onSidebarOpen, ...rest }: MobileProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const {
         isOpen: isDrawerOpen,
@@ -307,4 +345,4 @@ const MobileNav = ({ onSidebarOpen, ...rest }: MobileProps) => {
             />
         </>
     )
-}
+})

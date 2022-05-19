@@ -18,6 +18,8 @@ import {
     useSettingsStore,
 } from './RootStoreProvider'
 
+const controlStyle = { margin: '16px' }
+
 const DetailsInput = ({
     label,
     value,
@@ -30,11 +32,11 @@ const DetailsInput = ({
     helperText?: string
 }) => {
     return (
-        <FormControl style={{ margin: '16px' }} variant="floating">
+        <FormControl style={controlStyle} variant="floating">
             <FormLabel>{label}</FormLabel>
             <Input value={value} onChange={handleChange}></Input>
             {helperText != '' ? (
-                <FormHelperText>only month and date necessary</FormHelperText>
+                <FormHelperText>{helperText}</FormHelperText>
             ) : (
                 ''
             )}
@@ -43,10 +45,12 @@ const DetailsInput = ({
 }
 export const DetailsForm = ({
     employee,
-    setEmployee,
+    updateEmployee,
+    isDialog,
 }: {
     employee: Employee
-    setEmployee: (employee) => Promise<string>
+    updateEmployee: (employee) => void
+    isDialog: boolean
 }) => {
     const employeeStore = useEmployeeStore()
     const selectedEmployeeStore = useSelectedEmployeeStore()
@@ -56,7 +60,33 @@ export const DetailsForm = ({
 
     const [last, setLast] = useState<string>(employee.last)
 
-    const controlStyle = { margin: '16px' }
+    const [email, setEmail] = useState<string>(employee.email)
+
+    const [startDate, setStartDate] = useState<Date>(employee.startDate)
+
+    const [position, setPosition] = useState<Id>(employee.position)
+
+    const [skills, setSkills] = useState<string[]>(employee.skills)
+
+    const [interests, setInterests] = useState<string[]>(employee.interests)
+
+    const [college, setCollege] = useState<string>(employee.college)
+
+    const [hometown, setHometown] = useState<string>(employee.hometown)
+
+    const [townOfResidence, setTownOfResidence] = useState<string>(
+        employee.townOfResidence
+    )
+
+    const [birthMonthDay, setBirthMonthDay] = useState<Date>(
+        employee.birthMonthDay
+    )
+
+    const [pets, setPets] = useState<string[]>(employee.pets)
+
+    const [additionalDetails, setAdditionalDetails] = useState<string>(
+        employee.additionalDetails
+    )
 
     employeeStore.getEmployee(selectedEmployeeStore.selectedId)
 
@@ -66,15 +96,27 @@ export const DetailsForm = ({
         borderRadius: '5px',
     }
 
-    const updateEmployee = () => {
+    const setNewValues = () => {
         employee.first = first
         employee.last = last
-        setEmployee(employee)
+        employee.email = email
+        employee.startDate = startDate
+        employee.position = position
+        employee.skills = skills
+        employee.interests = interests
+        employee.college = college
+        employee.hometown = hometown
+        employee.townOfResidence = townOfResidence
+        employee.birthMonthDay = birthMonthDay
+        employee.pets = pets
+        employee.additionalDetails = additionalDetails
+
+        updateEmployee(employee)
     }
 
     return (
         <>
-            <Box w={[250, 500, 750]}>
+            <Box w={isDialog ? [250, 500] : [250, 500, 750]}>
                 <DetailsInput
                     label="first name"
                     value={first}
@@ -90,11 +132,8 @@ export const DetailsForm = ({
                     <FormLabel>email</FormLabel>
                     <Input
                         type={'email'}
-                        value={employee.email}
-                        onChange={(event) => {
-                            employee.email = event.target.value
-                            setEmployee(employee)
-                        }}
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
                     ></Input>
                 </FormControl>
 
@@ -104,27 +143,27 @@ export const DetailsForm = ({
                         style={pickerStyle}
                         type="date"
                         value={
-                            employee.startDate
-                                ? dateToString(employee.startDate)
+                            startDate
+                                ? dateToString(startDate)
                                 : dateToString(new Date())
                         }
-                        onChange={(event) => {
-                            employee.startDate = new Date(event.target.value)
-                            setEmployee(employee)
-                        }}
+                        onChange={(event) =>
+                            setStartDate(new Date(event.target.value))
+                        }
                     />
                 </FormControl>
 
                 <FormControl style={controlStyle} variant="floating">
                     <FormLabel>{'position'}</FormLabel>
                     <Select
-                        defaultValue={employee.position.id}
-                        onChange={(event) => {
-                            employee.position = Id.fromString(
+                        value={position ? position.id : null}
+                        onChange={(event) =>
+                            setPosition(
                                 event.target.value
+                                    ? Id.fromString(event.target.value)
+                                    : null
                             )
-                            setEmployee(employee)
-                        }}
+                        }
                     >
                         {settingsStore
                             .getByEntryName('positions')[1]
@@ -140,91 +179,73 @@ export const DetailsForm = ({
                 </FormControl>
                 <DetailsInput
                     label="skills"
-                    value={employee.skills.join(',')}
-                    handleChange={(event) => {
-                        employee.skills = (event.target.value as string).split(
-                            ','
-                        )
-                        setEmployee(employee)
-                    }}
+                    value={skills.join(',')}
+                    handleChange={(event) =>
+                        setSkills((event.target.value as string).split(','))
+                    }
                     helperText="comma separated list"
                 />
                 <DetailsInput
                     label="interests"
-                    value={employee.interests.join(',')}
-                    handleChange={(event) => {
-                        employee.interests = (
-                            event.target.value as string
-                        ).split(',')
-                        setEmployee(employee)
-                    }}
+                    value={interests.join(',')}
+                    handleChange={(event) =>
+                        setInterests((event.target.value as string).split(','))
+                    }
                     helperText="comma separated list"
                 />
                 <DetailsInput
                     label="college"
-                    value={employee.college}
-                    handleChange={(event) => {
-                        employee.college = event.target.value
-                        setEmployee(employee)
-                    }}
+                    value={college}
+                    handleChange={(event) => setCollege(event.target.value)}
                 />
                 <DetailsInput
                     label="home town"
-                    value={employee.hometown}
-                    handleChange={(event) => {
-                        employee.hometown = event.target.value
-                        setEmployee(employee)
-                    }}
+                    value={hometown}
+                    handleChange={(event) => setHometown(event.target.value)}
                 />
                 <DetailsInput
                     label="current town"
-                    value={employee.townOfResidence}
-                    handleChange={(event) => {
-                        employee.townOfResidence = event.target.value
-                        setEmployee(employee)
-                    }}
+                    value={townOfResidence}
+                    handleChange={(event) =>
+                        setTownOfResidence(event.target.value)
+                    }
                 />
                 <FormControl style={controlStyle} variant="floating">
-                    <FormLabel>{'birth day (month and day)'}</FormLabel>
+                    <FormLabel>{'birth month/day'}</FormLabel>
                     <input
                         style={pickerStyle}
                         type="date"
                         value={
-                            employee.birthMonthDay
-                                ? dateToString(employee.birthMonthDay)
+                            birthMonthDay
+                                ? dateToString(birthMonthDay)
                                 : dateToString(new Date())
                         }
                         min={`01-01-${new Date().getFullYear()}`}
-                        onChange={(event) => {
-                            employee.birthMonthDay = new Date(
-                                event.target.value
-                            )
-                            setEmployee(employee)
-                        }}
+                        onChange={(event) =>
+                            setBirthMonthDay(new Date(event.target.value))
+                        }
                     />
                     <FormHelperText>
-                        only month and date necessary
+                        only month and date necessary, year ignored
                     </FormHelperText>
                 </FormControl>
+
                 <DetailsInput
                     label="pets"
-                    value={employee.pets.join(',')}
-                    handleChange={(event) => {
-                        employee.pets = (event.target.value as string).split(
-                            ','
-                        )
-                        setEmployee(employee)
-                    }}
+                    value={pets.join(',')}
+                    handleChange={(event) =>
+                        setPets((event.target.value as string).split(','))
+                    }
                 />
+
                 <FormControl style={controlStyle} variant="floating">
                     <FormLabel>{'additional details'}</FormLabel>
                     <Input
                         type="text"
-                        value={employee.additionalDetails}
-                        onChange={(event) => {
-                            employee.additionalDetails = event.target.value
-                            setEmployee(employee)
-                        }}
+                        value={additionalDetails}
+                        onChange={(event) =>
+                            setAdditionalDetails(event.target.value)
+                        }
                     />
                 </FormControl>
             </Box>
@@ -232,10 +253,10 @@ export const DetailsForm = ({
                 alignItems={'center'}
                 justifyContent={'flex-end'}
                 direction={'row'}
-                w={[250, 500, 750]}
+                w={isDialog ? [250, 500] : [250, 500, 750]}
             >
                 <Box p={2}>
-                    <Button onClick={updateEmployee} colorScheme="green">
+                    <Button onClick={setNewValues} colorScheme="green">
                         save details
                     </Button>
                 </Box>

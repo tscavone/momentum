@@ -5,11 +5,11 @@ import {
     useEmployeeStore,
     useSelectedEmployeeStore,
 } from '../RootStoreProvider'
-import { useToast } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { TabPanelContainer } from './TabPanelContainer'
 import { DetailsForm } from '../DetailsForm'
 import { Employee } from '../../value_objects/Employee'
+import { useToast } from '@chakra-ui/react'
 
 export const DetailsTab = observer(() => {
     const selectedEmployeeStore = useSelectedEmployeeStore()
@@ -17,32 +17,27 @@ export const DetailsTab = observer(() => {
 
     const toast = useToast()
 
-    const updateDetails = (employee: Employee): Promise<string> => {
+    const updateEmployee = (employee: Employee): void => {
         employeeStore.save(employee)
-        return employeeStore.write()
-        // noteStore
-        //     .save(
-        //         selectedEmployeeStore.selectedId,
-        //         currentDateStore.date ? currentDateStore.date : new Date(),
-        //         new Note()
-        //     )
-        //     .then((successfulMessage) =>
-        //         toast({
-        //             title: successfulMessage,
-        //             status: 'success',
-        //             duration: 2000,
-        //             isClosable: true,
-        //         })
-        //     )
-        //     .catch((failureMessage) =>
-        //         toast({
-        //             title: 'save failed',
-        //             description: failureMessage,
-        //             status: 'error',
-        //             duration: 2000,
-        //             isClosable: true,
-        //         })
-        //     )
+        employeeStore
+            .write()
+            .then((successfulMessage) =>
+                toast({
+                    title: successfulMessage,
+                    status: 'success',
+                    duration: 2000,
+                    isClosable: true,
+                })
+            )
+            .catch((failureMessage) =>
+                toast({
+                    title: 'save failed',
+                    description: failureMessage,
+                    status: 'error',
+                    duration: 2000,
+                    isClosable: true,
+                })
+            )
     }
 
     return (
@@ -51,7 +46,8 @@ export const DetailsTab = observer(() => {
                 employee={employeeStore.getEmployee(
                     selectedEmployeeStore.selectedId
                 )}
-                setEmployee={updateDetails}
+                updateEmployee={updateEmployee}
+                isDialog={false}
             />
         </TabPanelContainer>
     )

@@ -4,6 +4,7 @@ export const DatePicker = ({ onChange, label, value }) => {
         padding: '3px',
         borderRadius: '5px',
         margin: '5px',
+        color: 'darkgrey',
     }
     return (
         <div className="date-picker">

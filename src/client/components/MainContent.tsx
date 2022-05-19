@@ -6,7 +6,6 @@ import {
     AccordionPanel,
     Box,
 } from '@chakra-ui/react'
-import { DatePicker } from './DatePicker'
 import { SummaryPanel } from './SummaryPanel'
 import { TabContainer } from './TabContainer'
 import { useCurrentDateStore } from './RootStoreProvider'
@@ -37,7 +36,7 @@ export const MainContent = () => {
                     <AccordionPanel pb={4}>
                         <TabContainer />
                     </AccordionPanel>
-                </AccordionItem>{' '}
+                </AccordionItem>
             </Accordion>
         </main>
     )

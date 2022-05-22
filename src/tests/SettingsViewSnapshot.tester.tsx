@@ -1,6 +1,6 @@
 import { ChakraProvider, Menu, MenuList } from '@chakra-ui/react'
 import renderer from 'react-test-renderer'
-import { SettingsMenuItem } from '../client/components/SettingsMenuItem'
+import { SettingsMenuItem } from '../client/components/dialogs/SettingsMenuItem'
 import { SettingsStore } from '../client/stores/SettingsStore'
 import { settingsTestData } from './testdata'
 import { customTheme } from '../client/theme/theme'

@@ -232,4 +232,74 @@ export class SettingsStore implements IStore, IWriteable {
 
         this._settings = newSettings
     }
+
+    static getDefaultValues(): IDataSettingsValue[] {
+        return [
+            {
+                _entryId: '1100',
+                _id: '1100-10',
+                _value: 'test',
+            },
+            {
+                _entryId: '1200',
+                _id: '1200-10',
+                _value: 'Associate Software Engineer',
+                _description:
+                    'Somebody just starting out. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
+            },
+            {
+                _entryId: '1200',
+                _id: '1200-20',
+                _value: 'Software Engineer',
+                _description:
+                    'Somebody who has been at it for a while. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
+            },
+            {
+                _entryId: '1200',
+                _id: '1200-30',
+                _value: 'Senior Software Engineer',
+                _description:
+                    'Should be well versed in a lot of stuff and a good programmer.  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            },
+            {
+                _entryId: '1300',
+                _id: '1300-10',
+                _value: "How do you debug a problem when you're really stuck?",
+            },
+            {
+                _entryId: '1300',
+                _id: '1300-20',
+                _value: 'What initially got you into coding?',
+            },
+            {
+                _entryId: '1300',
+                _id: '1300-30',
+                _value: 'Have you ever eaten Vegemite?',
+            },
+            {
+                _entryId: '1400',
+                _id: '1400-10-1',
+                _value: 'give a presentation',
+                _deleted: 'false',
+            },
+            {
+                _entryId: '1400',
+                _id: '1400-10-2',
+                _value: 'take a course',
+                _deleted: 'false',
+            },
+            {
+                _entryId: '1400',
+                _id: '1400-10-3',
+                _value: 'plan an outing',
+                _deleted: 'false',
+            },
+            {
+                _entryId: '1400',
+                _id: '1400-10-4',
+                _value: 'read a technical book',
+                _deleted: 'false',
+            },
+        ]
+    }
 }

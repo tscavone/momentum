@@ -458,7 +458,7 @@ export const settingsTestData: IDataSettings = {
     },
 }
 
-//test employee datak
+//test employee data
 export const employeeTestData: IDataEmployeeDetails = {
     abcdef: {
         '1234': {

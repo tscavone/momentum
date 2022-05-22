@@ -6,11 +6,15 @@ import {
     useNoteStore,
     useSelectedEmployeeStore,
 } from '../RootStoreProvider'
-import { RichTextBlock, serialize, deserialize } from '../RichTextBlock'
+import {
+    RichTextBlock,
+    serialize,
+    deserialize,
+} from '../subcomponents/RichTextBlock'
 import { Box, Button, Checkbox, Flex, Spacer, useToast } from '@chakra-ui/react'
 import { Note } from '../../value_objects/Note'
 import { observer } from 'mobx-react'
-import { TabContainer } from '../TabContainer'
+import { TabContainer } from './TabContainer'
 import { TabPanelContainer } from './TabPanelContainer'
 
 export const NotesTab = observer(() => {

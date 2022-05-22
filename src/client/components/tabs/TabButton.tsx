@@ -1,5 +1,5 @@
 import { Tab, Tooltip, Text } from '@chakra-ui/react'
-import { useSelectedEmployeeStore } from './RootStoreProvider'
+import { useSelectedEmployeeStore } from '../RootStoreProvider'
 import { observer } from 'mobx-react'
 
 export const TabButton = observer(({ name, icon, infoStore }) => {

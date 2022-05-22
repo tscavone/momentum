@@ -6,10 +6,10 @@ import {
     Select,
     Textarea,
 } from '@chakra-ui/react'
-import { SettingsEntry, SettingsType } from '../value_objects/SettingsEntry'
-import { SettingsValue } from '../value_objects/SettingsValue'
+import { SettingsEntry, SettingsType } from '../../value_objects/SettingsEntry'
+import { SettingsValue } from '../../value_objects/SettingsValue'
 import { FiMinus, FiPlus } from 'react-icons/fi'
-import { SettingsValueWithDesc } from '../value_objects/SettingsValueWithDesc'
+import { SettingsValueWithDesc } from '../../value_objects/SettingsValueWithDesc'
 import { MouseEventHandler } from 'react'
 
 export const SettingsInput = ({

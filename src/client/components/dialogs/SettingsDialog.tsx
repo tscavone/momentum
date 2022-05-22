@@ -11,10 +11,10 @@ import {
     ModalOverlay,
 } from '@chakra-ui/react'
 import React from 'react'
-import { SettingsEntry } from '../value_objects/SettingsEntry'
-import { SettingsValue } from '../value_objects/SettingsValue'
-import { SettingsValueWithDesc } from '../value_objects/SettingsValueWithDesc'
-import { useSettingsStore } from './RootStoreProvider'
+import { SettingsEntry } from '../../value_objects/SettingsEntry'
+import { SettingsValue } from '../../value_objects/SettingsValue'
+import { SettingsValueWithDesc } from '../../value_objects/SettingsValueWithDesc'
+import { useSettingsStore } from '../RootStoreProvider'
 import { SettingsInput } from './SettingsInput'
 
 export const SettingsDialog = ({

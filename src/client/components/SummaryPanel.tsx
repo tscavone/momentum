@@ -9,7 +9,7 @@ import {
     Text,
 } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
-import { DatePicker } from './DatePicker'
+import { DatePicker } from './subcomponents/DatePicker'
 import {
     useCurrentDateStore,
     useEmployeeStore,

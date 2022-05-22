@@ -30,6 +30,7 @@ import {
     FiLink2,
     FiInfo,
     FiEye,
+    FiClock,
 } from 'react-icons/fi'
 import { IconType } from 'react-icons'
 import { ReactText } from 'react'
@@ -40,8 +41,8 @@ import {
     useSettingsStore,
 } from './RootStoreProvider'
 import { ReportDrawer } from './reportComponents/ReportDrawer'
-import { SettingsDialog } from './SettingsDialog'
-import { NewEmployeeDialog } from './NewEmployeeDialog'
+import { SettingsDialog } from './dialogs/SettingsDialog'
+import { NewEmployeeDialog } from './dialogs/NewEmployeeDialog'
 import { observer } from 'mobx-react'
 
 interface LinkItemProps {
@@ -92,9 +93,15 @@ const SidebarContent = ({ onSidebarClose, ...rest }: SidebarProps) => {
     } = useDisclosure()
 
     const {
-        isOpen: isDialogOpen,
-        onOpen: onDialogOpen,
-        onClose: onDialogClosed,
+        isOpen: isNewEmployeeOpen,
+        onOpen: onNewEmployeeOpen,
+        onClose: onNewEmployeeClosed,
+    } = useDisclosure()
+
+    const {
+        isOpen: isFollowupOpen,
+        onOpen: onFollowupOpen,
+        onClose: onFollowupClosed,
     } = useDisclosure()
     return (
         <Box
@@ -135,9 +142,16 @@ const SidebarContent = ({ onSidebarClose, ...rest }: SidebarProps) => {
             <NavItem
                 key={'newEmployee'}
                 icon={FiUserPlus}
-                onClick={onDialogOpen}
+                onClick={onNewEmployeeOpen}
             >
                 new employee
+            </NavItem>
+            <NavItem
+                key={'newFollowup'}
+                icon={FiClock}
+                onClick={onFollowupOpen}
+            >
+                new follow up
             </NavItem>
             {LinkItems.map((link) => (
                 <NavItem key={link.name} icon={link.icon}>
@@ -150,8 +164,8 @@ const SidebarContent = ({ onSidebarClose, ...rest }: SidebarProps) => {
                 origSettings={settingsStore.settings}
             />
             <NewEmployeeDialog
-                isDialogOpen={isDialogOpen}
-                onDialogClosed={onDialogClosed}
+                isDialogOpen={isNewEmployeeOpen}
+                onDialogClosed={onNewEmployeeClosed}
             />
         </Box>
     )

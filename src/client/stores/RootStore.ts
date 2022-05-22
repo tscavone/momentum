@@ -7,6 +7,7 @@ import { StretchAnswerStore } from './StretchAnswerStore'
 import { CurrentDateStore } from './CurrentDateStore'
 import { AuthedUserStore } from './AuthedUserStore'
 import { StatusAndGoalsStore } from './StatusAndGoalsStore'
+import { FollowUpStore } from './FollowUpStore'
 import { PersistenceProviderFactory } from '../persistence/PersistenceProviderFactory'
 
 //const UserData
@@ -16,6 +17,7 @@ export class RootStore {
     _selectedEmployeeStore: SelectedEmployeeStore
     _currentDateStore: CurrentDateStore
     _authedUserStore: AuthedUserStore
+    _followUpStore: FollowUpStore
     //Temporal Object Stores
     _noteStore: NoteStore
     _stretchAnswerStore: StretchAnswerStore
@@ -30,6 +32,7 @@ export class RootStore {
         this._noteStore = new NoteStore()
         this._stretchAnswerStore = new StretchAnswerStore()
         this._statusAndGoalsStore = new StatusAndGoalsStore()
+        this._followUpStore = new FollowUpStore()
     }
 
     initialize(userId: Id | string) {
@@ -47,9 +50,11 @@ export class RootStore {
         this._noteStore.persistenceProvider = persistenceProvider
         this._stretchAnswerStore.persistenceProvider = persistenceProvider
         this._statusAndGoalsStore.persistenceProvider = persistenceProvider
+        this._followUpStore.persistenceProvider = persistenceProvider
 
         this._selectedEmployeeStore.load()
         this.loadTemporalObjects()
+        this._followUpStore.load()
         this._settingsStore.load()
         this._employeeStore.load()
     }

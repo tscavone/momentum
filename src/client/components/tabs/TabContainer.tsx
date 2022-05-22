@@ -1,4 +1,4 @@
-import { NotesTab } from './tabs/NotesTab'
+import { NotesTab } from './NotesTab'
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react'
 import {
     FiCheckSquare,
@@ -9,20 +9,20 @@ import {
     FiClock,
     FiUser,
 } from 'react-icons/fi'
-import { StretchQuesitonTab } from './tabs/StretchQuestionTab'
+import { StretchQuesitonTab } from './StretchQuestionTab'
 import {
     useNoteStore,
     useStatusAndGoalsStore,
     useStretchAnswerStore,
-} from './RootStoreProvider'
+} from '../RootStoreProvider'
 import { observer } from 'mobx-react'
 import { TabButton } from './TabButton'
-import { GoalsTab } from './tabs/GoalsTab'
+import { GoalsTab } from './GoalsTab'
 import { FiAlertTriangle } from 'react-icons/fi'
-import { DetailsTab } from './tabs/DetailsTab'
-import { FollowUpsTab } from './tabs/FollowUpsTab'
-import { IntegrationTab } from './tabs/IntegrationTab'
-import { IssuesTab } from './tabs/IssuesTab'
+import { DetailsTab } from './DetailsTab'
+import { FollowUpsTab } from './FollowUpsTab'
+import { IntegrationTab } from './IntegrationTab'
+import { IssuesTab } from './IssuesTab'
 
 export const TabContainer = observer(() => {
     const noteStore = useNoteStore()

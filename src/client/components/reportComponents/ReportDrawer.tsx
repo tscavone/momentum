@@ -17,7 +17,7 @@ import { DatedObject } from '../../util/DatedObject'
 import { ITemporalStore } from '../../stores/ITemporalStore'
 import { Note } from '../../value_objects/Note'
 import { makeObservable, observable } from 'mobx'
-import { DatePicker } from '../DatePicker'
+import { DatePicker } from '../subcomponents/DatePicker'
 import {
     useNoteStore,
     useSelectedEmployeeStore,

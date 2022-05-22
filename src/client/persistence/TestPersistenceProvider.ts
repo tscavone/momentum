@@ -13,6 +13,7 @@ import {
 } from '../data_definitions/GlobalDefinitions'
 import { IDataSelectedEmployee } from '../data_definitions/SelectedEmployeeDefinitions'
 import { IDataUserScopedSettings } from '../data_definitions/SettingsDefinitions'
+import { SettingsStore } from '../stores/SettingsStore'
 import { IPersistenceProvider } from './IPersistenceProvider'
 
 export class TestPersistenceProvider implements IPersistenceProvider {
@@ -47,9 +48,14 @@ export class TestPersistenceProvider implements IPersistenceProvider {
         return employeeTestData[this._userId]
     }
     getSettingsData(): IDataUserScopedSettings {
+        let values = settingsTestData['values'][this._userId]
+
+        if (!values) {
+            values = SettingsStore.getDefaultValues()
+        }
         return {
             entries: settingsTestData['entries'],
-            values: settingsTestData['values'][this._userId],
+            values,
         }
     }
     getSelectedEmployeeData(): IDataSelectedEmployee {

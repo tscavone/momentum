@@ -8,7 +8,7 @@ import { toggleMark, Toolbar } from './RichTextSubComponents'
 import escapeHtml from 'escape-html'
 import { jsx } from 'slate-hyperscript'
 import { observer } from 'mobx-react'
-import { useSelectedEmployeeStore } from './RootStoreProvider'
+import { useSelectedEmployeeStore } from '../RootStoreProvider'
 import { createNode } from 'typescript'
 
 // @refresh reset

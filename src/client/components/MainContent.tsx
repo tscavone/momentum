@@ -4,10 +4,9 @@ import {
     AccordionIcon,
     AccordionItem,
     AccordionPanel,
-    Box,
 } from '@chakra-ui/react'
 import { SummaryPanel } from './SummaryPanel'
-import { TabContainer } from './TabContainer'
+import { TabContainer } from './tabs/TabContainer'
 import { useCurrentDateStore } from './RootStoreProvider'
 
 export const MainContent = () => {

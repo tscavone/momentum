@@ -30,7 +30,7 @@ import {
     useSelectedEmployeeStore,
     useSettingsStore,
 } from './RootStoreProvider'
-import { SettingsMenuItem } from './SettingsMenuItem'
+import { SettingsMenuItem } from './dialogs/SettingsMenuItem'
 
 const Links = ['links']
 

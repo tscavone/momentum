@@ -7,9 +7,14 @@ import {
     ModalOverlay,
     useToast,
 } from '@chakra-ui/react'
-import { Employee } from '../value_objects/Employee'
-import { DetailsForm } from './DetailsForm'
-import { useEmployeeStore } from './RootStoreProvider'
+import { Employee } from '../../value_objects/Employee'
+import { DetailsForm } from '../DetailsForm'
+import {
+    useEmployeeStore,
+    useNoteStore,
+    useStatusAndGoalsStore,
+    useStretchAnswerStore,
+} from '../RootStoreProvider'
 
 export const NewEmployeeDialog = ({
     isDialogOpen,
@@ -18,6 +23,9 @@ export const NewEmployeeDialog = ({
     isDialogOpen: boolean
     onDialogClosed: () => void
 }) => {
+    const notesStore = useNoteStore()
+    const stretchStore = useStretchAnswerStore()
+    const goalAndStatusStore = useStatusAndGoalsStore()
     const employeeStore = useEmployeeStore()
     const toast = useToast()
 
@@ -25,14 +33,19 @@ export const NewEmployeeDialog = ({
         employeeStore.save(employee)
         employeeStore
             .write()
-            .then((successfulMessage) =>
+            .then((successfulMessage) => {
+                //initialize new employee
+                notesStore.addEmployee(employee.id)
+                stretchStore.addEmployee(employee.id)
+                goalAndStatusStore.addEmployee(employee.id)
+
                 toast({
                     title: successfulMessage,
                     status: 'success',
                     duration: 2000,
                     isClosable: true,
                 })
-            )
+            })
             .catch((failureMessage) =>
                 toast({
                     title: 'save failed',

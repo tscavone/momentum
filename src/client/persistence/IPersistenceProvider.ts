@@ -1,5 +1,8 @@
 import { IDataAllEmployees } from '../data_definitions/EmployeeDefinitions'
-import { IDataAllEmployeeFollowUps } from '../data_definitions/FollowUpDefinitions'
+import {
+    IDataAllEmployeeFollowUp,
+    IDataFollowUp,
+} from '../data_definitions/FollowUpDefinitions'
 import {
     IDataNotesLoad,
     IDataStatusAndGoalsLoad,
@@ -15,7 +18,7 @@ export interface IPersistenceProvider {
     getNotesData(): IDataNotesLoad
     getStretchData(): IDataStretchLoad
     getStatusAndGoalData(): IDataStatusAndGoalsLoad
-    getFollowUpData(): IDataAllEmployeeFollowUps
+    getFollowUpData(): IDataAllEmployeeFollowUp
     writeNotesData(noteData: IDataNotesLoad): Promise<string>
     writeStretchData(stretchData: IDataStretchLoad): Promise<string>
     writeStatusAndGoalData(
@@ -26,4 +29,5 @@ export interface IPersistenceProvider {
     writeSelectedEmployeeData(
         selectedEmployee: IDataSelectedEmployee
     ): Promise<string>
+    writeFollowUpData(followUpData: IDataAllEmployeeFollowUp): Promise<string>
 }

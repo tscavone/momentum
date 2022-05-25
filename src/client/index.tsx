@@ -61,7 +61,7 @@ ReactDOM.render(
             <RootStoreProvider>
                 <BrowserRouter>
                     <Routes>
-                        <Route path="top" element={<App />} />
+                        <Route path="register" element={<App />} />
                         <Route path="/" element={<SideMenuApp />} />
                     </Routes>
                 </BrowserRouter>

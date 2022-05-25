@@ -1,15 +1,28 @@
+import { json } from 'body-parser'
+import { action, computed, makeObservable, observable, trace } from 'mobx'
+import {
+    IDataAllEmployeeFollowUp,
+    IDataFollowUp,
+} from '../data_definitions/FollowUpDefinitions'
 import { IPersistenceProvider } from '../persistence/IPersistenceProvider'
 import { IWriteable } from '../persistence/IWriteable'
+import { Id } from '../util/Id'
 import { FollowUp } from '../value_objects/FollowUp'
 import { IStore } from './IStore'
 
 export class FollowUpStore implements IStore, IWriteable {
     // keyed by id
-    private _followUps: Map<string, FollowUp>
+    _followUps: Map<string, FollowUp[]>
+    private _currentUser: Id
     _persistenceProvider: IPersistenceProvider
 
     constructor() {
-        this._followUps = new Map<string, FollowUp>()
+        makeObservable(this, {
+            _followUps: observable,
+            resolve: action,
+        })
+        this._followUps = observable.map()
+        this._currentUser = null
         this._persistenceProvider = null
     }
 
@@ -19,17 +32,62 @@ export class FollowUpStore implements IStore, IWriteable {
     public set persistenceProvider(value: IPersistenceProvider) {
         this._persistenceProvider = value
     }
+    public get currentUser(): Id {
+        return this._currentUser
+    }
+    public set currentUser(value: Id) {
+        this._currentUser = value
+    }
+    get unresolvedFollowups(): FollowUp[] {
+        if (!this.currentUser)
+            throw new Error('Current user unset in FollowUpStore')
+
+        const userIdStr = Id.asString(this._currentUser)
+        return this._followUps
+            .get(userIdStr)
+            .filter((followUp) => followUp.resolvedDate === null)
+    }
+
+    resolve(followUpId: string): void {
+        if (!this.currentUser)
+            throw new Error('Current user unset in FollowUpStore')
+
+        const userIdStr = Id.asString(this._currentUser)
+        this._followUps
+            .get(userIdStr)
+            .filter(
+                (followUp) => followUp.id.id === followUpId
+            )[0].resolvedDate = new Date()
+
+        this._followUps.set(userIdStr, [...this._followUps.get(userIdStr)])
+    }
 
     load(): void {
         const followUpJsonData = this._persistenceProvider.getFollowUpData()
 
-        this._followUps.clear()
+        for (const employeeId in followUpJsonData) {
+            const employeeFollowUps = []
+            for (const employeeJson of followUpJsonData[employeeId]) {
+                employeeFollowUps.push(FollowUp.fromJSON(employeeJson))
+            }
 
-        for (const followUp in followUpJsonData) {
-            const followUp = FollowUp.fromJSON()
+            this._followUps.set(employeeId, employeeFollowUps)
         }
     }
+
     write(): Promise<string> {
-        throw new Error('Method not implemented.')
+        if (this._persistenceProvider === null)
+            throw new Error('peristenceProvider null in Followup store')
+
+        let followUpData: IDataAllEmployeeFollowUp = {}
+
+        for (const [employeeId, followUps] of this._followUps) {
+            const jsonFollowUps: IDataFollowUp[] = []
+            for (const followUp of followUps) {
+                jsonFollowUps.push(followUp.serialize())
+            }
+            followUpData[employeeId] = jsonFollowUps
+        }
+        return this._persistenceProvider.writeFollowUpData(followUpData)
     }
 }

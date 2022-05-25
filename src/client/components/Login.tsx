@@ -14,6 +14,7 @@ import {
     Heading,
     Text,
     useColorModeValue,
+    useBoolean,
 } from '@chakra-ui/react'
 
 async function loginUser(credentials) {
@@ -32,6 +33,8 @@ export default function Login() {
     const rootStore = useRootStore()
     const [username, setUserName] = useState<string>('dardenfall')
     const [password, setPassword] = useState<string>('coro')
+    const [register, setRegister] = useBoolean(false)
+
     useEffect(() => {
         var input = document.getElementById('password')
 

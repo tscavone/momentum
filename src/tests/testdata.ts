@@ -3,7 +3,7 @@ import { IDataSettings } from '../client/data_definitions/SettingsDefinitions'
 import { IDataEmployeeDetails } from '../client/data_definitions/EmployeeDefinitions'
 import { IDataAuthedUser } from '../client/data_definitions/AuthedUserDefinitions'
 import { IDataAllEmployeeSelections } from '../client/data_definitions/SelectedEmployeeDefinitions'
-import { IDataFollowUpDetails } from '../client/data_definitions/FollowUpDefinitions'
+import { IDataFollowUpAllUsers } from '../client/data_definitions/FollowUpDefinitions'
 
 //test global business logic data
 export const valueTestData: IDataMultiuserTest = {
@@ -517,31 +517,52 @@ export const employeeTestData: IDataEmployeeDetails = {
     },
 }
 
-export const followUpTestData: IDataFollowUpDetails = {
-    abcdef: [
-        {
-            _id: '5555',
-            _text: 'Open enrollment',
-            _resolvedDate: '2/2/21',
-        },
-        {
-            _id: '5555',
-            _text: 'Open enrollment',
-            _resolvedDate: '',
-        },
-        {
-            _id: '5555',
-            _text: 'Company Outing - lorem ipsum heres a bunch of text yada yada yad heres a link ',
-            _resolvedDate: '',
-        },
-    ],
-    uvwxyz: [
-        {
-            _id: '5555',
-            _text: 'Open enrollment',
-            _resolvedDate: '2/2/21',
-        },
-    ],
+export const followUpTestData: IDataFollowUpAllUsers = {
+    abcdef: {
+        '1234': [
+            {
+                _id: '5555',
+                _text: 'Open enrollment',
+                _resolvedDate: '2/2/21',
+            },
+            {
+                _id: '5556',
+                _text: 'Open enrollment',
+                _resolvedDate: '',
+            },
+            {
+                _id: '5557',
+                _text: 'Company Outing - lorem ipsum heres a bunch of text yada yada yad heres a link ',
+                _resolvedDate: '',
+            },
+        ],
+        '2345': [
+            {
+                _id: '5555-2',
+                _text: 'Open enrollment - user 2',
+                _resolvedDate: '2/2/21',
+            },
+            {
+                _id: '5556-2',
+                _text: 'Open enrollment - user 2',
+                _resolvedDate: '',
+            },
+            {
+                _id: '5557-2',
+                _text: 'user 2 - Company Outing - lorem ipsum heres a bunch of text yada yada yad heres a link ',
+                _resolvedDate: '',
+            },
+        ],
+    },
+    uvwxyz: {
+        '9876': [
+            {
+                _id: '5555',
+                _text: 'Open enrollment',
+                _resolvedDate: '2/2/21',
+            },
+        ],
+    },
 }
 
 //auto login user for now...

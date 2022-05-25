@@ -30,7 +30,10 @@ export class FollowUp extends IdentifiedObject {
     public static fromJSON(jsonFollowUp: IDataFollowUp): FollowUp {
         let followUp = Object.assign(new FollowUp(), jsonFollowUp) as FollowUp
         followUp.id = Id.fromString(jsonFollowUp._id)
-        followUp.resolvedDate = new Date(jsonFollowUp._resolvedDate)
+        followUp.resolvedDate =
+            jsonFollowUp._resolvedDate === ''
+                ? null
+                : new Date(jsonFollowUp._resolvedDate)
 
         return followUp
     }

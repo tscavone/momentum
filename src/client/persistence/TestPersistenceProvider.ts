@@ -6,7 +6,7 @@ import {
     valueTestData,
 } from '../../tests/testdata'
 import { IDataAllEmployees } from '../data_definitions/EmployeeDefinitions'
-import { IDataAllEmployeeFollowUps } from '../data_definitions/FollowUpDefinitions'
+import { IDataAllEmployeeFollowUp } from '../data_definitions/FollowUpDefinitions'
 import {
     IDataMomentum,
     IDataNotesLoad,
@@ -49,7 +49,7 @@ export class TestPersistenceProvider implements IPersistenceProvider {
     getEmployeeData(): IDataAllEmployees {
         return employeeTestData[this._userId]
     }
-    getFollowUpData(): IDataAllEmployeeFollowUps {
+    getFollowUpData(): IDataAllEmployeeFollowUp {
         return followUpTestData[this._userId]
     }
     getSettingsData(): IDataUserScopedSettings {
@@ -80,6 +80,10 @@ export class TestPersistenceProvider implements IPersistenceProvider {
     }
     writeEmployeeData(employeeData: IDataAllEmployees) {
         console.log('\tWRITE:  << employee >> data:  ', employeeData)
+        return Promise.resolve('save successful')
+    }
+    writeFollowUpData(followUpData: IDataAllEmployeeFollowUp) {
+        console.log('\tWRITE:  << Followup >> data:  ', followUpData)
         return Promise.resolve('save successful')
     }
     writeSettingsData(settingsData: IDataUserScopedSettings) {

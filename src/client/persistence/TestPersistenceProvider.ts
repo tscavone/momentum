@@ -1,10 +1,12 @@
 import {
     employeeTestData,
+    followUpTestData,
     settingsTestData,
     TestSelectedEmployeeData,
     valueTestData,
 } from '../../tests/testdata'
 import { IDataAllEmployees } from '../data_definitions/EmployeeDefinitions'
+import { IDataAllEmployeeFollowUps } from '../data_definitions/FollowUpDefinitions'
 import {
     IDataMomentum,
     IDataNotesLoad,
@@ -46,6 +48,9 @@ export class TestPersistenceProvider implements IPersistenceProvider {
     }
     getEmployeeData(): IDataAllEmployees {
         return employeeTestData[this._userId]
+    }
+    getFollowUpData(): IDataAllEmployeeFollowUps {
+        return followUpTestData[this._userId]
     }
     getSettingsData(): IDataUserScopedSettings {
         let values = settingsTestData['values'][this._userId]

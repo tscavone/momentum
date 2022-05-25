@@ -21,7 +21,13 @@ export class FollowUpStore implements IStore, IWriteable {
     }
 
     load(): void {
-        throw new Error('Method not implemented.')
+        const followUpJsonData = this._persistenceProvider.getFollowUpData()
+
+        this._followUps.clear()
+
+        for (const followUp in followUpJsonData) {
+            const followUp = FollowUp.fromJSON()
+        }
     }
     write(): Promise<string> {
         throw new Error('Method not implemented.')

@@ -1,5 +1,6 @@
-export interface IDataEmployee {
-    _id: string
+import { IDataIdentifiedObject } from './GlobalDefinitions'
+
+export interface IDataEmployee extends IDataIdentifiedObject {
     _first: string
     _last: string
     _email: string

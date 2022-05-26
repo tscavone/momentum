@@ -1,5 +1,4 @@
-import { json } from 'body-parser'
-import { action, computed, makeObservable, observable, trace } from 'mobx'
+import { action, makeObservable, observable } from 'mobx'
 import {
     IDataAllEmployeeFollowUp,
     IDataFollowUp,

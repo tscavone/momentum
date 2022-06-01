@@ -5,7 +5,7 @@ import {
     useFollowUpStore,
     useSelectedEmployeeStore,
 } from '../RootStoreProvider'
-import { Box, Button, HStack, Input } from '@chakra-ui/react'
+import { Box, Button, Center, Heading, HStack, Input } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { TabPanelContainer } from './TabPanelContainer'
 import { Id } from '../../util/Id'
@@ -29,9 +29,18 @@ export const FollowUpsTab = observer(() => {
 
         followUpStore.currentUser = Id.fromString(selectedId)
 
+        if (followUpStore.unresolvedFollowups.length === 0) {
+            return [
+                <Center>
+                    <Heading color={'gray.500'} size={'lg'} as={'h5'}>
+                        You have no follow ups
+                    </Heading>
+                </Center>,
+            ]
+        }
         for (const followUp of followUpStore.unresolvedFollowups) {
             followUpComponents.push(
-                <HStack key={followUp.id.id}>
+                <HStack key={followUp.id.id} m={'2'}>
                     <Input type="text" readOnly value={followUp.text} />
                     <Button value={followUp.id.id} onClick={resolveFollowUp}>
                         {' '}

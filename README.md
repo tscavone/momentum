@@ -4,5 +4,19 @@
 
 ### Usage
 
-npm run dev - to start ui and server
-npm test - to run tests in ./test/\*.test.tsx
+- create a .env file in base directory
+- add the following environment variables
+```
+USERNAME1 = <quoted name here>
+PASSWORD1 = <quoted password here>
+USERID1 = 'abcdef'
+USERNAME2 = <quoted name  #2 here>
+PASSWORD2 = <quoted password #2 here>
+USERID2 = 'uvwxyz'
+```
+- npm run dev - to start ui and server
+- login with either username1 or username2 and corresponding password
+
+
+npm test - to run data load tests in ./test/\*.test.tsx
+

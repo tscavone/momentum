@@ -24,6 +24,7 @@ export class TestPersistenceProvider implements IPersistenceProvider {
     constructor(userId: string) {
         this._userId = userId
     }
+
     private collateLoadData(key: string) {
         let retval = {}
         const userTestData = valueTestData[this._userId]
@@ -34,6 +35,16 @@ export class TestPersistenceProvider implements IPersistenceProvider {
         return retval
     }
 
+    createNewUser(
+        username: string,
+        password: string,
+        first: string,
+        last: string,
+        moniker: string
+    ): Promise<string> {
+        console.log("New test user 'created'")
+        return Promise.resolve('user created')
+    }
     getNotesData(): IDataNotesLoad {
         return this.collateLoadData('_notes')
     }

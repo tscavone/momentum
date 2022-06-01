@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Id } from '../util/Id'
 import { useAuthedUserStore, useRootStore } from './RootStoreProvider'
 import {
@@ -7,7 +7,6 @@ import {
     FormControl,
     FormLabel,
     Input,
-    Checkbox,
     Stack,
     Link,
     Button,
@@ -23,13 +22,11 @@ import {
     PopoverTrigger,
     PopoverContent,
     PopoverArrow,
-    PopoverCloseButton,
     PopoverBody,
     IconButton,
+    FormErrorMessage,
 } from '@chakra-ui/react'
-import { QuestionIcon, QuestionOutlineIcon } from '@chakra-ui/icons'
-import { FiHelpCircle } from 'react-icons/fi'
-import { MdHelp, MdHelpCenter } from 'react-icons/md'
+import { QuestionOutlineIcon } from '@chakra-ui/icons'
 
 async function loginUser(credentials) {
     console.log('credentials: ', JSON.stringify(credentials))
@@ -42,33 +39,55 @@ async function loginUser(credentials) {
     }).then((data) => data.json())
 }
 
+async function createUser(credentials) {
+    console.log('credentials: ', JSON.stringify(credentials))
+    return fetch('http://localhost:3001/createUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+    }).then((data) => data.json())
+}
 export default function Login() {
     const authedUserStore = useAuthedUserStore()
     const rootStore = useRootStore()
-    const [username, setUserName] = useState<string>('dardenfall')
-    const [password, setPassword] = useState<string>('coro')
-    const [confirmPassword, setConfirmPassword] = useState<string>('coro')
+    const [loginUsername, setLoginUserName] = useState<string>('dardenfall')
+    const [loginPassword, setLoginPassword] = useState<string>('coro')
+    const [registerFirst, setRegisterFirst] = useState<string>('')
+    const [registerLast, setRegisterLast] = useState<string>('')
+    const [registerUsername, setRegisterUserName] = useState<string>('')
+    const [registerMoniker, setRegisterMoniker] = useState<string>('manager')
+    const [registerPassword, setRegisterPassword] = useState<string>('')
+    const [registerConfirmPassword, setRegisterConfirmPassword] =
+        useState<string>('')
     const [register, setRegister] = useBoolean(false)
+    const [storage, setStorage] = useBoolean(false)
+    const passwordMatches =
+        (registerPassword === '' && registerConfirmPassword) ||
+        registerPassword === registerConfirmPassword
 
-    useEffect(() => {
-        var input = document.getElementById('password')
+    // useEffect(() => {
+    //     var input =
+    //         document.getElementById('loginPassword') ||
+    //         document.getElementById('registerPassword')
 
-        input.addEventListener('keypress', function (event) {
-            if (event.key === 'Enter') {
-                event.preventDefault()
-                document.getElementById('submit').click()
-            }
-        })
-    })
+    //     input.addEventListener('keypress', function (event) {
+    //         if (event.key === 'Enter') {
+    //             event.preventDefault()
+    //             document.getElementById('submit').click()
+    //         }
+    //     })
+    // })
 
-    const handleSubmit = async (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault()
         let responseData: { userId: string; token: string } = null
 
         try {
             responseData = await loginUser({
-                username: username.trim(),
-                password: password.trim(),
+                username: loginUsername.trim(),
+                password: loginPassword.trim(),
             })
             console.log('------> logged in')
             rootStore.initialize(Id.fromString(responseData.userId))
@@ -84,20 +103,20 @@ export default function Login() {
     const getLogin = () => {
         return (
             <Stack spacing={4}>
-                <FormControl id="email" colorScheme={'green'}>
-                    <FormLabel>Email address</FormLabel>
-                    <Input onChange={(e) => setUserName(e.target.value)} />
+                <FormControl id="loginUsername" colorScheme={'green'}>
+                    <FormLabel>username</FormLabel>
+                    <Input onChange={(e) => setLoginUserName(e.target.value)} />
                 </FormControl>
-                <FormControl id="password" colorScheme={'green'}>
-                    <FormLabel>Password</FormLabel>
+                <FormControl id="loginPassword" colorScheme={'green'}>
+                    <FormLabel>password</FormLabel>
                     <Input
                         type="password"
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => setLoginPassword(e.target.value)}
                     />
                 </FormControl>
                 <Stack spacing={10}>
                     <Center>
-                        <Link color={'green.600'}>Forgot password?</Link>
+                        <Link color={'green.600'}>forgot password?</Link>
                     </Center>
 
                     <Button
@@ -106,7 +125,7 @@ export default function Login() {
                         _hover={{
                             bg: 'green.500',
                         }}
-                        onClick={handleSubmit}
+                        onClick={handleLogin}
                         id="submit"
                     >
                         Sign in
@@ -121,31 +140,46 @@ export default function Login() {
             <Stack spacing={4}>
                 <HStack>
                     <FormControl id="first" colorScheme={'green'}>
-                        <FormLabel>First Name</FormLabel>
-                        <Input onChange={(e) => setUserName(e.target.value)} />
+                        <FormLabel>first name *</FormLabel>
+                        <Input
+                            onChange={(e) => setRegisterFirst(e.target.value)}
+                        />
                     </FormControl>
                     <FormControl id="last" colorScheme={'green'}>
-                        <FormLabel>Last Name</FormLabel>
-                        <Input onChange={(e) => setUserName(e.target.value)} />
+                        <FormLabel>last name *</FormLabel>
+                        <Input
+                            onChange={(e) => setRegisterLast(e.target.value)}
+                        />
                     </FormControl>
                 </HStack>
-                <FormControl id="email" colorScheme={'green'}>
-                    <FormLabel>Email address</FormLabel>
-                    <Input onChange={(e) => setUserName(e.target.value)} />
+                <FormControl id="registerUsername" colorScheme={'green'}>
+                    <FormLabel>username *</FormLabel>
+                    <Input
+                        onChange={(e) => setRegisterUserName(e.target.value)}
+                    />
                 </FormControl>
                 <FormControl id="password" colorScheme={'green'}>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>password *</FormLabel>
                     <Input
+                        id="registerPassword"
                         type="password"
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => setRegisterPassword(e.target.value)}
                     />
                 </FormControl>
-                <FormControl id="confirmPassword" colorScheme={'green'}>
-                    <FormLabel>Confirm Password</FormLabel>
+                <FormControl
+                    id="confirmPassword"
+                    colorScheme={'green'}
+                    isInvalid={!passwordMatches}
+                >
+                    <FormLabel>confirm password *</FormLabel>
                     <Input
                         type="password"
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        onChange={(e) =>
+                            setRegisterConfirmPassword(e.target.value)
+                        }
                     />
+
+                    <FormErrorMessage>password does not match</FormErrorMessage>
                 </FormControl>
                 <FormControl display="flex" alignItems="center">
                     <FormLabel ml={'10'} htmlFor="register" mb="0">
@@ -154,12 +188,8 @@ export default function Login() {
                     <Switch
                         colorScheme="green"
                         color={'green'}
-                        onChange={function () {
-                            setRegister.toggle()
-                            console.log(register)
-                            return register
-                        }}
-                        id="register"
+                        onChange={() => setStorage.toggle()}
+                        id="storage"
                     />
                     <chakra.span ml={4}>server storage</chakra.span>
                     <Popover
@@ -208,8 +238,8 @@ export default function Login() {
                         _hover={{
                             bg: 'green.500',
                         }}
-                        onClick={handleSubmit}
-                        id="submit"
+                        onClick={createUser}
+                        id="create"
                     >
                         Register
                     </Button>
@@ -217,6 +247,7 @@ export default function Login() {
             </Stack>
         )
     }
+
     return (
         <Flex
             minH={'100vh'}
@@ -247,11 +278,7 @@ export default function Login() {
                             <Switch
                                 colorScheme="green"
                                 color={'green'}
-                                onChange={function () {
-                                    setRegister.toggle()
-                                    console.log(register)
-                                    return register
-                                }}
+                                onChange={() => setRegister.toggle()}
                                 id="register"
                             />
                             <chakra.span ml={4}>register</chakra.span>

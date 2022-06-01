@@ -1,8 +1,5 @@
 import { IDataAllEmployees } from '../data_definitions/EmployeeDefinitions'
-import {
-    IDataAllEmployeeFollowUp,
-    IDataFollowUp,
-} from '../data_definitions/FollowUpDefinitions'
+import { IDataAllEmployeeFollowUp } from '../data_definitions/FollowUpDefinitions'
 import {
     IDataNotesLoad,
     IDataStatusAndGoalsLoad,
@@ -12,6 +9,13 @@ import { IDataSelectedEmployee } from '../data_definitions/SelectedEmployeeDefin
 import { IDataUserScopedSettings } from '../data_definitions/SettingsDefinitions'
 
 export interface IPersistenceProvider {
+    createNewUser(
+        username: string,
+        password: string,
+        first: string,
+        last: string,
+        moniker: string
+    ): Promise<string>
     getEmployeeData(): IDataAllEmployees
     getSettingsData(): IDataUserScopedSettings
     getSelectedEmployeeData(): IDataSelectedEmployee

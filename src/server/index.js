@@ -57,12 +57,16 @@ const connectToDb = () => {
         client.close()
     })
 }
+const port = 3001
 
-app.listen(3001, () => {
-    try {
-        connectToDb()
-    } catch (e) {
-        console.error(`Unable to connect to db: "${e}"  `)
-    }
-    console.log('Express server is running on localhost:3001')
-})
+connectToDb()
+    .then(() => {
+        // start the Express server
+        app.listen(port, () => {
+            console.log(`Server started at http://localhost:${port}`)
+        })
+    })
+    .catch((error) => {
+        console.error('Database connection failed', error)
+        process.exit()
+    })

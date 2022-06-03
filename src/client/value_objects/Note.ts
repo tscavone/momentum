@@ -1,7 +1,7 @@
 // contains the notes
 //
 
-import { IDataNote } from '../data_definitions/GlobalDefinitions'
+import { IDataNote } from '../../shared/data_definitions/GlobalDefinitions'
 import { Id } from '../util/Id'
 import { TemporalObject } from '../util/TemporalObject'
 

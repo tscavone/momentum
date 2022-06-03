@@ -5,16 +5,16 @@ import {
     TestSelectedEmployeeData,
     valueTestData,
 } from '../../tests/testdata'
-import { IDataAllEmployees } from '../data_definitions/EmployeeDefinitions'
-import { IDataAllEmployeeFollowUp } from '../data_definitions/FollowUpDefinitions'
+import { IDataAllEmployees } from '../../shared/data_definitions/EmployeeDefinitions'
+import { IDataAllEmployeeFollowUp } from '../../shared/data_definitions/FollowUpDefinitions'
 import {
     IDataMomentum,
     IDataNotesLoad,
     IDataStatusAndGoalsLoad,
     IDataStretchLoad,
-} from '../data_definitions/GlobalDefinitions'
-import { IDataSelectedEmployee } from '../data_definitions/SelectedEmployeeDefinitions'
-import { IDataUserScopedSettings } from '../data_definitions/SettingsDefinitions'
+} from '../../shared/data_definitions/GlobalDefinitions'
+import { IDataSelectedEmployee } from '../../shared/data_definitions/SelectedEmployeeDefinitions'
+import { IDataUserScopedSettings } from '../../shared/data_definitions/SettingsDefinitions'
 import { SettingsStore } from '../stores/SettingsStore'
 import { IPersistenceProvider } from './IPersistenceProvider'
 

@@ -1,7 +1,7 @@
 // a goal for an employee
 //
 
-import { IDataGoal } from '../data_definitions/GlobalDefinitions'
+import { IDataGoal } from '../../shared/data_definitions/GlobalDefinitions'
 import { Id } from '../util/Id'
 import { IdentifiedObject } from '../util/IdentifiedObject'
 import { Link } from './Link'

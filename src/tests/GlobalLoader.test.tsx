@@ -1,7 +1,7 @@
 import {
     IDataGoal,
     IDataLink,
-} from '../client/data_definitions/GlobalDefinitions'
+} from '../shared/data_definitions/GlobalDefinitions'
 import { RootStore } from '../client/stores/RootStore'
 import { DatedObject } from '../client/util/DatedObject'
 import { Id } from '../client/util/Id'

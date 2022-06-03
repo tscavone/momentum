@@ -1,7 +1,7 @@
 // representation of a user of the system
 //
 
-import { IDataEmployee } from '../data_definitions/EmployeeDefinitions'
+import { IDataEmployee } from '../../shared/data_definitions/EmployeeDefinitions'
 import { Id } from '../util/Id'
 import { IdentifiedObject } from '../util/IdentifiedObject'
 import { dateToString } from '../util/utils'

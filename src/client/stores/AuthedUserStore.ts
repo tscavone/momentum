@@ -1,7 +1,7 @@
 // The store that contains the selected employee at the global level
 //
 import { makeAutoObservable } from 'mobx'
-import { IDataAuthedUser } from '../data_definitions/AuthedUserDefinitions'
+import { IDataAuthedUser } from '../../shared/data_definitions/AuthedUserDefinitions'
 import { Id } from '../util/Id'
 import { IStore } from './IStore'
 

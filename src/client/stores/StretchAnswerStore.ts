@@ -10,7 +10,7 @@ import {
     IDataStretchLoad,
     IDataTemporalObject,
     IDatedObject,
-} from '../data_definitions/GlobalDefinitions'
+} from '../../shared/data_definitions/GlobalDefinitions'
 import { DateRange } from '../util/DateRange'
 import { dateToString } from '../util/utils'
 

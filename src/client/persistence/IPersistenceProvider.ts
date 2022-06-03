@@ -1,12 +1,12 @@
-import { IDataAllEmployees } from '../data_definitions/EmployeeDefinitions'
-import { IDataAllEmployeeFollowUp } from '../data_definitions/FollowUpDefinitions'
+import { IDataAllEmployees } from '../../shared/data_definitions/EmployeeDefinitions'
+import { IDataAllEmployeeFollowUp } from '../../shared/data_definitions/FollowUpDefinitions'
 import {
     IDataNotesLoad,
     IDataStatusAndGoalsLoad,
     IDataStretchLoad,
-} from '../data_definitions/GlobalDefinitions'
-import { IDataSelectedEmployee } from '../data_definitions/SelectedEmployeeDefinitions'
-import { IDataUserScopedSettings } from '../data_definitions/SettingsDefinitions'
+} from '../../shared/data_definitions/GlobalDefinitions'
+import { IDataSelectedEmployee } from '../../shared/data_definitions/SelectedEmployeeDefinitions'
+import { IDataUserScopedSettings } from '../../shared/data_definitions/SettingsDefinitions'
 
 export interface IPersistenceProvider {
     createNewUser(

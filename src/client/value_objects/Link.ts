@@ -1,7 +1,7 @@
 // a hyperlink
 //
 
-import { IDataLink } from '../data_definitions/GlobalDefinitions'
+import { IDataLink } from '../../shared/data_definitions/GlobalDefinitions'
 import { Id } from '../util/Id'
 import { IdentifiedObject } from '../util/IdentifiedObject'
 

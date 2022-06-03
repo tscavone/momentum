@@ -9,7 +9,7 @@ import {
     IDataNotesLoad,
     IDataTemporalObject,
     IDatedObject,
-} from '../data_definitions/GlobalDefinitions'
+} from '../../shared/data_definitions/GlobalDefinitions'
 import { AbstractTemporalStore } from './AbstractTemporalStore'
 import { DateRange } from '../util/DateRange'
 import { DatedObject } from '../util/DatedObject'

@@ -1,7 +1,7 @@
 // Milestones mark a significant point of a Goal / GoalType
 //
 
-import { IDataIdentifiedObject } from '../data_definitions/GlobalDefinitions'
+import { IDataIdentifiedObject } from '../../shared/data_definitions/GlobalDefinitions'
 import { IdentifiedObject } from '../util/IdentifiedObject'
 
 export class Milestone extends IdentifiedObject {

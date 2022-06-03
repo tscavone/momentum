@@ -9,7 +9,7 @@ import { IWriteable } from '../persistence/IWriteable'
 import {
     IDataSettingsEntry,
     IDataSettingsValue,
-} from '../data_definitions/SettingsDefinitions'
+} from '../../shared/data_definitions/SettingsDefinitions'
 
 export class SettingsStore implements IStore, IWriteable {
     // keyed by id

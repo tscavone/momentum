@@ -4,7 +4,7 @@
 import { Id } from '../util/Id'
 import { Employee } from '../value_objects/Employee'
 import { IStore } from './IStore'
-import { IDataAllEmployees } from '../data_definitions/EmployeeDefinitions'
+import { IDataAllEmployees } from '../../shared/data_definitions/EmployeeDefinitions'
 import { IWriteable } from '../persistence/IWriteable'
 import { IPersistenceProvider } from '../persistence/IPersistenceProvider'
 import { makeAutoObservable } from 'mobx'

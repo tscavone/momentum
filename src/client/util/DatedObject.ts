@@ -1,7 +1,7 @@
 // An object that contains a date timestamp
 //
 
-import { IDatedObject } from '../data_definitions/GlobalDefinitions'
+import { IDatedObject } from '../../shared/data_definitions/GlobalDefinitions'
 import { ISerializable } from './ISerializable'
 import { dateToString } from './utils'
 

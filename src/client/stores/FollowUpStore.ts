@@ -2,7 +2,7 @@ import { action, makeObservable, observable } from 'mobx'
 import {
     IDataAllEmployeeFollowUp,
     IDataFollowUp,
-} from '../data_definitions/FollowUpDefinitions'
+} from '../../shared/data_definitions/FollowUpDefinitions'
 import { IPersistenceProvider } from '../persistence/IPersistenceProvider'
 import { IWriteable } from '../persistence/IWriteable'
 import { Id } from '../util/Id'

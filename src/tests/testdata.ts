@@ -1,9 +1,9 @@
-import { IDataMultiuserTest } from '../client/data_definitions/GlobalDefinitions'
-import { IDataSettings } from '../client/data_definitions/SettingsDefinitions'
-import { IDataEmployeeDetails } from '../client/data_definitions/EmployeeDefinitions'
-import { IDataAuthedUser } from '../client/data_definitions/AuthedUserDefinitions'
-import { IDataAllEmployeeSelections } from '../client/data_definitions/SelectedEmployeeDefinitions'
-import { IDataFollowUpAllUsers } from '../client/data_definitions/FollowUpDefinitions'
+import { IDataMultiuserTest } from '../shared/data_definitions/GlobalDefinitions'
+import { IDataSettings } from '../shared/data_definitions/SettingsDefinitions'
+import { IDataEmployeeDetails } from '../shared/data_definitions/EmployeeDefinitions'
+import { IDataAuthedUser } from '../shared/data_definitions/AuthedUserDefinitions'
+import { IDataAllEmployeeSelections } from '../shared/data_definitions/SelectedEmployeeDefinitions'
+import { IDataFollowUpAllUsers } from '../shared/data_definitions/FollowUpDefinitions'
 
 //test global business logic data
 export const valueTestData: IDataMultiuserTest = {

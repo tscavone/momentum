@@ -1,6 +1,6 @@
 //
 //
-import { IDataStretchAnswer } from '../data_definitions/GlobalDefinitions'
+import { IDataStretchAnswer } from '../../shared/data_definitions/GlobalDefinitions'
 import { Id } from '../util/Id'
 import { TemporalObject } from '../util/TemporalObject'
 

@@ -1,7 +1,7 @@
 // a type of setting with description of what that setting is for
 //
 
-import { IDataSettingsEntry } from '../data_definitions/SettingsDefinitions'
+import { IDataSettingsEntry } from '../../shared/data_definitions/SettingsDefinitions'
 import { Id } from '../util/Id'
 import { IdentifiedObject } from '../util/IdentifiedObject'
 

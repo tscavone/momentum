@@ -4,7 +4,7 @@
 import {
     IDataIdentifiedObject,
     IDataStatusAndGoals,
-} from '../data_definitions/GlobalDefinitions'
+} from '../../shared/data_definitions/GlobalDefinitions'
 import { Id } from '../util/Id'
 import { TemporalCollection } from '../util/TemporalCollection'
 import { TemporalObject } from '../util/TemporalObject'

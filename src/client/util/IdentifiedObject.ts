@@ -2,7 +2,7 @@
 // object
 //
 
-import { IDataIdentifiedObject } from '../data_definitions/GlobalDefinitions'
+import { IDataIdentifiedObject } from '../../shared/data_definitions/GlobalDefinitions'
 import { Id } from './Id'
 import { ISerializable } from './ISerializable'
 

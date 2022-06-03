@@ -45,8 +45,7 @@ app.post('/login', (req, res) => {
 
 const connectToDb = () => {
     const { MongoClient, ServerApiVersion } = require('mongodb')
-    const uri =
-        'mongodb+srv://ivanhoe:<password>@dardenfall.vaaoq.mongodb.net/?retryWrites=true&w=majority'
+    const uri = process.env.DBCONN + process.env.DBSTR
     const client = new MongoClient(uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -59,6 +58,11 @@ const connectToDb = () => {
     })
 }
 
-app.listen(3001, () =>
+app.listen(3001, () => {
+    try {
+        connectToDb()
+    } catch (e) {
+        console.error(`Unable to connect to db: "${e}"  `)
+    }
     console.log('Express server is running on localhost:3001')
-)
+})

@@ -1,4 +1,4 @@
-import { IDataSettingsValue } from '../data_definitions/SettingsDefinitions'
+import { IDataSettingsValue } from '../../shared/data_definitions/SettingsDefinitions'
 import { Id } from '../util/Id'
 import { IdentifiedObject } from '../util/IdentifiedObject'
 

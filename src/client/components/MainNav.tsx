@@ -44,6 +44,7 @@ import { ReportDrawer } from './reportComponents/ReportDrawer'
 import { SettingsDialog } from './dialogs/SettingsDialog'
 import { NewEmployeeDialog } from './dialogs/NewEmployeeDialog'
 import { observer } from 'mobx-react'
+import { NewFollowUpDialog } from './dialogs/NewFollowupDialog'
 
 interface LinkItemProps {
     name: string
@@ -166,6 +167,10 @@ const SidebarContent = ({ onSidebarClose, ...rest }: SidebarProps) => {
             <NewEmployeeDialog
                 isDialogOpen={isNewEmployeeOpen}
                 onDialogClosed={onNewEmployeeClosed}
+            />
+            <NewFollowUpDialog
+                isDialogOpen={isFollowupOpen}
+                onDialogClosed={onFollowupClosed}
             />
         </Box>
     )

@@ -114,7 +114,7 @@ export const TabPanelContainer = ({
                                 to close, click any
                                 <chakra.span fontSize="sm" color={'white'}>
                                     <PopoverTrigger>
-                                        <FiInfo></FiInfo>
+                                        <FiInfo display={'inline'}></FiInfo>
                                     </PopoverTrigger>{' '}
                                 </chakra.span>
                                 <chakra.span>icon</chakra.span>

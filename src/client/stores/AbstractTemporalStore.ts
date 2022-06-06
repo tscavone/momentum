@@ -15,6 +15,7 @@ export abstract class AbstractTemporalStore<T extends TemporalObject>
 {
     protected _allEmployeeObjects: Map<string, TemporalCollection<T>>
     _persistenceProvider: IPersistenceProvider
+    SUMMARY_TEXT_LENGTH: number = 75
 
     constructor() {
         this._allEmployeeObjects = new Map<string, TemporalCollection<T>>()
@@ -72,6 +73,30 @@ export abstract class AbstractTemporalStore<T extends TemporalObject>
 
     getAllSaved(id: Id | string): DatedObject<T>[] {
         return this.getSaved(id, DateRange.upTo(DateRange.AFTER_TIMES))
+    }
+
+    summarize(textsToSummarize: string[]): string {
+        let retval = ''
+
+        if (textsToSummarize.length === 1) {
+            retval =
+                textsToSummarize[0].substring(0, this.SUMMARY_TEXT_LENGTH - 3) +
+                '...'
+        } else {
+            //5 below is for '..., '
+            const individualTextLength: number =
+                (this.SUMMARY_TEXT_LENGTH - 5 * textsToSummarize.length) /
+                textsToSummarize.length
+
+            for (const textToSummarize of textsToSummarize) {
+                //add comma and space to
+                if (retval !== '') retval += ', '
+                retval +=
+                    textToSummarize.substring(0, individualTextLength) + '...'
+            }
+        }
+
+        return retval
     }
 
     abstract addEmployee(newEmployeeId: Id | string): void

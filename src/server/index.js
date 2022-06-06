@@ -56,6 +56,8 @@ const connectToDb = () => {
         // perform actions on the collection object
         client.close()
     })
+    //todo: fix this
+    return Promise.resolve('db connected')
 }
 const port = 3001
 

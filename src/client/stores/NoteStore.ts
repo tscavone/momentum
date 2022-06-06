@@ -39,6 +39,12 @@ export class NoteStore extends AbstractTemporalStore<Note> {
         )
     }
 
+    getNoteSummary(employeeId: string): string {
+        return this.summarize([
+            this.getCollectionForEmployee(employeeId).getLatestSaved().text,
+        ])
+    }
+
     load(): void {
         const employeeNotesData = this._persistenceProvider.getNotesData()
 

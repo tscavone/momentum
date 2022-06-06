@@ -18,7 +18,7 @@ export const FollowUpsTab = observer(() => {
     const resolveFollowUp = (event): void => {
         const followUpId = event.target.value
 
-        followUpStore.currentUser = Id.fromString(
+        followUpStore.currentEmployee = Id.fromString(
             selectedEmployeeStore.selectedId
         )
         followUpStore.resolve(followUpId)
@@ -27,7 +27,7 @@ export const FollowUpsTab = observer(() => {
     const getFollowUpComponents = (selectedId): ReactNode[] => {
         const followUpComponents: ReactNode[] = []
 
-        followUpStore.currentUser = Id.fromString(selectedId)
+        followUpStore.currentEmployee = Id.fromString(selectedId)
 
         if (followUpStore.unresolvedFollowups.length === 0) {
             return [

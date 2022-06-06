@@ -1,15 +1,27 @@
 import {
+    Box,
+    Button,
+    Checkbox,
+    Flex,
+    FormControl,
+    FormLabel,
+    HStack,
+    Input,
     Modal,
     ModalBody,
     ModalCloseButton,
     ModalContent,
     ModalHeader,
     ModalOverlay,
+    Spacer,
+    useBoolean,
     useToast,
 } from '@chakra-ui/react'
-import { Employee } from '../../value_objects/Employee'
-import { DetailsForm } from '../DetailsForm'
-import { useFollowUpStore } from '../RootStoreProvider'
+import { useState } from 'react'
+import {
+    useFollowUpStore,
+    useSelectedEmployeeStore,
+} from '../RootStoreProvider'
 
 export const NewFollowUpDialog = ({
     isDialogOpen,
@@ -19,48 +31,81 @@ export const NewFollowUpDialog = ({
     onDialogClosed: () => void
 }) => {
     const followUpStore = useFollowUpStore()
+    const currentEmployee = useSelectedEmployeeStore()
     const toast = useToast()
+    let [checked, setChecked] = useBoolean(false)
+    let [text, setText] = useState<string>()
 
-    const updateEmployee = (employee: Employee): void => {
-        // employeeStore.save(employee)
-        // employeeStore
-        //     .write()
-        //     .then((successfulMessage) => {
-        //         //initialize new employee
-        //         notesStore.addEmployee(employee.id)
-        //         stretchStore.addEmployee(employee.id)
-        //         goalAndStatusStore.addEmployee(employee.id)
-        //         toast({
-        //             title: successfulMessage,
-        //             status: 'success',
-        //             duration: 2000,
-        //             isClosable: true,
-        //         })
-        //     })
-        //     .catch((failureMessage) =>
-        //         toast({
-        //             title: 'save failed',
-        //             description: failureMessage,
-        //             status: 'error',
-        //             duration: 2000,
-        //             isClosable: true,
-        //         })
-        //     )
-        //  .finally(() => onDialogClosed())
+    const followUp = () => addFollowUp()
+    const followUpAndClose = () => addFollowUp(true)
+    const addFollowUp = (closeDialog: boolean = false) => {
+        followUpStore
+            .add(text, checked ? null : currentEmployee.selectedId)
+            .then(() => {
+                toast({
+                    title: 'followup added',
+                    status: 'success',
+                    duration: 2000,
+                    isClosable: true,
+                })
+            })
+            .catch((e) => {
+                toast({
+                    title: `followup not added: ${e}`,
+                    status: 'error',
+                    duration: 10000,
+                    isClosable: true,
+                })
+            })
+
+        if (closeDialog) onDialogClosed()
     }
 
     return (
         <Modal isOpen={isDialogOpen} onClose={onDialogClosed}>
             <ModalOverlay />
             <ModalContent maxW="600px">
-                <ModalHeader>settings</ModalHeader>
+                <ModalHeader>new followup</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                    <DetailsForm
-                        employee={new Employee()}
-                        updateEmployee={updateEmployee}
-                        isDialog={true}
-                    />
+                    <Box w={[250, 500]}>
+                        <HStack>
+                            <FormControl colorScheme={'green'}>
+                                <Input
+                                    type="text"
+                                    placeholder="followup description"
+                                    onChange={(e) => setText(e.target.value)}
+                                ></Input>
+                            </FormControl>
+                            <Checkbox
+                                colorScheme="green"
+                                onChange={() => setChecked.toggle()}
+                            >
+                                global
+                            </Checkbox>
+                        </HStack>
+                        <Flex
+                            alignItems={'center'}
+                            justifyContent={'flex-end'}
+                            direction={'row'}
+                            w={[250, 500]}
+                        >
+                            <Spacer />
+                            <Box p={2}>
+                                <Button onClick={followUp}>
+                                    add follow up
+                                </Button>
+                            </Box>
+                            <Box p={2}>
+                                <Button
+                                    onClick={followUpAndClose}
+                                    colorScheme="green"
+                                >
+                                    add and close
+                                </Button>
+                            </Box>
+                        </Flex>
+                    </Box>
                 </ModalBody>
             </ModalContent>
         </Modal>

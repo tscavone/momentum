@@ -12,7 +12,7 @@ import { IStore } from './IStore'
 export class FollowUpStore implements IStore, IWriteable {
     // keyed by id
     _followUps: Map<string, FollowUp[]>
-    private _currentUser: Id
+    private _currentEmployee: Id
     _persistenceProvider: IPersistenceProvider
 
     constructor() {
@@ -21,7 +21,7 @@ export class FollowUpStore implements IStore, IWriteable {
             resolve: action,
         })
         this._followUps = observable.map()
-        this._currentUser = null
+        this._currentEmployee = null
         this._persistenceProvider = null
     }
 
@@ -31,27 +31,47 @@ export class FollowUpStore implements IStore, IWriteable {
     public set persistenceProvider(value: IPersistenceProvider) {
         this._persistenceProvider = value
     }
-    public get currentUser(): Id {
-        return this._currentUser
+
+    //we need to set this because unresolvedFollowups needs to be a getter for mobx and they can't take parameters
+    public get currentEmployee(): Id {
+        return this._currentEmployee
     }
-    public set currentUser(value: Id) {
-        this._currentUser = value
+    public set currentEmployee(value: Id) {
+        this._currentEmployee = value
     }
     get unresolvedFollowups(): FollowUp[] {
-        if (!this.currentUser)
+        if (!this.currentEmployee)
             throw new Error('Current user unset in FollowUpStore')
 
-        const userIdStr = Id.asString(this._currentUser)
+        const userIdStr = Id.asString(this._currentEmployee)
         return this._followUps
             .get(userIdStr)
             .filter((followUp) => followUp.resolvedDate === null)
     }
 
+    //if currentEmployee is unspecified, then it is global and the followup is added to all employees
+    add(text: string, currentEmployee?: string): Promise<string> {
+        let followUp = new FollowUp()
+        followUp.text = text
+
+        if (currentEmployee) {
+            this._followUps.get(currentEmployee).push(followUp)
+        } else {
+            for (const employeeId of this._followUps.keys()) {
+                this._followUps.get(employeeId).push(followUp)
+                followUp = new FollowUp()
+                followUp.text = text
+            }
+        }
+
+        return this.write()
+    }
+
     resolve(followUpId: string): void {
-        if (!this.currentUser)
+        if (!this.currentEmployee)
             throw new Error('Current user unset in FollowUpStore')
 
-        const userIdStr = Id.asString(this._currentUser)
+        const userIdStr = Id.asString(this._currentEmployee)
         this._followUps
             .get(userIdStr)
             .filter(

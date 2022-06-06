@@ -1,4 +1,4 @@
-import { Container, VStack } from '@chakra-ui/react'
+import { Box, Container, VStack } from '@chakra-ui/react'
 import { StretchAnswer } from '../../value_objects/StretchAnswer'
 import { useSettingsStore } from '../RootStoreProvider'
 
@@ -15,18 +15,23 @@ export const StretchReport = ({
     )
 
     return (
-        <VStack>
-            <details>
-                <summary>{stretchQuestion.value}</summary>
-                <Container
-                    p={5}
-                    shadow="md"
-                    borderWidth="1px"
-                    w={[250, 500]}
-                    borderRadius="md"
-                    dangerouslySetInnerHTML={{ __html: stretchAnswer.answer }}
-                ></Container>
-            </details>
-        </VStack>
+        <Container
+            p={5}
+            shadow="md"
+            borderWidth="1px"
+            w={[250, 500]}
+            borderRadius="md"
+        >
+            <Box width="95%">
+                <details>
+                    <summary>{stretchQuestion.value}</summary>
+                    <Container
+                        dangerouslySetInnerHTML={{
+                            __html: stretchAnswer.answer,
+                        }}
+                    ></Container>
+                </details>
+            </Box>
+        </Container>
     )
 }

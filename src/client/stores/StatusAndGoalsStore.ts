@@ -13,6 +13,8 @@ import {
 } from '../../shared/data_definitions/GlobalDefinitions'
 import { DateRange } from '../util/DateRange'
 import { dateToString } from '../util/utils'
+import { SettingsStore } from './SettingsStore'
+import { Goal } from '../value_objects/Goal'
 
 export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
     //
@@ -40,6 +42,27 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
                 )
             )
         )
+    }
+
+    getSummarizedStatus(employeeID: string): string {
+        return this.summarize([
+            this.getCollectionForEmployee(employeeID).getLatestSaved().status,
+        ])
+    }
+
+    getSummarizedGoals(
+        employeeID: string,
+        settingsStore: SettingsStore
+    ): string {
+        let goalNames: string[] = []
+
+        for (const goal of this.getCollectionForEmployee(employeeID).current
+            .goals) {
+            goalNames.push(
+                StatusAndGoalsStore.goalNameFromSettingId(settingsStore, goal)
+            )
+        }
+        return this.summarize(goalNames)
     }
 
     load(): void {
@@ -110,5 +133,9 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
         return this._persistenceProvider.writeStatusAndGoalData(
             statusAndGoalsData
         )
+    }
+
+    static goalNameFromSettingId(settingsStore: SettingsStore, goal: Goal) {
+        return settingsStore.getValueById(goal.settingValueId).value
     }
 }

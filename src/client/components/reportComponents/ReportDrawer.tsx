@@ -12,6 +12,7 @@ import {
     Divider,
     Center,
     Button,
+    Tag,
 } from '@chakra-ui/react'
 import { DatedObject } from '../../util/DatedObject'
 import { ITemporalStore } from '../../stores/ITemporalStore'
@@ -23,6 +24,7 @@ import {
     useSelectedEmployeeStore,
     useEmployeeStore,
     useStretchAnswerStore,
+    useStatusAndGoalsStore,
 } from '../RootStoreProvider'
 import { DateRange } from '../../util/DateRange'
 import { observer } from 'mobx-react'
@@ -32,6 +34,10 @@ import { dateToString } from '../../util/utils'
 import { NoteReport } from './NoteReport'
 import { StretchAnswer } from '../../value_objects/StretchAnswer'
 import { StretchReport } from './StretchReport'
+import { Goal } from '../../value_objects/Goal'
+import { GoalReport } from './GoalReport'
+import { StatusAndGoals } from '../../value_objects/StatusAndGoals'
+import { StatusReport } from './StatusReport'
 
 //
 // Date state
@@ -55,6 +61,7 @@ let reportDates = new ReportDates()
 export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
     const noteStore = useNoteStore()
     const stretchAnswerStore = useStretchAnswerStore()
+    const statusAndGoalsStore = useStatusAndGoalsStore()
     const selectedEmployeeStore = useSelectedEmployeeStore()
     const selectedEmployee = useEmployeeStore().getEmployee(
         selectedEmployeeStore.selectedId
@@ -134,7 +141,14 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
             dateReportComponents.push(
                 <VStack alignItems={'flex-start'}>
                     <Box>
-                        <Badge>{dateString}</Badge>
+                        <Tag
+                            size={'lg'}
+                            key={'lg'}
+                            variant="solid"
+                            colorScheme="green"
+                        >
+                            {dateString}
+                        </Tag>
                     </Box>
                     {reportComponents}
                 </VStack>
@@ -165,6 +179,19 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
                     stretchAnswer={reportObject}
                 ></StretchReport>
             )
+        } else if (reportObject instanceof StatusAndGoals) {
+            let reportObjects: ReactNode[] = []
+
+            reportObjects.push(
+                <StatusReport
+                    key={reportObject.id.id}
+                    status={reportObject.status}
+                />
+            )
+            for (const goal of reportObject.goals) {
+                reportObjects.push(<GoalReport key={goal.id.id} goal={goal} />)
+            }
+            return <>{reportObjects}</>
         } else {
             throw Error(
                 `ReportDrawer:renderReportComponent reportObject not of any instance: ${reportObject}`
@@ -174,6 +201,9 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
 
     const renderReport = (): ReactNode => {
         const reportComponents = []
+        reportComponents.push(
+            getReportComponentsInRange<StatusAndGoals>(statusAndGoalsStore)
+        )
         reportComponents.push(getReportComponentsInRange<Note>(noteStore))
         reportComponents.push(
             getReportComponentsInRange<StretchAnswer>(stretchAnswerStore)

@@ -13,7 +13,7 @@ import {
 import { AbstractTemporalStore } from './AbstractTemporalStore'
 import { DateRange } from '../util/DateRange'
 import { DatedObject } from '../util/DatedObject'
-import { dateToString } from '../util/utils'
+import { dateToString } from '../../shared/utils'
 
 export class NoteStore extends AbstractTemporalStore<Note> {
     //

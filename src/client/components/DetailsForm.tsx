@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { Id } from '../util/Id'
-import { dateToString } from '../util/utils'
+import { dateToString } from '../../shared/utils'
 import { Employee } from '../value_objects/Employee'
 import {
     useEmployeeStore,

@@ -3,7 +3,7 @@
 
 import { IDatedObject } from '../../shared/data_definitions/GlobalDefinitions'
 import { ISerializable } from './ISerializable'
-import { dateToString } from './utils'
+import { dateToString } from '../../shared/utils'
 
 export class DatedObject<T extends ISerializable> implements ISerializable {
     //

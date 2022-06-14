@@ -1,7 +1,7 @@
 import { IDataFollowUp } from '../../shared/data_definitions/FollowUpDefinitions'
 import { Id } from '../util/Id'
 import { IdentifiedObject } from '../util/IdentifiedObject'
-import { dateToString } from '../util/utils'
+import { dateToString } from '../../shared/utils'
 
 export class FollowUp extends IdentifiedObject {
     private _text: string

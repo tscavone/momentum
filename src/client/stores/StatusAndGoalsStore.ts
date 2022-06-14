@@ -12,7 +12,7 @@ import {
     IDatedObject,
 } from '../../shared/data_definitions/GlobalDefinitions'
 import { DateRange } from '../util/DateRange'
-import { dateToString } from '../util/utils'
+import { dateToString } from '../../shared/utils'
 import { SettingsStore } from './SettingsStore'
 import { Goal } from '../value_objects/Goal'
 

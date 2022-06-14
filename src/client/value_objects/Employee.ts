@@ -4,7 +4,7 @@
 import { IDataEmployee } from '../../shared/data_definitions/EmployeeDefinitions'
 import { Id } from '../util/Id'
 import { IdentifiedObject } from '../util/IdentifiedObject'
-import { dateToString } from '../util/utils'
+import { dateToString } from '../../shared/utils'
 
 export class Employee extends IdentifiedObject {
     private _first: string

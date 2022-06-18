@@ -11,7 +11,7 @@ export interface IDataUser extends IDataIdentifiedObject {
     first: string
     last: string
     email: string
-    created: string
-    updated: string
-    deleted: string
+    created?: string
+    updated?: string
+    deleted?: string
 }

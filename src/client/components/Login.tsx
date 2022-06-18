@@ -29,8 +29,14 @@ import {
     useToast,
 } from '@chakra-ui/react'
 import { QuestionOutlineIcon } from '@chakra-ui/icons'
+import {
+    QueryResponse,
+    LoginRequest,
+    LoginPayload,
+} from '../../shared/data_definitions/NetworkDefinitions'
+import { IDataUser } from '../../shared/data_definitions/AuthedUserDefinitions'
 
-async function queryServer(path: string, credentials: object) {
+async function queryServer(path: string, payload: object) {
     const hostString = process.env.REACT_APP_HOSTSTRING
 
     if (!hostString) {
@@ -42,13 +48,16 @@ async function queryServer(path: string, credentials: object) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(credentials),
-    }).then((response) => {
-        if (!response.ok) {
-            throw Error(response.statusText)
-        }
-        return response.json()
+        body: JSON.stringify(payload),
     })
+        .then((response) => response.json())
+        .then((jsonResponse: QueryResponse) => {
+            console.log('query response (client side): ', jsonResponse)
+            if (jsonResponse.errorMessage) {
+                throw Error(jsonResponse.errorMessage)
+            }
+            return jsonResponse
+        })
 }
 
 export default function Login() {
@@ -60,7 +69,7 @@ export default function Login() {
     const [registerFirst, setRegisterFirst] = useState<string>('')
     const [registerLast, setRegisterLast] = useState<string>('')
     const [registerUsername, setRegisterUserName] = useState<string>('')
-    const [registerEmail, setEmail] = useState<string>()
+    const [registerEmail, setEmail] = useState<string>('')
     const [registerPassword, setRegisterPassword] = useState<string>('')
     const [registerConfirmPassword, setRegisterConfirmPassword] =
         useState<string>('')
@@ -89,36 +98,38 @@ export default function Login() {
 
     const handleLogin = async (e) => {
         e.preventDefault()
-        let responseData: { userId: string; token: string } = null
-
-        responseData = await queryServer('login', {
+        let responseData: QueryResponse = null
+        let loginRequest: LoginRequest = {
             username: loginUsername.trim(),
             password: loginPassword.trim(),
-        })
+        }
 
-        rootStore.initialize(Id.fromString(responseData.userId))
+        responseData = await queryServer('login', loginRequest)
+        let loginPayload: LoginPayload = responseData.payload as LoginPayload
 
-        authedUserStore.token = responseData.token
-        authedUserStore.userId = Id.fromString(responseData.userId)
+        rootStore.initialize(Id.fromString(loginPayload.userId))
+
+        authedUserStore.token = loginPayload.token
+        authedUserStore.userId = Id.fromString(loginPayload.userId)
     }
 
     const handleSignup = async (e) => {
         e.preventDefault()
-        let responseData: { userId: string; token: string } = null
-
-        responseData = await queryServer('signup', {
-            _id: new Id(),
+        let responseData: QueryResponse = null
+        let signupRequest: IDataUser = {
+            _id: new Id().id,
             username: registerUsername.trim(),
             password: registerPassword.trim(),
             first: registerFirst.trim(),
             last: registerLast.trim(),
             email: registerEmail.trim(),
-            storage: storage,
-        })
+        }
+        responseData = await queryServer('signup', signupRequest)
 
-        rootStore.initialize(Id.fromString(responseData.userId))
-        authedUserStore.token = responseData.token
-        authedUserStore.userId = Id.fromString(responseData.userId)
+        let signupPayload: LoginPayload = responseData.payload as LoginPayload
+        rootStore.initialize(Id.fromString(signupPayload.userId))
+        authedUserStore.token = signupPayload.token
+        authedUserStore.userId = Id.fromString(signupPayload.userId)
 
         console.log('error logging in :  ', e)
         return
@@ -127,11 +138,19 @@ export default function Login() {
     const getLoginComponent = () => {
         return (
             <Stack spacing={4}>
-                <FormControl id="loginUsername" colorScheme={'green'}>
+                <FormControl
+                    id="loginUsername"
+                    colorScheme={'green'}
+                    isRequired
+                >
                     <FormLabel>username</FormLabel>
                     <Input onChange={(e) => setLoginUserName(e.target.value)} />
                 </FormControl>
-                <FormControl id="loginPassword" colorScheme={'green'}>
+                <FormControl
+                    id="loginPassword"
+                    colorScheme={'green'}
+                    isRequired
+                >
                     <FormLabel>password</FormLabel>
                     <Input
                         type="password"
@@ -159,7 +178,7 @@ export default function Login() {
                                     title: 'login failed',
                                     description: err.message,
                                     status: 'error',
-                                    duration: 9000,
+                                    duration: 5000,
                                     isClosable: true,
                                 })
                             } finally {
@@ -168,7 +187,7 @@ export default function Login() {
                         }}
                         id="submit"
                     >
-                        {loading ? <Spinner></Spinner> : 'Sign in'}
+                        {loading ? <Spinner></Spinner> : 'sign in'}
                     </Button>
                 </Stack>
             </Stack>
@@ -179,8 +198,8 @@ export default function Login() {
         return (
             <Stack spacing={4}>
                 <HStack>
-                    <FormControl id="first" colorScheme={'green'}>
-                        <FormLabel>first name *</FormLabel>
+                    <FormControl id="first" colorScheme={'green'} isRequired>
+                        <FormLabel>first name</FormLabel>
                         <Input
                             onChange={(e) => setRegisterFirst(e.target.value)}
                         />
@@ -192,22 +211,26 @@ export default function Login() {
                         />
                     </FormControl>
                 </HStack>
-                <FormControl id="registerUsername" colorScheme={'green'}>
-                    <FormLabel>username *</FormLabel>
+                <FormControl
+                    id="registerUsername"
+                    colorScheme={'green'}
+                    isRequired
+                >
+                    <FormLabel>username</FormLabel>
                     <Input
                         onChange={(e) => setRegisterUserName(e.target.value)}
                     />
                 </FormControl>
-                <FormControl id="email" colorScheme={'green'}>
-                    <FormLabel>email *</FormLabel>
+                <FormControl id="email" colorScheme={'green'} isRequired>
+                    <FormLabel>email</FormLabel>
                     <Input
                         id="email"
                         type="email"
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </FormControl>
-                <FormControl id="password" colorScheme={'green'}>
-                    <FormLabel>password *</FormLabel>
+                <FormControl id="password" colorScheme={'green'} isRequired>
+                    <FormLabel>password</FormLabel>
                     <Input
                         id="registerPassword"
                         type="password"
@@ -218,8 +241,9 @@ export default function Login() {
                     id="confirmPassword"
                     colorScheme={'green'}
                     isInvalid={!passwordMatches}
+                    isRequired
                 >
-                    <FormLabel>confirm password *</FormLabel>
+                    <FormLabel>confirm password</FormLabel>
                     <Input
                         type="password"
                         onChange={(e) =>
@@ -286,10 +310,26 @@ export default function Login() {
                         _hover={{
                             bg: 'green.500',
                         }}
-                        onClick={handleSignup}
+                        isDisabled={loading ? true : false}
+                        onClick={async (e) => {
+                            try {
+                                setLoading.on()
+                                await handleSignup(e)
+                            } catch (err) {
+                                toast({
+                                    title: 'signup failed',
+                                    description: err.message,
+                                    status: 'error',
+                                    duration: 5000,
+                                    isClosable: true,
+                                })
+                            } finally {
+                                setLoading.off()
+                            }
+                        }}
                         id="create"
                     >
-                        Register
+                        {loading ? <Spinner></Spinner> : 'register'}
                     </Button>
                 </Stack>
             </Stack>

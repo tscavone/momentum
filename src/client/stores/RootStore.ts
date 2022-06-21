@@ -9,6 +9,7 @@ import { AuthedUserStore } from './AuthedUserStore'
 import { StatusAndGoalsStore } from './StatusAndGoalsStore'
 import { FollowUpStore } from './FollowUpStore'
 import { PersistenceProviderFactory } from '../persistence/PersistenceProviderFactory'
+import { IDataUser } from '../../shared/data_definitions/AuthedUserDefinitions'
 
 //const UserData
 export class RootStore {
@@ -33,6 +34,12 @@ export class RootStore {
         this._stretchAnswerStore = new StretchAnswerStore()
         this._statusAndGoalsStore = new StatusAndGoalsStore()
         this._followUpStore = new FollowUpStore()
+    }
+
+    initializeNewUser(user: IDataUser, localStorage: boolean) {
+        this._settingsStore.initializeNewUser(localStorage)
+
+        this.initialize(user._id)
     }
 
     initialize(userId: Id | string) {

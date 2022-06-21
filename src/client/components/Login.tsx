@@ -74,7 +74,7 @@ export default function Login() {
     const [registerConfirmPassword, setRegisterConfirmPassword] =
         useState<string>('')
     const [register, setRegister] = useBoolean(false)
-    const [storage, setStorage] = useBoolean(false)
+    const [serverStorage, setStorage] = useBoolean(false)
     const [loading, setLoading] = useBoolean(false)
 
     const passwordMatches =
@@ -116,7 +116,7 @@ export default function Login() {
     const handleSignup = async (e) => {
         e.preventDefault()
         let responseData: QueryResponse = null
-        let signupRequest: IDataUser = {
+        let newUser: IDataUser = {
             _id: new Id().id,
             username: registerUsername.trim(),
             password: registerPassword.trim(),
@@ -124,10 +124,10 @@ export default function Login() {
             last: registerLast.trim(),
             email: registerEmail.trim(),
         }
-        responseData = await queryServer('signup', signupRequest)
+        responseData = await queryServer('signup', newUser)
 
         let signupPayload: LoginPayload = responseData.payload as LoginPayload
-        rootStore.initialize(Id.fromString(signupPayload.userId))
+        rootStore.initializeNewUser(newUser, !serverStorage)
         authedUserStore.token = signupPayload.token
         authedUserStore.userId = Id.fromString(signupPayload.userId)
 

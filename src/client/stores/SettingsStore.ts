@@ -9,7 +9,12 @@ import { IWriteable } from '../persistence/IWriteable'
 import {
     IDataSettingsEntry,
     IDataSettingsValue,
+    IDataUserScopedSettings,
 } from '../../shared/data_definitions/SettingsDefinitions'
+import {
+    NewUserLocalStorageSettings,
+    NewUserServerStorageSettings,
+} from './SettingsStoreInitializationData'
 
 export class SettingsStore implements IStore, IWriteable {
     // keyed by id
@@ -116,9 +121,21 @@ export class SettingsStore implements IStore, IWriteable {
         throw `deleteValue: value not found to be deleted: ${idStr}`
     }
 
+    initializeNewUser(localStorage: boolean) {
+        if (localStorage) {
+            this.loadData(NewUserLocalStorageSettings)
+        } else {
+            this.loadData(NewUserServerStorageSettings)
+        }
+    }
+
     load(): void {
         const jsonSettingsData = this._persistenceProvider.getSettingsData()
 
+        this.loadData(jsonSettingsData)
+    }
+
+    private loadData(jsonSettingsData: IDataUserScopedSettings) {
         //clear all existing data
         this._settings.clear()
 

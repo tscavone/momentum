@@ -4,6 +4,8 @@ Momentum is a prescriptive management solution for Engineering Managers and Team
 
 ### Usage
 
+First, clone and follow the setup instructions in [momentum-server](https://github.com/tscavone/momentum-server) to set up the backend. Then follow these steps:
+
 - create a .env file in base directory
 - add the following environment variables
 ```
@@ -13,8 +15,9 @@ USERID1 = 'abcdef'
 USERNAME2 = <quoted name  #2 here>
 PASSWORD2 = <quoted password #2 here>
 USERID2 = 'uvwxyz'
+REACT_APP_HOSTSTRING = <server host string, i.e. http://localhost:3001>
 ```
-- npm run dev - to start ui and server
+- npm run start- to start ui
 - login with either username1 or username2 and corresponding password
 
 

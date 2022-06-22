@@ -123,15 +123,14 @@ export default function Login() {
             first: registerFirst.trim(),
             last: registerLast.trim(),
             email: registerEmail.trim(),
+            storage: serverStorage ? 'server' : 'local',
         }
         responseData = await queryServer('signup', newUser)
 
-        let signupPayload: LoginPayload = responseData.payload as LoginPayload
-        rootStore.initializeNewUser(newUser, !serverStorage)
-        authedUserStore.token = signupPayload.token
-        authedUserStore.userId = Id.fromString(signupPayload.userId)
+        //let signupPayload: LoginPayload = responseData.payload as LoginPayload
+        //rootStore.initializeNewUser(newUser, !serverStorage)
 
-        console.log('error logging in :  ', e)
+        console.log('new user response', responseData)
         return
     }
 
@@ -315,6 +314,15 @@ export default function Login() {
                             try {
                                 setLoading.on()
                                 await handleSignup(e)
+                                setLoading.off()
+                                toast({
+                                    title: `success`,
+                                    description: `"${registerUsername}" created successfully, please login`,
+                                    status: 'success',
+                                    duration: 5000,
+                                    isClosable: true,
+                                })
+                                setRegister.toggle()
                             } catch (err) {
                                 toast({
                                     title: 'signup failed',

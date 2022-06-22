@@ -9,8 +9,6 @@ export class PersistenceProviderFactory {
         userId: string,
         settingsStore: SettingsStore
     ): IPersistenceProvider {
-        return new TestPersistenceProvider(userId)
-        // TODO enable this once we're getting storage setting back from the server
         const storage = settingsStore.getValueById(userId)
 
         switch (storage.value) {

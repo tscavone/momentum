@@ -38,17 +38,15 @@ export class RootStore {
 
     initializeNewUser(user: IDataUser, localStorage: boolean) {
         this._settingsStore.initializeNewUser(localStorage)
-
-        this.initialize(user._id)
     }
 
-    initialize(userId: Id | string) {
+    initialize(userId: Id | string, storage: string) {
         const userIdString = Id.asString(userId)
 
         const persistenceProvider =
             PersistenceProviderFactory.getPersistenceProvider(
                 userIdString,
-                this._settingsStore
+                storage
             )
 
         this._selectedEmployeeStore.persistenceProvider = persistenceProvider
@@ -58,17 +56,19 @@ export class RootStore {
         this._stretchAnswerStore.persistenceProvider = persistenceProvider
         this._statusAndGoalsStore.persistenceProvider = persistenceProvider
         this._followUpStore.persistenceProvider = persistenceProvider
-
-        this._selectedEmployeeStore.load()
-        this.loadTemporalObjects()
-        this._followUpStore.load()
-        this._settingsStore.load()
-        this._employeeStore.load()
     }
 
-    private loadTemporalObjects(): void {
-        this._noteStore.load()
-        this._stretchAnswerStore.load()
-        this._statusAndGoalsStore.load()
+    async loadData() {
+        await this._selectedEmployeeStore.load()
+        await this.loadTemporalObjects()
+        await this._followUpStore.load()
+        await this._settingsStore.load()
+        await this._employeeStore.load()
+    }
+
+    private async loadTemporalObjects() {
+        await this._noteStore.load()
+        await this._stretchAnswerStore.load()
+        await this._statusAndGoalsStore.load()
     }
 }

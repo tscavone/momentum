@@ -39,8 +39,13 @@ export class EmployeeStore implements IStore, IWriteable {
         return this._employees.get(id)
     }
 
-    load(): void {
-        const jsonEmployeeData = this._persistenceProvider.getEmployeeData()
+    numEmployees(): number {
+        return this._employees.size
+    }
+
+    async load(): Promise<string> {
+        const jsonEmployeeData =
+            (await this._persistenceProvider.getEmployeeData()) as IDataAllEmployees
 
         //clear all existing data
         this._employees.clear()
@@ -49,6 +54,8 @@ export class EmployeeStore implements IStore, IWriteable {
             const user = Employee.fromJSON(jsonEmployeeData[jsonId])
             this._employees.set(jsonId, user as Employee)
         }
+
+        return Promise.resolve('employees loaded')
     }
 
     save(employee: Employee) {

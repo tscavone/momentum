@@ -32,4 +32,5 @@ export type QueryResponse = Success | Failure
 export interface LoginPayload {
     userId: string
     token: string
+    storage: string
 }

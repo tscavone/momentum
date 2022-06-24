@@ -81,8 +81,9 @@ export class FollowUpStore implements IStore, IWriteable {
         this._followUps.set(userIdStr, [...this._followUps.get(userIdStr)])
     }
 
-    load(): void {
-        const followUpJsonData = this._persistenceProvider.getFollowUpData()
+    async load(): Promise<string> {
+        const followUpJsonData =
+            (await this._persistenceProvider.getFollowUpData()) as IDataAllEmployeeFollowUp
 
         for (const employeeId in followUpJsonData) {
             const employeeFollowUps = []
@@ -92,6 +93,8 @@ export class FollowUpStore implements IStore, IWriteable {
 
             this._followUps.set(employeeId, employeeFollowUps)
         }
+
+        return Promise.resolve('followups loaded')
     }
 
     write(): Promise<string> {

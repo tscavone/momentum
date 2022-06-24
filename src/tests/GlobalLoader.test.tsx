@@ -23,7 +23,7 @@ test('Root store constructs', () => {
 
 test('Root store initializes', () => {
     const rootStore = new RootStore()
-    rootStore.initialize('abcdef')
+    rootStore.initialize('abcdef', 'test')
 })
 
 const testDatedNote = ({
@@ -147,7 +147,7 @@ const testGoal = ({
 
 test('Root store noteStore load is correct with multiple users', () => {
     const rootStore = new RootStore()
-    rootStore.initialize('abcdef')
+    rootStore.initialize('abcdef', 'test')
 
     let allSavedNotes = rootStore._noteStore.getAllSaved(
         '1234'
@@ -187,7 +187,7 @@ test('Root store noteStore load is correct with multiple users', () => {
     //
     //test the loading of another user
     //
-    rootStore.initialize('uvwxyz')
+    rootStore.initialize('uvwxyz', 'test')
     allSavedNotes = rootStore._noteStore.getAllSaved(
         '9876'
     ) as DatedObject<Note>[]
@@ -209,7 +209,7 @@ test('Root store noteStore load is correct with multiple users', () => {
 
 test('Root store stretchAnswerStore load is correct', () => {
     const rootStore = new RootStore()
-    rootStore.initialize('abcdef')
+    rootStore.initialize('abcdef', 'test')
 
     let allSavedAnswers = rootStore._stretchAnswerStore.getAllSaved(
         '1234'
@@ -245,7 +245,7 @@ test('Root store stretchAnswerStore load is correct', () => {
     //
     //test the loading of another user
     //
-    rootStore.initialize('uvwxyz')
+    rootStore.initialize('uvwxyz', 'test')
     allSavedAnswers = rootStore._stretchAnswerStore.getAllSaved(
         '9876'
     ) as DatedObject<StretchAnswer>[]
@@ -269,7 +269,7 @@ test('Root store stretchAnswerStore load is correct', () => {
 
 test('Root store statusAndGoalStore load is correct', () => {
     const rootStore = new RootStore()
-    rootStore.initialize('abcdef')
+    rootStore.initialize('abcdef', 'test')
 
     let allSavedStatusAndGoals = rootStore._statusAndGoalsStore.getAllSaved(
         '1234'
@@ -371,7 +371,7 @@ const testSettingsValues = (
 
 test('Root store settings load is correct', () => {
     const rootStore = new RootStore()
-    rootStore.initialize('abcdef')
+    rootStore.initialize('abcdef', 'test')
 
     expect(() =>
         rootStore._settingsStore.getByEntryName('incorrect entry')
@@ -464,7 +464,7 @@ test('Root store settings load is correct', () => {
     //
     // user uvwxyz
     //
-    rootStore.initialize('uvwxyz')
+    rootStore.initialize('uvwxyz', 'test')
 
     persistence = rootStore._settingsStore.getByEntryName('persistence')
     testSettingsEntry({
@@ -553,5 +553,5 @@ test('Root store settings load is correct', () => {
 
 test('Root store employee load is correct', () => {
     const rootStore = new RootStore()
-    rootStore.initialize('abcdef')
+    rootStore.initialize('abcdef', 'test')
 })

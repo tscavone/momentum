@@ -60,7 +60,7 @@ async function queryServer(path: string, payload: object) {
         })
 }
 
-export default function Login() {
+export const Login = () => {
     const authedUserStore = useAuthedUserStore()
     const rootStore = useRootStore()
 
@@ -107,8 +107,12 @@ export default function Login() {
         responseData = await queryServer('login', loginRequest)
         let loginPayload: LoginPayload = responseData.payload as LoginPayload
 
-        rootStore.initialize(Id.fromString(loginPayload.userId))
+        rootStore.initialize(
+            Id.fromString(loginPayload.userId),
+            loginPayload.storage
+        )
 
+        await rootStore.loadData()
         authedUserStore.token = loginPayload.token
         authedUserStore.userId = Id.fromString(loginPayload.userId)
     }
@@ -128,7 +132,7 @@ export default function Login() {
         responseData = await queryServer('signup', newUser)
 
         //let signupPayload: LoginPayload = responseData.payload as LoginPayload
-        //rootStore.initializeNewUser(newUser, !serverStorage)
+        rootStore.initializeNewUser(newUser, !serverStorage)
 
         console.log('new user response', responseData)
         return
@@ -314,7 +318,6 @@ export default function Login() {
                             try {
                                 setLoading.on()
                                 await handleSignup(e)
-                                setLoading.off()
                                 toast({
                                     title: `success`,
                                     description: `"${registerUsername}" created successfully, please login`,

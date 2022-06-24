@@ -41,8 +41,9 @@ export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
         )
     }
 
-    load(): void {
-        const employeeStretchData = this._persistenceProvider.getStretchData()
+    async load(): Promise<string> {
+        const employeeStretchData =
+            (await this._persistenceProvider.getStretchData()) as IDataStretchLoad
 
         //clear all existing data
         this._allEmployeeObjects.clear()
@@ -68,6 +69,8 @@ export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
                 )
             )
         }
+
+        return Promise.resolve('stretch answers loaded')
     }
 
     write(): Promise<string> {

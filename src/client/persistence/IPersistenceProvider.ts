@@ -16,13 +16,13 @@ export interface IPersistenceProvider {
         last: string,
         moniker: string
     ): Promise<string>
-    getEmployeeData(): IDataAllEmployees
-    getSettingsData(): IDataUserScopedSettings
-    getSelectedEmployeeData(): IDataSelectedEmployee
-    getNotesData(): IDataNotesLoad
-    getStretchData(): IDataStretchLoad
-    getStatusAndGoalData(): IDataStatusAndGoalsLoad
-    getFollowUpData(): IDataAllEmployeeFollowUp
+    getEmployeeData(): Promise<IDataAllEmployees | string>
+    getSettingsData(): Promise<IDataUserScopedSettings | string>
+    getSelectedEmployeeData(): Promise<IDataSelectedEmployee | string>
+    getNotesData(): Promise<IDataNotesLoad | string>
+    getStretchData(): Promise<IDataStretchLoad | string>
+    getStatusAndGoalData(): Promise<IDataStatusAndGoalsLoad | string>
+    getFollowUpData(): Promise<IDataAllEmployeeFollowUp | string>
     writeNotesData(noteData: IDataNotesLoad): Promise<string>
     writeStretchData(stretchData: IDataStretchLoad): Promise<string>
     writeStatusAndGoalData(

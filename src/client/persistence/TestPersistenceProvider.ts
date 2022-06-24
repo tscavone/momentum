@@ -45,63 +45,67 @@ export class TestPersistenceProvider implements IPersistenceProvider {
         console.log("New test user 'created'")
         return Promise.resolve('user created')
     }
-    getNotesData(): IDataNotesLoad {
-        return this.collateLoadData('_notes')
+    getNotesData(): Promise<IDataNotesLoad | string> {
+        return Promise.resolve(this.collateLoadData('_notes'))
     }
-    getStretchData(): IDataStretchLoad {
-        return this.collateLoadData('_stretchAnswers')
+    getStretchData(): Promise<IDataStretchLoad | string> {
+        return Promise.resolve(this.collateLoadData('_stretchAnswers'))
     }
-    getStatusAndGoalData(): IDataStatusAndGoalsLoad {
-        return this.collateLoadData('_statusAndGoals')
+    getStatusAndGoalData(): Promise<IDataStatusAndGoalsLoad | string> {
+        return Promise.resolve(this.collateLoadData('_statusAndGoals'))
     }
-    getMomentumData(): IDataMomentum {
-        return valueTestData[this._userId]
+    getMomentumData(): Promise<IDataMomentum | string> {
+        return Promise.resolve(valueTestData[this._userId])
     }
-    getEmployeeData(): IDataAllEmployees {
-        return employeeTestData[this._userId]
+    getEmployeeData(): Promise<IDataAllEmployees | string> {
+        return Promise.resolve(employeeTestData[this._userId])
     }
-    getFollowUpData(): IDataAllEmployeeFollowUp {
-        return followUpTestData[this._userId]
+    getFollowUpData(): Promise<IDataAllEmployeeFollowUp | string> {
+        return Promise.resolve(followUpTestData[this._userId])
     }
-    getSettingsData(): IDataUserScopedSettings {
+    getSettingsData(): Promise<IDataUserScopedSettings | string> {
         let values = settingsTestData['values'][this._userId]
 
         if (!values) {
             values = SettingsStore.getDefaultValues()
         }
-        return {
+        return Promise.resolve({
             entries: settingsTestData['entries'],
             values,
-        }
+        })
     }
-    getSelectedEmployeeData(): IDataSelectedEmployee {
-        return TestSelectedEmployeeData[this._userId]
+    getSelectedEmployeeData(): Promise<IDataSelectedEmployee | string> {
+        return Promise.resolve(TestSelectedEmployeeData[this._userId])
     }
-    writeNotesData(noteData: IDataNotesLoad) {
+    writeNotesData(noteData: IDataNotesLoad): Promise<string> {
         console.log('\tWRITE:  << note >> data:  ', noteData)
         return Promise.resolve('save successful')
     }
-    writeStretchData(stretchData: IDataStretchLoad) {
+    writeStretchData(stretchData: IDataStretchLoad): Promise<string> {
         console.log('\tWRITE:  << stretch >> data:  ', stretchData)
         return Promise.resolve('save successful')
     }
-    writeStatusAndGoalData(statusAndGoalData: IDataStatusAndGoalsLoad) {
+    writeStatusAndGoalData(
+        statusAndGoalData: IDataStatusAndGoalsLoad
+    ): Promise<string> {
         console.log('\tWRITE:  << status&goal >> data:  ', statusAndGoalData)
         return Promise.resolve('save successful')
     }
-    writeEmployeeData(employeeData: IDataAllEmployees) {
+    writeEmployeeData(employeeData: IDataAllEmployees): Promise<string> {
         console.log('\tWRITE:  << employee >> data:  ', employeeData)
         return Promise.resolve('save successful')
     }
-    writeFollowUpData(followUpData: IDataAllEmployeeFollowUp) {
+    writeFollowUpData(followUpData: IDataAllEmployeeFollowUp): Promise<string> {
         console.log('\tWRITE:  << Followup >> data:  ', followUpData)
         return Promise.resolve('save successful')
     }
-    writeSettingsData(settingsData: IDataUserScopedSettings) {
+    writeSettingsData(settingsData: IDataUserScopedSettings): Promise<string> {
         console.log('\tWRITE:  << settings >> data:  ', settingsData)
         return Promise.resolve('save successful')
     }
-    writeSelectedEmployeeData(selectedEmployee: IDataSelectedEmployee) {
+    writeSelectedEmployeeData(
+        selectedEmployee: IDataSelectedEmployee
+    ): Promise<string> {
         console.log(
             '\tWRITE:  << selected Employee >>  data:  ',
             selectedEmployee

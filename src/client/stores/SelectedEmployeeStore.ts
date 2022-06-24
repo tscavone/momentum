@@ -1,6 +1,7 @@
 // The store that contains the selected employee at the global level
 //
 import { makeAutoObservable } from 'mobx'
+import { IDataSelectedEmployee } from '../../shared/data_definitions/SelectedEmployeeDefinitions'
 import { IPersistenceProvider } from '../persistence/IPersistenceProvider'
 import { IWriteable } from '../persistence/IWriteable'
 import { Id } from '../util/Id'
@@ -41,11 +42,16 @@ export class SelectedEmployeeStore implements IStore, IWriteable {
     //
     //public methods
     //
-    load(): void {
+    async load(): Promise<string | null> {
         const selectedJsonData =
-            this._persistenceProvider.getSelectedEmployeeData()
+            (await this._persistenceProvider.getSelectedEmployeeData()) as IDataSelectedEmployee
 
-        this._selectedId = Id.fromString(selectedJsonData._selectedId)
+        if (!selectedJsonData) {
+            this._selectedId = null
+        } else {
+            this._selectedId = Id.fromString(selectedJsonData._selectedId)
+        }
+        return Promise.resolve(selectedJsonData ? this._selectedId.id : null)
     }
 
     write(): Promise<string> {

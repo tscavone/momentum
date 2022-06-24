@@ -65,9 +65,9 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
         return this.summarize(goalNames)
     }
 
-    load(): void {
+    async load(): Promise<string> {
         const employeeStatusAndGoalData =
-            this._persistenceProvider.getStatusAndGoalData()
+            (await this._persistenceProvider.getStatusAndGoalData()) as IDataStatusAndGoalsLoad
         //clear all existing data
         this._allEmployeeObjects.clear()
 
@@ -101,6 +101,8 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
                     StatusAndGoals.instantiate(statusAndGoals)
             }
         }
+
+        return Promise.resolve('status and goals loaded')
     }
 
     write(): Promise<string> {

@@ -129,10 +129,13 @@ export class SettingsStore implements IStore, IWriteable {
         }
     }
 
-    load(): void {
-        const jsonSettingsData = this._persistenceProvider.getSettingsData()
+    async load(): Promise<string> {
+        const jsonSettingsData =
+            (await this._persistenceProvider.getSettingsData()) as IDataUserScopedSettings
 
         this.loadData(jsonSettingsData)
+
+        return Promise.resolve('settings loaded')
     }
 
     private loadData(jsonSettingsData: IDataUserScopedSettings) {

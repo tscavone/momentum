@@ -45,8 +45,9 @@ export class NoteStore extends AbstractTemporalStore<Note> {
         ])
     }
 
-    load(): void {
-        const employeeNotesData = this._persistenceProvider.getNotesData()
+    async load(): Promise<string> {
+        const employeeNotesData =
+            (await this._persistenceProvider.getNotesData()) as IDataNotesLoad
 
         //clear all existing data
         this._allEmployeeObjects.clear()
@@ -74,6 +75,8 @@ export class NoteStore extends AbstractTemporalStore<Note> {
                     )
             )
         }
+
+        return Promise.resolve('Notes loaded')
     }
 
     write(): Promise<string> {

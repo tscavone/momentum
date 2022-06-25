@@ -14,14 +14,14 @@ export interface IDataSettingsValue {
     _deleted?: string
 }
 
-export interface IDataSettings {
+export interface IDataTestSettings {
     entries: IDataSettingsEntry[]
     values: {
         [key: string]: IDataSettingsValue[]
     }
 }
 
-export interface IDataUserScopedSettings {
+export interface IDataSettings {
     entries: IDataSettingsEntry[]
     values: IDataSettingsValue[]
 }

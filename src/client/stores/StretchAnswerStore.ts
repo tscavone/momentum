@@ -7,7 +7,7 @@ import { AbstractTemporalStore } from './AbstractTemporalStore'
 import { StretchAnswer } from '../value_objects/StretchAnswer'
 import {
     IDataStretchAnswer,
-    IDataStretchLoad,
+    IDataStretchAnswers,
     IDataTemporalObject,
     IDatedObject,
 } from '../../shared/data_definitions/GlobalDefinitions'
@@ -43,7 +43,7 @@ export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
 
     async load(): Promise<string> {
         const employeeStretchData =
-            (await this._persistenceProvider.getStretchData()) as IDataStretchLoad
+            (await this._persistenceProvider.getStretchData()) as IDataStretchAnswers
 
         //clear all existing data
         this._allEmployeeObjects.clear()
@@ -77,7 +77,7 @@ export class StretchAnswerStore extends AbstractTemporalStore<StretchAnswer> {
         if (this._persistenceProvider === null)
             throw new Error('peristenceProvider null in StretchStore')
 
-        let stretchData: IDataStretchLoad = {}
+        let stretchData: IDataStretchAnswers = {}
 
         for (const [employeeID, temporalStretchAnswers] of this
             ._allEmployeeObjects) {

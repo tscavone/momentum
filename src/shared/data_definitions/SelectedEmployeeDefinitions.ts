@@ -1,6 +1,6 @@
 export interface IDataSelectedEmployee {
     _selectedId: string
 }
-export interface IDataAllEmployeeSelections {
+export interface IDataSelectedEmployees {
     [key: string]: { _selectedId: string }
 }

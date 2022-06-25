@@ -101,7 +101,7 @@ export abstract class AbstractTemporalStore<T extends TemporalObject>
 
     abstract addEmployee(newEmployeeId: Id | string): void
 
-    abstract load(jsonObj: IDataMomentum, employeeId?: Id): Promise<string>
+    abstract load(): Promise<string>
 
     abstract write(): Promise<string>
 }

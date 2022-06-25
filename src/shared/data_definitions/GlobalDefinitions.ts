@@ -53,13 +53,13 @@ export interface IDataMultiuserTest {
     [key: string]: IDataMomentum
 }
 
-export interface IDataNotesLoad {
+export interface IDataNotes {
     [key: string]: IDataTemporalObject<IDataNote>
 }
 
-export interface IDataStretchLoad {
+export interface IDataStretchAnswers {
     [key: string]: IDataTemporalObject<IDataStretchAnswer>
 }
-export interface IDataStatusAndGoalsLoad {
+export interface IDataStatusesAndGoals {
     [key: string]: IDataTemporalObject<IDataStatusAndGoals>
 }

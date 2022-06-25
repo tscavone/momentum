@@ -132,7 +132,8 @@ export const Login = () => {
         responseData = await queryServer('signup', newUser)
 
         //let signupPayload: LoginPayload = responseData.payload as LoginPayload
-        rootStore.initializeNewUser(newUser, !serverStorage)
+        rootStore.initialize(newUser._id, newUser.storage)
+        rootStore.initializeNewUser(newUser, newUser.storage)
 
         console.log('new user response', responseData)
         return

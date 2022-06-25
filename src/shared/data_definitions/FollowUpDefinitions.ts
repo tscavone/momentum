@@ -5,11 +5,11 @@ export interface IDataFollowUp extends IDataIdentifiedObject {
     _resolvedDate: string
 }
 
-export interface IDataAllEmployeeFollowUp {
+export interface IDataFollowUps {
     [key: string]: IDataFollowUp[]
 }
 
 //used in testing
 export interface IDataFollowUpAllUsers {
-    [key: string]: IDataAllEmployeeFollowUp
+    [key: string]: IDataFollowUps
 }

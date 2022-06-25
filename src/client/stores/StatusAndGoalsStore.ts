@@ -7,7 +7,7 @@ import { AbstractTemporalStore } from './AbstractTemporalStore'
 import { StatusAndGoals } from '../value_objects/StatusAndGoals'
 import {
     IDataStatusAndGoals,
-    IDataStatusAndGoalsLoad,
+    IDataStatusesAndGoals,
     IDataTemporalObject,
     IDatedObject,
 } from '../../shared/data_definitions/GlobalDefinitions'
@@ -67,7 +67,7 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
 
     async load(): Promise<string> {
         const employeeStatusAndGoalData =
-            (await this._persistenceProvider.getStatusAndGoalData()) as IDataStatusAndGoalsLoad
+            (await this._persistenceProvider.getStatusAndGoalData()) as IDataStatusesAndGoals
         //clear all existing data
         this._allEmployeeObjects.clear()
 
@@ -109,7 +109,7 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
         if (this._persistenceProvider === null)
             throw new Error('peristenceProvider null in StatusAndGoalStore')
 
-        let statusAndGoalsData: IDataStatusAndGoalsLoad = {}
+        let statusAndGoalsData: IDataStatusesAndGoals = {}
 
         for (const [employeeID, temporalSAndGs] of this._allEmployeeObjects) {
             let serializedSAndGObject: IDataTemporalObject<IDataStatusAndGoals> =

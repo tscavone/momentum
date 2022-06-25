@@ -36,8 +36,8 @@ export class RootStore {
         this._followUpStore = new FollowUpStore()
     }
 
-    initializeNewUser(user: IDataUser, localStorage: boolean) {
-        this._settingsStore.initializeNewUser(localStorage)
+    initializeNewUser(user: IDataUser, storage: string) {
+        this._settingsStore.initializeNewUser(storage)
     }
 
     initialize(userId: Id | string, storage: string) {

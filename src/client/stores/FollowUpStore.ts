@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from 'mobx'
 import {
-    IDataAllEmployeeFollowUp,
+    IDataFollowUps,
     IDataFollowUp,
 } from '../../shared/data_definitions/FollowUpDefinitions'
 import { IPersistenceProvider } from '../persistence/IPersistenceProvider'
@@ -83,7 +83,7 @@ export class FollowUpStore implements IStore, IWriteable {
 
     async load(): Promise<string> {
         const followUpJsonData =
-            (await this._persistenceProvider.getFollowUpData()) as IDataAllEmployeeFollowUp
+            (await this._persistenceProvider.getFollowUpData()) as IDataFollowUps
 
         for (const employeeId in followUpJsonData) {
             const employeeFollowUps = []
@@ -101,7 +101,7 @@ export class FollowUpStore implements IStore, IWriteable {
         if (this._persistenceProvider === null)
             throw new Error('peristenceProvider null in Followup store')
 
-        let followUpData: IDataAllEmployeeFollowUp = {}
+        let followUpData: IDataFollowUps = {}
 
         for (const [employeeId, followUps] of this._followUps) {
             const jsonFollowUps: IDataFollowUp[] = []

@@ -6,7 +6,7 @@ import { Note } from '../value_objects/Note'
 import { Id } from '../util/Id'
 import {
     IDataNote,
-    IDataNotesLoad,
+    IDataNotes,
     IDataTemporalObject,
     IDatedObject,
 } from '../../shared/data_definitions/GlobalDefinitions'
@@ -47,7 +47,7 @@ export class NoteStore extends AbstractTemporalStore<Note> {
 
     async load(): Promise<string> {
         const employeeNotesData =
-            (await this._persistenceProvider.getNotesData()) as IDataNotesLoad
+            (await this._persistenceProvider.getNotesData()) as IDataNotes
 
         //clear all existing data
         this._allEmployeeObjects.clear()
@@ -83,7 +83,7 @@ export class NoteStore extends AbstractTemporalStore<Note> {
         if (this._persistenceProvider === null)
             throw new Error('peristenceProvider null in noteStore')
 
-        let notesData: IDataNotesLoad = {}
+        let notesData: IDataNotes = {}
 
         for (const [employeeID, temporalNotes] of this._allEmployeeObjects) {
             let serializedTemportalNote: IDataTemporalObject<IDataNote> = {

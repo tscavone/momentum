@@ -112,7 +112,6 @@ export const Login = () => {
             loginPayload.storage
         )
 
-        await rootStore.loadData()
         authedUserStore.token = loginPayload.token
         authedUserStore.userId = Id.fromString(loginPayload.userId)
     }

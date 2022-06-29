@@ -52,8 +52,6 @@ export const DetailsForm = ({
     updateEmployee: (employee) => void
     isDialog: boolean
 }) => {
-    const employeeStore = useEmployeeStore()
-    const selectedEmployeeStore = useSelectedEmployeeStore()
     const settingsStore = useSettingsStore()
 
     const [first, setFirst] = useState<string>(employee.first)
@@ -88,8 +86,6 @@ export const DetailsForm = ({
         employee.additionalDetails
     )
 
-    employeeStore.getEmployee(selectedEmployeeStore.selectedId)
-    
     const pickerStyle = {
         border: '1px solid lightgrey',
         padding: '5px',
@@ -165,16 +161,20 @@ export const DetailsForm = ({
                             )
                         }
                     >
-                        {settingsStore
-                            .getByEntryName('positions')[1]
-                            .map((settingsValue) => (
-                                <option
-                                    key={settingsValue.id.id}
-                                    value={settingsValue.id.id}
-                                >
-                                    {settingsValue.value}
-                                </option>
-                            ))}
+                        {settingsStore.isLoaded ? (
+                            settingsStore
+                                .getByEntryName('positions')[1]
+                                .map((settingsValue) => (
+                                    <option
+                                        key={settingsValue.id.id}
+                                        value={settingsValue.id.id}
+                                    >
+                                        {settingsValue.value}
+                                    </option>
+                                ))
+                        ) : (
+                            <></>
+                        )}
                     </Select>
                 </FormControl>
                 <DetailsInput

@@ -13,7 +13,7 @@ export const InitEmployees = () => {
             bg={useColorModeValue('green.50', 'green.800')}
         >
             <NewEmployeeDialog
-                isDialogOpen={isNewEmployeeOpen}
+                isDialogOpen={true}
                 onDialogClosed={onNewEmployeeClosed}
             />
         </Flex>

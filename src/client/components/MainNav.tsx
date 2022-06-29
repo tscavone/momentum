@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react'
+import React, { ReactNode, useEffect, useRef } from 'react'
 import {
     IconButton,
     Avatar,
@@ -21,6 +21,12 @@ import {
     MenuList,
     Select,
     Button,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalBody,
+    Heading,
+    Spinner,
 } from '@chakra-ui/react'
 import {
     FiSettings,
@@ -37,6 +43,7 @@ import { ReactText } from 'react'
 import {
     useAuthedUserStore,
     useEmployeeStore,
+    useRootStore,
     useSelectedEmployeeStore,
     useSettingsStore,
 } from './RootStoreProvider'
@@ -45,6 +52,7 @@ import { SettingsDialog } from './dialogs/SettingsDialog'
 import { NewEmployeeDialog } from './dialogs/NewEmployeeDialog'
 import { observer } from 'mobx-react'
 import { NewFollowUpDialog } from './dialogs/NewFollowupDialog'
+import { InitEmployees } from './InitEmployees'
 
 interface LinkItemProps {
     name: string
@@ -56,27 +64,59 @@ const LinkItems: Array<LinkItemProps> = [
 ]
 
 export function MainNav({ children }: { children: ReactNode }) {
+    const rootStore = useRootStore()
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    useEffect(() => {
+        console.log('calling use effect')
+        onOpen()
+        console.log('on open called')
+        rootStore
+            .loadData()
+            .then(() => {
+                onClose()
+                console.log('On close called')
+            })
+            .catch((e) => console.error('Failed to load data', e))
+    }, [])
+
+    const employeeStore = useEmployeeStore()
+
     const {
-        isOpen,
+        isOpen: isSidebarOpen,
         onOpen: onSidebarOpen,
         onClose: onSidebarClose,
     } = useDisclosure()
     return (
-        <Box minH="90vh">
-            <SidebarContent
-                onSidebarClose={() => onSidebarClose}
-                display={{ base: 'none', md: 'block' }}
-                background={'green.700'}
-                color={'white'}
-            />
-            {/* mobilenav */}
-            <MobileNav
-                onSidebarOpen={onSidebarOpen}
-                background={'green.700'}
-                color={'white'}
-            />
-            <Box ml={{ base: 0, md: 60 }}>{children}</Box>
-        </Box>
+        <>
+            {employeeStore.numEmployees() === 0 ? (
+                <InitEmployees />
+            ) : (
+                <Box minH="90vh">
+                    <SidebarContent
+                        onSidebarClose={() => onSidebarClose}
+                        display={{ base: 'none', md: 'block' }}
+                        background={'green.700'}
+                        color={'white'}
+                    />
+                    {/* mobilenav */}
+                    <MobileNav
+                        onSidebarOpen={onSidebarOpen}
+                        background={'green.700'}
+                        color={'white'}
+                    />
+                    <Box ml={{ base: 0, md: 60 }}>{children}</Box>
+                </Box>
+            )}
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent maxW="600px">
+                    <ModalBody>
+                        <Heading>Loading Employee Data</Heading>
+                        <Spinner></Spinner>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+        </>
     )
 }
 

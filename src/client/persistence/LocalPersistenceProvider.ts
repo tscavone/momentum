@@ -119,8 +119,13 @@ export class LocalPersistenceProvider implements IPersistenceProvider {
     getFollowUpData(): Promise<IDataFollowUps | string> {
         return Promise.resolve(followUpTestData[this._userId])
     }
-    getSettingsData(): Promise<IDataSettings | string> {
-        throw new Error('unimplemented function')
+    async getSettingsData(): Promise<IDataSettings | string> {
+        const db = await this.openDatabase()
+
+        return db
+            .get(SETTINGS_STORE_NAME, this._userId)
+            .then((result) => Promise.resolve(result))
+            .catch((e) => Promise.reject(e))
     }
     getSelectedEmployeeData(): Promise<IDataSelectedEmployee | string> {
         return Promise.resolve(TestSelectedEmployeeData[this._userId])

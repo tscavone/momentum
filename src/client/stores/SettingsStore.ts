@@ -19,6 +19,13 @@ import {
 export class SettingsStore implements IStore, IWriteable {
     // keyed by id
     private _settings: Map<string, [SettingsEntry, SettingsValue[]]>
+    private _isLoaded: boolean = false
+    public get isLoaded(): boolean {
+        return this._isLoaded
+    }
+    public set isLoaded(value: boolean) {
+        this._isLoaded = value
+    }
     _persistenceProvider: IPersistenceProvider
 
     constructor() {
@@ -137,6 +144,7 @@ export class SettingsStore implements IStore, IWriteable {
 
         this.loadData(jsonSettingsData)
 
+        this._isLoaded = true
         return Promise.resolve('settings loaded')
     }
 

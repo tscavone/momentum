@@ -59,10 +59,10 @@ export class RootStore {
     }
 
     async loadData() {
+        await this._settingsStore.load()
         await this._selectedEmployeeStore.load()
         await this.loadTemporalObjects()
         await this._followUpStore.load()
-        await this._settingsStore.load()
         await this._employeeStore.load()
     }
 

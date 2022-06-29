@@ -89,7 +89,7 @@ export const DetailsForm = ({
     )
 
     employeeStore.getEmployee(selectedEmployeeStore.selectedId)
-
+    
     const pickerStyle = {
         border: '1px solid lightgrey',
         padding: '5px',

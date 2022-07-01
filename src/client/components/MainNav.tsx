@@ -63,7 +63,7 @@ const LinkItems: Array<LinkItemProps> = [
     { name: 'about', icon: FiInfo },
 ]
 
-export function MainNav({ children }: { children: ReactNode }) {
+export const MainNav = observer(({ children }: { children: ReactNode }) => {
     const rootStore = useRootStore()
     const { isOpen, onOpen, onClose } = useDisclosure()
     useEffect(() => {
@@ -88,7 +88,7 @@ export function MainNav({ children }: { children: ReactNode }) {
     } = useDisclosure()
     return (
         <>
-            {employeeStore.numEmployees() === 0 ? (
+            {employeeStore.numEmployees === 0 ? (
                 <InitEmployees />
             ) : (
                 <Box minH="90vh">
@@ -118,7 +118,7 @@ export function MainNav({ children }: { children: ReactNode }) {
             </Modal>
         </>
     )
-}
+})
 
 interface SidebarProps extends BoxProps {
     onSidebarClose: () => void

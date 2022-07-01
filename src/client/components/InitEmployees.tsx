@@ -1,4 +1,12 @@
-import { Flex, useColorModeValue, useDisclosure } from '@chakra-ui/react'
+import {
+    Box,
+    Flex,
+    Text,
+    Heading,
+    useColorModeValue,
+    useDisclosure,
+    VStack,
+} from '@chakra-ui/react'
 import { NewEmployeeDialog } from './dialogs/NewEmployeeDialog'
 
 export const InitEmployees = () => {

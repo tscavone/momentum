@@ -12,11 +12,7 @@ import { useState } from 'react'
 import { Id } from '../util/Id'
 import { dateToString } from '../../shared/utils'
 import { Employee } from '../value_objects/Employee'
-import {
-    useEmployeeStore,
-    useSelectedEmployeeStore,
-    useSettingsStore,
-} from './RootStoreProvider'
+import { useSettingsStore } from './RootStoreProvider'
 
 const controlStyle = { margin: '16px' }
 
@@ -24,15 +20,21 @@ const DetailsInput = ({
     label,
     value,
     handleChange,
+    isRequired,
     helperText = '',
 }: {
     label: string
     value: string
     handleChange: (event) => void
+    isRequired: boolean
     helperText?: string
 }) => {
     return (
-        <FormControl style={controlStyle} variant="floating">
+        <FormControl
+            style={controlStyle}
+            variant="floating"
+            isRequired={isRequired}
+        >
             <FormLabel>{label}</FormLabel>
             <Input value={value} onChange={handleChange}></Input>
             {helperText != '' ? (
@@ -117,12 +119,14 @@ export const DetailsForm = ({
                     label="first name"
                     value={first}
                     handleChange={(event) => setFirst(event.target.value)}
+                    isRequired={true}
                 />
 
                 <DetailsInput
                     label="last name"
                     value={last}
                     handleChange={(event) => setLast(event.target.value)}
+                    isRequired={false}
                 />
                 <FormControl style={controlStyle} variant="floating">
                     <FormLabel>email</FormLabel>
@@ -149,10 +153,11 @@ export const DetailsForm = ({
                     />
                 </FormControl>
 
-                <FormControl style={controlStyle} variant="floating">
+                <FormControl style={controlStyle} variant="floating" isRequired>
                     <FormLabel>{'position'}</FormLabel>
                     <Select
-                        value={position ? position.id : null}
+                        placeholder="select a position"
+                        value={position ? position.id : undefined}
                         onChange={(event) =>
                             setPosition(
                                 event.target.value
@@ -184,6 +189,7 @@ export const DetailsForm = ({
                         setSkills((event.target.value as string).split(','))
                     }
                     helperText="comma separated list"
+                    isRequired={false}
                 />
                 <DetailsInput
                     label="interests"
@@ -192,16 +198,19 @@ export const DetailsForm = ({
                         setInterests((event.target.value as string).split(','))
                     }
                     helperText="comma separated list"
+                    isRequired={false}
                 />
                 <DetailsInput
                     label="college"
                     value={college}
                     handleChange={(event) => setCollege(event.target.value)}
+                    isRequired={false}
                 />
                 <DetailsInput
                     label="home town"
                     value={hometown}
                     handleChange={(event) => setHometown(event.target.value)}
+                    isRequired={false}
                 />
                 <DetailsInput
                     label="current town"
@@ -209,6 +218,7 @@ export const DetailsForm = ({
                     handleChange={(event) =>
                         setTownOfResidence(event.target.value)
                     }
+                    isRequired={false}
                 />
                 <FormControl style={controlStyle} variant="floating">
                     <FormLabel>{'birth month/day'}</FormLabel>
@@ -236,6 +246,7 @@ export const DetailsForm = ({
                     handleChange={(event) =>
                         setPets((event.target.value as string).split(','))
                     }
+                    isRequired={false}
                 />
 
                 <FormControl style={controlStyle} variant="floating">

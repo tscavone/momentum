@@ -44,9 +44,12 @@ export class FollowUpStore implements IStore, IWriteable {
             throw new Error('Current user unset in FollowUpStore')
 
         const userIdStr = Id.asString(this._currentEmployee)
-        return this._followUps
-            .get(userIdStr)
-            .filter((followUp) => followUp.resolvedDate === null)
+
+        return (
+            this._followUps
+                .get(userIdStr)
+                ?.filter((followUp) => followUp.resolvedDate === null) || []
+        )
     }
 
     //if currentEmployee is unspecified, then it is global and the followup is added to all employees

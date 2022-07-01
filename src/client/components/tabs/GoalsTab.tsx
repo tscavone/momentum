@@ -37,16 +37,15 @@ export const GoalsTab = observer(() => {
     const settingsStore = useSettingsStore()
     const statusAndGoalStore = useStatusAndGoalsStore()
     const currentDateStore = useCurrentDateStore()
-    const toast = useToast()
-
-    const [goals, setGoals] = React.useState<Goal[]>(
-        statusAndGoalStore.getCurrent(selectedEmployeeStore.selectedId).goals
-    )
     const [status, setStatus] = React.useState<string>('')
     const [name, setName] = React.useState<string>('')
     const [details, setDetails] = React.useState<string>('')
-
     const [progress, setProgress] = React.useState<number>(0)
+    const [goals, setGoals] = React.useState<Goal[]>(
+        statusAndGoalStore.getCurrent(selectedEmployeeStore.selectedId)
+            ?.goals || []
+    )
+    const toast = useToast()
 
     const updateStatus = (event) => {
         setStatus(event.target.value)
@@ -144,7 +143,7 @@ export const GoalsTab = observer(() => {
                     goals
                 </Text>
                 <VStack style={{ marginLeft: '80px' }}>
-                    {goals.map((goal) => {
+                    {goals?.map((goal) => {
                         return (
                             <div key={goal.id.id}>
                                 <HStack>

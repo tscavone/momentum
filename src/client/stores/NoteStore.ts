@@ -40,9 +40,12 @@ export class NoteStore extends AbstractTemporalStore<Note> {
     }
 
     getNoteSummary(employeeId: string): string {
-        return this.summarize([
-            this.getCollectionForEmployee(employeeId).getLatestSaved().text,
-        ])
+        let status = ''
+        const employeeCollection = this.getCollectionForEmployee(employeeId)
+        if (employeeCollection) {
+            status = employeeCollection.getLatestSaved().text
+        }
+        return this.summarize([status])
     }
 
     async load(): Promise<string> {

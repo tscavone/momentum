@@ -39,7 +39,7 @@ export class EmployeeStore implements IStore, IWriteable {
         return this._employees.get(id)
     }
 
-    numEmployees(): number {
+    get numEmployees(): number {
         return this._employees.size
     }
 

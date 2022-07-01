@@ -44,20 +44,29 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
         )
     }
 
-    getSummarizedStatus(employeeID: string): string {
-        return this.summarize([
-            this.getCollectionForEmployee(employeeID).getLatestSaved().status,
-        ])
+    getSummarizedStatus(employeeId: string): string {
+        let status = ''
+        const employeeCollection = this.getCollectionForEmployee(employeeId)
+        if (employeeCollection) {
+            status = employeeCollection.getLatestSaved().status
+        }
+
+        return this.summarize([status])
     }
 
     getSummarizedGoals(
-        employeeID: string,
+        employeeId: string,
         settingsStore: SettingsStore
     ): string {
         let goalNames: string[] = []
+        let currentGoals: Goal[] = []
+        const employeeCollection = this.getCollectionForEmployee(employeeId)
+        if (employeeCollection) {
+            currentGoals =
+                this.getCollectionForEmployee(employeeId).current.goals
+        }
 
-        for (const goal of this.getCollectionForEmployee(employeeID).current
-            .goals) {
+        for (const goal of currentGoals) {
             goalNames.push(
                 StatusAndGoalsStore.goalNameFromSettingId(settingsStore, goal)
             )

@@ -14,4 +14,5 @@ export interface IDataUser extends IDataIdentifiedObject {
     created?: string
     updated?: string
     deleted?: string
+    storage?: string
 }

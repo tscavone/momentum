@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import App from './App'
 import reportWebVitals from '../reportWebVitals'
 import { RootStoreProvider } from './components/RootStoreProvider'
 import { ChakraProvider } from '@chakra-ui/react'
@@ -61,7 +60,6 @@ ReactDOM.render(
             <RootStoreProvider>
                 <BrowserRouter>
                     <Routes>
-                        <Route path="register" element={<App />} />
                         <Route path="/" element={<SideMenuApp />} />
                     </Routes>
                 </BrowserRouter>

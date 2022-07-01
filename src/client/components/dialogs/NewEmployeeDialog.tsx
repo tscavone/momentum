@@ -6,12 +6,17 @@ import {
     ModalHeader,
     ModalOverlay,
     useToast,
+    Text,
+    VStack,
 } from '@chakra-ui/react'
+import { SelectedEmployeeStore } from '../../stores/SelectedEmployeeStore'
+import { Id } from '../../util/Id'
 import { Employee } from '../../value_objects/Employee'
 import { DetailsForm } from '../DetailsForm'
 import {
     useEmployeeStore,
     useNoteStore,
+    useSelectedEmployeeStore,
     useStatusAndGoalsStore,
     useStretchAnswerStore,
 } from '../RootStoreProvider'
@@ -27,10 +32,13 @@ export const NewEmployeeDialog = ({
     const stretchStore = useStretchAnswerStore()
     const goalAndStatusStore = useStatusAndGoalsStore()
     const employeeStore = useEmployeeStore()
+    const selectedEmployeeStore = useSelectedEmployeeStore()
+
     const toast = useToast()
 
     const updateEmployee = (employee: Employee): void => {
         employeeStore.save(employee)
+        selectedEmployeeStore.selectedId = Id.asString(employee.id)
         employeeStore
             .write()
             .then((successfulMessage) => {
@@ -59,19 +67,28 @@ export const NewEmployeeDialog = ({
     }
 
     return (
-        <Modal isOpen={isDialogOpen} onClose={onDialogClosed}>
-            <ModalOverlay />
-            <ModalContent maxW="600px">
-                <ModalHeader>settings</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                    <DetailsForm
-                        employee={new Employee()}
-                        updateEmployee={updateEmployee}
-                        isDialog={true}
-                    />
-                </ModalBody>
-            </ModalContent>
-        </Modal>
+        <>
+            <Modal isOpen={isDialogOpen} onClose={onDialogClosed}>
+                <ModalOverlay />
+                <ModalContent maxW="600px">
+                    <ModalHeader>enter employee</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <VStack>
+                            <Text fontSize="md">
+                                to continue, fill out the form below to create
+                                an employee to manage
+                            </Text>
+
+                            <DetailsForm
+                                employee={new Employee()}
+                                updateEmployee={updateEmployee}
+                                isDialog={true}
+                            />
+                        </VStack>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+        </>
     )
 }

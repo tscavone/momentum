@@ -60,7 +60,7 @@ async function queryServer(path: string, payload: object) {
         })
 }
 
-export default function Login() {
+export const Login = () => {
     const authedUserStore = useAuthedUserStore()
     const rootStore = useRootStore()
 
@@ -107,7 +107,10 @@ export default function Login() {
         responseData = await queryServer('login', loginRequest)
         let loginPayload: LoginPayload = responseData.payload as LoginPayload
 
-        rootStore.initialize(Id.fromString(loginPayload.userId))
+        rootStore.initialize(
+            Id.fromString(loginPayload.userId),
+            loginPayload.storage
+        )
 
         authedUserStore.token = loginPayload.token
         authedUserStore.userId = Id.fromString(loginPayload.userId)
@@ -123,15 +126,15 @@ export default function Login() {
             first: registerFirst.trim(),
             last: registerLast.trim(),
             email: registerEmail.trim(),
+            storage: serverStorage ? 'server' : 'local',
         }
         responseData = await queryServer('signup', newUser)
 
-        let signupPayload: LoginPayload = responseData.payload as LoginPayload
-        rootStore.initializeNewUser(newUser, !serverStorage)
-        authedUserStore.token = signupPayload.token
-        authedUserStore.userId = Id.fromString(signupPayload.userId)
+        //let signupPayload: LoginPayload = responseData.payload as LoginPayload
+        rootStore.initialize(newUser._id, newUser.storage)
+        rootStore.initializeNewUser(newUser, newUser.storage)
 
-        console.log('error logging in :  ', e)
+        console.log('new user response', responseData)
         return
     }
 
@@ -315,6 +318,14 @@ export default function Login() {
                             try {
                                 setLoading.on()
                                 await handleSignup(e)
+                                toast({
+                                    title: `success`,
+                                    description: `"${registerUsername}" created successfully, please login`,
+                                    status: 'success',
+                                    duration: 5000,
+                                    isClosable: true,
+                                })
+                                setRegister.toggle()
                             } catch (err) {
                                 toast({
                                     title: 'signup failed',

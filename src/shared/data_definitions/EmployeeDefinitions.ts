@@ -16,7 +16,7 @@ export interface IDataEmployee extends IDataIdentifiedObject {
     _additionalDetails: string
 }
 
-export interface IDataAllEmployees {
+export interface IDataEmployees {
     [key: string]: IDataEmployee
 }
 

@@ -5,7 +5,6 @@ import { Id } from '../util/Id'
 import { DateRange } from '../util/DateRange'
 import { DatedObject } from '../util/DatedObject'
 import { ITemporalStore } from './ITemporalStore'
-import { IDataMomentum } from '../../shared/data_definitions/GlobalDefinitions'
 import { TemporalObject } from '../util/TemporalObject'
 import { IPersistenceProvider } from '../persistence/IPersistenceProvider'
 import { IWriteable } from '../persistence/IWriteable'
@@ -33,12 +32,12 @@ export abstract class AbstractTemporalStore<T extends TemporalObject>
     getCollectionForEmployee(id: Id | string): TemporalCollection<T> {
         let stringId = Id.asString(id)
 
-        return this._allEmployeeObjects.get(stringId)
+        return this._allEmployeeObjects?.get(stringId)
     }
 
     getCurrent(employeeId: Id | string): T {
         const id = Id.asString(employeeId)
-        return this._allEmployeeObjects.get(id).current
+        return this._allEmployeeObjects?.get(id)?.current
     }
 
     setCurrent(employeeId: Id | string, newValue: T) {
@@ -55,7 +54,14 @@ export abstract class AbstractTemporalStore<T extends TemporalObject>
     getSaved(id: Id | string, dateRange: DateRange): DatedObject<T>[] {
         const stringId = id instanceof Id ? id.id : id
 
-        return this.getCollectionForEmployee(stringId)?.getSaved(dateRange)
+        const employeeCollection: TemporalCollection<T> =
+            this.getCollectionForEmployee(stringId)
+
+        if (employeeCollection) {
+            return employeeCollection.getSaved(dateRange)
+        } else {
+            return []
+        }
     }
 
     getAllSavedWithCurrent(id: Id | string): T[] {
@@ -101,7 +107,7 @@ export abstract class AbstractTemporalStore<T extends TemporalObject>
 
     abstract addEmployee(newEmployeeId: Id | string): void
 
-    abstract load(jsonObj: IDataMomentum, employeeId?: Id): void
+    abstract load(): Promise<string>
 
     abstract write(): Promise<string>
 }

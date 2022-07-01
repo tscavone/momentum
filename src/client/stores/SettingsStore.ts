@@ -9,7 +9,7 @@ import { IWriteable } from '../persistence/IWriteable'
 import {
     IDataSettingsEntry,
     IDataSettingsValue,
-    IDataUserScopedSettings,
+    IDataSettings,
 } from '../../shared/data_definitions/SettingsDefinitions'
 import {
     NewUserLocalStorageSettings,
@@ -19,6 +19,13 @@ import {
 export class SettingsStore implements IStore, IWriteable {
     // keyed by id
     private _settings: Map<string, [SettingsEntry, SettingsValue[]]>
+    private _isLoaded: boolean = false
+    public get isLoaded(): boolean {
+        return this._isLoaded
+    }
+    public set isLoaded(value: boolean) {
+        this._isLoaded = value
+    }
     _persistenceProvider: IPersistenceProvider
 
     constructor() {
@@ -121,21 +128,27 @@ export class SettingsStore implements IStore, IWriteable {
         throw `deleteValue: value not found to be deleted: ${idStr}`
     }
 
-    initializeNewUser(localStorage: boolean) {
-        if (localStorage) {
+    async initializeNewUser(storage: string) {
+        if (storage === 'local') {
             this.loadData(NewUserLocalStorageSettings)
+            return this.write()
         } else {
             this.loadData(NewUserServerStorageSettings)
+            return this.write()
         }
     }
 
-    load(): void {
-        const jsonSettingsData = this._persistenceProvider.getSettingsData()
+    async load(): Promise<string> {
+        const jsonSettingsData =
+            (await this._persistenceProvider.getSettingsData()) as IDataSettings
 
         this.loadData(jsonSettingsData)
+
+        this._isLoaded = true
+        return Promise.resolve('settings loaded')
     }
 
-    private loadData(jsonSettingsData: IDataUserScopedSettings) {
+    private loadData(jsonSettingsData: IDataSettings) {
         //clear all existing data
         this._settings.clear()
 

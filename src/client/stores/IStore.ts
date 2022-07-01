@@ -2,5 +2,5 @@
 //
 
 export interface IStore {
-    load(jsonObj: any): void
+    load(): Promise<string>
 }

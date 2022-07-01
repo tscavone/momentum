@@ -15,5 +15,5 @@ export interface ITemporalStore<T> extends IStore {
         id: Id | string,
         dateRange: DateRange
     ): DatedObject<IdentifiedObject>[]
-    load(jsonObj: any): void
+    load(): Promise<string>
 }

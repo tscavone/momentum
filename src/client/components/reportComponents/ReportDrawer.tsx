@@ -67,13 +67,11 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
         selectedEmployeeStore.selectedId
     )
 
-    if (!selectedEmployee) {
-        return <></>
-    }
-
     function getReportComponentsInRange<T>(
         objectStore: ITemporalStore<T>
     ): Map<string, IdentifiedObject[]> {
+        let reportObjects = new Map<string, IdentifiedObject[]>()
+
         const reportObjectsArray: DatedObject<IdentifiedObject>[] =
             objectStore.getSaved(
                 selectedEmployeeStore.selectedId,
@@ -82,8 +80,6 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
                     reportDates.reportEndDate
                 )
             ) as DatedObject<IdentifiedObject>[]
-
-        let reportObjects = new Map<string, IdentifiedObject[]>()
 
         reportObjectsArray.forEach((datedReportObject) => {
             let dateString = dateToString(datedReportObject.date)
@@ -200,7 +196,7 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
     }
 
     const renderReport = (): ReactNode => {
-        const reportComponents = []
+        const reportComponents: Map<string, IdentifiedObject[]>[] = []
         reportComponents.push(
             getReportComponentsInRange<StatusAndGoals>(statusAndGoalsStore)
         )

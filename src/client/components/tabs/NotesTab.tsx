@@ -14,7 +14,6 @@ import {
 import { Box, Button, Checkbox, Flex, Spacer, useToast } from '@chakra-ui/react'
 import { Note } from '../../value_objects/Note'
 import { observer } from 'mobx-react'
-import { TabContainer } from './TabContainer'
 import { TabPanelContainer } from './TabPanelContainer'
 
 export const NotesTab = observer(() => {
@@ -65,7 +64,7 @@ export const NotesTab = observer(() => {
             selectedEmployeeStore.selectedId
         ) as Note
 
-        if (currentNote.isNewlyMinted()) return
+        if (currentNote?.isNewlyMinted()) return
 
         var parser = new DOMParser()
         var el = parser.parseFromString(currentNote.text, 'text/html')

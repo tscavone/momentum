@@ -7,7 +7,7 @@ import { AbstractTemporalStore } from './AbstractTemporalStore'
 import { StatusAndGoals } from '../value_objects/StatusAndGoals'
 import {
     IDataStatusAndGoals,
-    IDataStatusAndGoalsLoad,
+    IDataStatusesAndGoals,
     IDataTemporalObject,
     IDatedObject,
 } from '../../shared/data_definitions/GlobalDefinitions'
@@ -44,20 +44,29 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
         )
     }
 
-    getSummarizedStatus(employeeID: string): string {
-        return this.summarize([
-            this.getCollectionForEmployee(employeeID).getLatestSaved().status,
-        ])
+    getSummarizedStatus(employeeId: string): string {
+        let status = ''
+        const employeeCollection = this.getCollectionForEmployee(employeeId)
+        if (employeeCollection) {
+            status = employeeCollection.getLatestSaved().status
+        }
+
+        return this.summarize([status])
     }
 
     getSummarizedGoals(
-        employeeID: string,
+        employeeId: string,
         settingsStore: SettingsStore
     ): string {
         let goalNames: string[] = []
+        let currentGoals: Goal[] = []
+        const employeeCollection = this.getCollectionForEmployee(employeeId)
+        if (employeeCollection) {
+            currentGoals =
+                this.getCollectionForEmployee(employeeId).current.goals
+        }
 
-        for (const goal of this.getCollectionForEmployee(employeeID).current
-            .goals) {
+        for (const goal of currentGoals) {
             goalNames.push(
                 StatusAndGoalsStore.goalNameFromSettingId(settingsStore, goal)
             )
@@ -65,9 +74,9 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
         return this.summarize(goalNames)
     }
 
-    load(): void {
+    async load(): Promise<string> {
         const employeeStatusAndGoalData =
-            this._persistenceProvider.getStatusAndGoalData()
+            (await this._persistenceProvider.getStatusAndGoalData()) as IDataStatusesAndGoals
         //clear all existing data
         this._allEmployeeObjects.clear()
 
@@ -101,13 +110,15 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
                     StatusAndGoals.instantiate(statusAndGoals)
             }
         }
+
+        return Promise.resolve('status and goals loaded')
     }
 
     write(): Promise<string> {
         if (this._persistenceProvider === null)
             throw new Error('peristenceProvider null in StatusAndGoalStore')
 
-        let statusAndGoalsData: IDataStatusAndGoalsLoad = {}
+        let statusAndGoalsData: IDataStatusesAndGoals = {}
 
         for (const [employeeID, temporalSAndGs] of this._allEmployeeObjects) {
             let serializedSAndGObject: IDataTemporalObject<IDataStatusAndGoals> =

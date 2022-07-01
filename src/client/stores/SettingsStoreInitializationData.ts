@@ -1,4 +1,4 @@
-import { IDataUserScopedSettings } from '../../shared/data_definitions/SettingsDefinitions'
+import { IDataSettings } from '../../shared/data_definitions/SettingsDefinitions'
 import { Id } from '../util/Id'
 
 const TestStorageValue = {
@@ -83,12 +83,12 @@ const NewUserSettingsValues = [
     },
 ]
 
-export const NewUserServerStorageSettings: IDataUserScopedSettings = {
+export const NewUserServerStorageSettings: IDataSettings = {
     entries: NewUserSettingsEntries,
     values: NewUserSettingsValues.concat(ServerStorageValue),
 }
 
-export const NewUserLocalStorageSettings: IDataUserScopedSettings = {
+export const NewUserLocalStorageSettings: IDataSettings = {
     entries: NewUserSettingsEntries,
     values: NewUserSettingsValues.concat(LocalStorageValue),
 }

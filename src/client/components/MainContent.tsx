@@ -7,11 +7,7 @@ import {
 } from '@chakra-ui/react'
 import { SummaryPanel } from './SummaryPanel'
 import { TabContainer } from './tabs/TabContainer'
-import { useCurrentDateStore } from './RootStoreProvider'
-
 export const MainContent = () => {
-    const currentDateStore = useCurrentDateStore()
-
     return (
         <main>
             <Accordion

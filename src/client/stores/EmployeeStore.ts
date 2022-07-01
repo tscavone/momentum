@@ -4,7 +4,7 @@
 import { Id } from '../util/Id'
 import { Employee } from '../value_objects/Employee'
 import { IStore } from './IStore'
-import { IDataAllEmployees } from '../../shared/data_definitions/EmployeeDefinitions'
+import { IDataEmployees } from '../../shared/data_definitions/EmployeeDefinitions'
 import { IWriteable } from '../persistence/IWriteable'
 import { IPersistenceProvider } from '../persistence/IPersistenceProvider'
 import { makeAutoObservable } from 'mobx'
@@ -39,8 +39,13 @@ export class EmployeeStore implements IStore, IWriteable {
         return this._employees.get(id)
     }
 
-    load(): void {
-        const jsonEmployeeData = this._persistenceProvider.getEmployeeData()
+    get numEmployees(): number {
+        return this._employees.size
+    }
+
+    async load(): Promise<string> {
+        const jsonEmployeeData =
+            (await this._persistenceProvider.getEmployeeData()) as IDataEmployees
 
         //clear all existing data
         this._employees.clear()
@@ -49,6 +54,8 @@ export class EmployeeStore implements IStore, IWriteable {
             const user = Employee.fromJSON(jsonEmployeeData[jsonId])
             this._employees.set(jsonId, user as Employee)
         }
+
+        return Promise.resolve('employees loaded')
     }
 
     save(employee: Employee) {
@@ -67,7 +74,7 @@ export class EmployeeStore implements IStore, IWriteable {
         if (this._persistenceProvider === null)
             throw new Error('peristenceProvider null in Employee store')
 
-        let employeeData: IDataAllEmployees = {}
+        let employeeData: IDataEmployees = {}
 
         for (const [employeeID, employee] of this._employees) {
             employeeData[employeeID] = employee.serialize()

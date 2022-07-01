@@ -11,7 +11,7 @@ export const TabButton = observer(({ name, icon, infoStore }) => {
             {name}
             {infoStore
                 .getCurrent(selectedEmployeeStore.selectedId)
-                .isNewlyMinted() ? (
+                ?.isNewlyMinted() ? (
                 <></>
             ) : (
                 <Tooltip label="This tab has changes that need saving">

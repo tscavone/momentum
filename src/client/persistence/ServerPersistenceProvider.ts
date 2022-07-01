@@ -5,16 +5,16 @@ import {
     TestSelectedEmployeeData,
     valueTestData,
 } from '../../tests/testdata'
-import { IDataAllEmployees } from '../../shared/data_definitions/EmployeeDefinitions'
-import { IDataAllEmployeeFollowUp } from '../../shared/data_definitions/FollowUpDefinitions'
+import { IDataEmployees } from '../../shared/data_definitions/EmployeeDefinitions'
+import { IDataFollowUps } from '../../shared/data_definitions/FollowUpDefinitions'
 import {
     IDataMomentum,
-    IDataNotesLoad,
-    IDataStatusAndGoalsLoad,
-    IDataStretchLoad,
+    IDataNotes,
+    IDataStatusesAndGoals,
+    IDataStretchAnswers,
 } from '../../shared/data_definitions/GlobalDefinitions'
 import { IDataSelectedEmployee } from '../../shared/data_definitions/SelectedEmployeeDefinitions'
-import { IDataUserScopedSettings } from '../../shared/data_definitions/SettingsDefinitions'
+import { IDataSettings } from '../../shared/data_definitions/SettingsDefinitions'
 import { SettingsStore } from '../stores/SettingsStore'
 import { IPersistenceProvider } from './IPersistenceProvider'
 
@@ -35,73 +35,62 @@ export class ServerPersistenceProvider implements IPersistenceProvider {
         return retval
     }
 
-    createNewUser(
-        username: string,
-        password: string,
-        first: string,
-        last: string,
-        moniker: string
-    ): Promise<string> {
-        console.log("New test user 'created'")
-        return Promise.resolve('user created')
+    initDatabase(): Promise<string> {
+        return Promise.reject('Method not implemented.')
     }
-    getNotesData(): IDataNotesLoad {
-        return this.collateLoadData('_notes')
+    getNotesData(): Promise<IDataNotes | string> {
+        return Promise.resolve(this.collateLoadData('_notes'))
     }
-    getStretchData(): IDataStretchLoad {
-        return this.collateLoadData('_stretchAnswers')
+    getStretchData(): Promise<IDataStretchAnswers | string> {
+        return Promise.resolve(this.collateLoadData('_stretchAnswers'))
     }
-    getStatusAndGoalData(): IDataStatusAndGoalsLoad {
-        return this.collateLoadData('_statusAndGoals')
+    getStatusAndGoalData(): Promise<IDataStatusesAndGoals | string> {
+        return Promise.resolve(this.collateLoadData('_statusAndGoals'))
     }
-    getMomentumData(): IDataMomentum {
-        return valueTestData[this._userId]
+    getMomentumData(): Promise<IDataMomentum | string> {
+        return Promise.resolve(valueTestData[this._userId])
     }
-    getEmployeeData(): IDataAllEmployees {
-        return employeeTestData[this._userId]
+    getEmployeeData(): Promise<IDataEmployees | string> {
+        return Promise.resolve(employeeTestData[this._userId])
     }
-    getFollowUpData(): IDataAllEmployeeFollowUp {
-        return followUpTestData[this._userId]
+    getFollowUpData(): Promise<IDataFollowUps | string> {
+        return Promise.resolve(followUpTestData[this._userId])
     }
-    getSettingsData(): IDataUserScopedSettings {
-        let values = settingsTestData['values'][this._userId]
-
-        if (!values) {
-            values = SettingsStore.getDefaultValues()
-        }
-        return {
-            entries: settingsTestData['entries'],
-            values,
-        }
+    getSettingsData(): Promise<IDataSettings | string> {
+        throw new Error('unimplemented')
     }
-    getSelectedEmployeeData(): IDataSelectedEmployee {
-        return TestSelectedEmployeeData[this._userId]
+    getSelectedEmployeeData(): Promise<IDataSelectedEmployee | string> {
+        return Promise.resolve(TestSelectedEmployeeData[this._userId])
     }
-    writeNotesData(noteData: IDataNotesLoad) {
+    writeNotesData(noteData: IDataNotes): Promise<string> {
         console.log('\tWRITE:  << note >> data:  ', noteData)
         return Promise.resolve('save successful')
     }
-    writeStretchData(stretchData: IDataStretchLoad) {
+    writeStretchData(stretchData: IDataStretchAnswers): Promise<string> {
         console.log('\tWRITE:  << stretch >> data:  ', stretchData)
         return Promise.resolve('save successful')
     }
-    writeStatusAndGoalData(statusAndGoalData: IDataStatusAndGoalsLoad) {
+    writeStatusAndGoalData(
+        statusAndGoalData: IDataStatusesAndGoals
+    ): Promise<string> {
         console.log('\tWRITE:  << status&goal >> data:  ', statusAndGoalData)
         return Promise.resolve('save successful')
     }
-    writeEmployeeData(employeeData: IDataAllEmployees) {
+    writeEmployeeData(employeeData: IDataEmployees): Promise<string> {
         console.log('\tWRITE:  << employee >> data:  ', employeeData)
         return Promise.resolve('save successful')
     }
-    writeFollowUpData(followUpData: IDataAllEmployeeFollowUp) {
+    writeFollowUpData(followUpData: IDataFollowUps): Promise<string> {
         console.log('\tWRITE:  << Followup >> data:  ', followUpData)
         return Promise.resolve('save successful')
     }
-    writeSettingsData(settingsData: IDataUserScopedSettings) {
+    writeSettingsData(settingsData: IDataSettings): Promise<string> {
         console.log('\tWRITE:  << settings >> data:  ', settingsData)
         return Promise.resolve('save successful')
     }
-    writeSelectedEmployeeData(selectedEmployee: IDataSelectedEmployee) {
+    writeSelectedEmployeeData(
+        selectedEmployee: IDataSelectedEmployee
+    ): Promise<string> {
         console.log(
             '\tWRITE:  << selected Employee >>  data:  ',
             selectedEmployee

@@ -17,14 +17,12 @@ import { TabPanelContainer } from './TabPanelContainer'
 
 class SelectedQuestionStore {
     _selectedQuestionId: string
-    // _shouldBeReadOnly: boolean
 
     constructor() {
         makeAutoObservable(this, {
             _selectedQuestionId: observable,
         })
         this.selectedQuestionId = null
-        // this.shouldBeReadOnly = true
     }
 
     public get selectedQuestionId(): string {
@@ -33,12 +31,6 @@ class SelectedQuestionStore {
     public set selectedQuestionId(value: string) {
         this._selectedQuestionId = value
     }
-    // public get shouldBeReadOnly(): boolean {
-    //     return this._shouldBeReadOnly
-    // }
-    // public set shouldBeReadOnly(value: boolean) {
-    //     this._shouldBeReadOnly = value
-    // }
 
     //null if the selected question has no answer or there's no selected question yet
     getSelectedAnswer(
@@ -101,7 +93,7 @@ export const StretchQuesitonTab = observer(() => {
         //deleted questions
         let returnValues = settingsQuestionsValues
             .filter((settingQuestionValue) => !settingQuestionValue.deleted)
-            .map((settingQuestionValue) => {
+            ?.map((settingQuestionValue) => {
                 const settingQuestionID = settingQuestionValue.id.id
                 const isAnswered = answeredQuestions.delete(settingQuestionID)
                 //TODO change from i to classname switch, and also turn if/else into inline logic
@@ -155,12 +147,6 @@ export const StretchQuesitonTab = observer(() => {
             selectedEmployeeStore.selectedId,
             newAnswer
         )
-        // stretchAnswerStore.getCurrent(selectedEmployeeStore.selectedId).answer =
-        //     e.target.value
-        // //todo - cache id somehow?
-        // stretchAnswerStore.getCurrent(
-        //     selectedEmployeeStore.selectedId
-        // ).questionId = Id.fromString(selectedQuestionStore.selectedQuestionId)
     }
 
     const saveStretchAnswer = () => {
@@ -206,24 +192,6 @@ export const StretchQuesitonTab = observer(() => {
                   .answer
     }
 
-    // const getValue = () => {
-    //     let selectedAnswer = selectedQuestionStore.getSelectedAnswer(
-    //         stretchAnswerStore,
-    //         selectedEmployeeStore
-    //     )
-    //     console.log('HERE IS GET VALUE selected ANSWER ', selectedAnswer)
-    //     if (selectedAnswer !== null) {
-    //         return selectedAnswer.answer
-    //     }
-
-    //     let currentAnswer = stretchAnswerStore.getCurrent(
-    //         selectedEmployeeStore.selectedId
-    //     ).answer
-
-    //     console.log('HERE IS GET VALUE CURRENT ANSWER ', currentAnswer)
-    //     //if current answer is null, we want to return '' to clear the input
-    //     return currentAnswer ? currentAnswer : ''
-    // }
     return (
         <TabPanelContainer title="stretch questions" helpText="" tag="stretch">
             <Select

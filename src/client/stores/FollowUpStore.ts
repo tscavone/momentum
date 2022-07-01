@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from 'mobx'
 import {
-    IDataAllEmployeeFollowUp,
+    IDataFollowUps,
     IDataFollowUp,
 } from '../../shared/data_definitions/FollowUpDefinitions'
 import { IPersistenceProvider } from '../persistence/IPersistenceProvider'
@@ -44,9 +44,12 @@ export class FollowUpStore implements IStore, IWriteable {
             throw new Error('Current user unset in FollowUpStore')
 
         const userIdStr = Id.asString(this._currentEmployee)
-        return this._followUps
-            .get(userIdStr)
-            .filter((followUp) => followUp.resolvedDate === null)
+
+        return (
+            this._followUps
+                .get(userIdStr)
+                ?.filter((followUp) => followUp.resolvedDate === null) || []
+        )
     }
 
     //if currentEmployee is unspecified, then it is global and the followup is added to all employees
@@ -81,8 +84,9 @@ export class FollowUpStore implements IStore, IWriteable {
         this._followUps.set(userIdStr, [...this._followUps.get(userIdStr)])
     }
 
-    load(): void {
-        const followUpJsonData = this._persistenceProvider.getFollowUpData()
+    async load(): Promise<string> {
+        const followUpJsonData =
+            (await this._persistenceProvider.getFollowUpData()) as IDataFollowUps
 
         for (const employeeId in followUpJsonData) {
             const employeeFollowUps = []
@@ -92,13 +96,15 @@ export class FollowUpStore implements IStore, IWriteable {
 
             this._followUps.set(employeeId, employeeFollowUps)
         }
+
+        return Promise.resolve('followups loaded')
     }
 
     write(): Promise<string> {
         if (this._persistenceProvider === null)
             throw new Error('peristenceProvider null in Followup store')
 
-        let followUpData: IDataAllEmployeeFollowUp = {}
+        let followUpData: IDataFollowUps = {}
 
         for (const [employeeId, followUps] of this._followUps) {
             const jsonFollowUps: IDataFollowUp[] = []

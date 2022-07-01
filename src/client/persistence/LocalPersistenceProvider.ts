@@ -1,28 +1,74 @@
 import {
     employeeTestData,
     followUpTestData,
-    settingsTestData,
     TestSelectedEmployeeData,
     valueTestData,
 } from '../../tests/testdata'
-import { IDataAllEmployees } from '../../shared/data_definitions/EmployeeDefinitions'
-import { IDataAllEmployeeFollowUp } from '../../shared/data_definitions/FollowUpDefinitions'
+import { IDataEmployees } from '../../shared/data_definitions/EmployeeDefinitions'
+import { IDataFollowUps } from '../../shared/data_definitions/FollowUpDefinitions'
 import {
     IDataMomentum,
-    IDataNotesLoad,
-    IDataStatusAndGoalsLoad,
-    IDataStretchLoad,
+    IDataNotes,
+    IDataStatusAndGoals,
+    IDataStatusesAndGoals,
+    IDataStretchAnswers,
 } from '../../shared/data_definitions/GlobalDefinitions'
-import { IDataSelectedEmployee } from '../../shared/data_definitions/SelectedEmployeeDefinitions'
-import { IDataUserScopedSettings } from '../../shared/data_definitions/SettingsDefinitions'
-import { SettingsStore } from '../stores/SettingsStore'
+import {
+    IDataSelectedEmployee,
+    IDataSelectedEmployees,
+} from '../../shared/data_definitions/SelectedEmployeeDefinitions'
+import { IDataSettings } from '../../shared/data_definitions/SettingsDefinitions'
 import { IPersistenceProvider } from './IPersistenceProvider'
+import { openDB, deleteDB, wrap, unwrap, IDBPDatabase } from 'idb'
+
+const NOTES_STORE_NAME = 'notes'
+const STRETCH_STORE_NAME = 'stretch'
+const STATUS_STORE_NAME = 'status'
+const FOLLOWUPS_STORE_NAME = 'followups'
+const SELECTED_EMPLOYEE_STORE_NAME = 'selected'
+const EMPLOYEE_STORE_NAME = 'employees'
+const SETTINGS_STORE_NAME = 'settings'
+
+interface momentumDB {
+    NOTES_STORE_NAME: {
+        key: string
+        value: IDataNotes
+    }
+    STRETCH_STORE_NAME: {
+        key: string
+        value: IDataStretchAnswers
+    }
+    STATUS_STORE_NAME: {
+        key: string
+        value: IDataStatusAndGoals
+    }
+    FOLLOWUPS_STORE_NAME: {
+        key: string
+        value: IDataFollowUps
+    }
+    SELECTED_EMPLOYEE_STORE_NAME: {
+        key: string
+        value: IDataSelectedEmployees
+    }
+    EMPLOYEE_STORE_NAME: {
+        key: string
+        value: IDataEmployees
+    }
+    SETTINGS_STORE_NAME: {
+        key: string
+        value: IDataSettings
+    }
+}
 
 export class LocalPersistenceProvider implements IPersistenceProvider {
     private _userId: string
+    private _DBNAME: string
+    private _DBVERSION: number
 
     constructor(userId: string) {
         this._userId = userId
+        this._DBNAME = 'momentum'
+        this._DBVERSION = 1
     }
 
     private collateLoadData(key: string) {
@@ -35,73 +81,88 @@ export class LocalPersistenceProvider implements IPersistenceProvider {
         return retval
     }
 
-    createNewUser(
-        username: string,
-        password: string,
-        first: string,
-        last: string,
-        moniker: string
-    ): Promise<string> {
-        console.log("New test user 'created'")
-        return Promise.resolve('user created')
+    async openDatabase(): Promise<IDBPDatabase<momentumDB>> {
+        return openDB<momentumDB>(this._DBNAME, this._DBVERSION, {
+            upgrade(db) {
+                db.createObjectStore(NOTES_STORE_NAME)
+                db.createObjectStore(STRETCH_STORE_NAME)
+                db.createObjectStore(STATUS_STORE_NAME)
+                db.createObjectStore(FOLLOWUPS_STORE_NAME)
+                db.createObjectStore(SELECTED_EMPLOYEE_STORE_NAME)
+                db.createObjectStore(EMPLOYEE_STORE_NAME)
+                db.createObjectStore(SETTINGS_STORE_NAME)
+            },
+        })
     }
-    getNotesData(): IDataNotesLoad {
-        return this.collateLoadData('_notes')
-    }
-    getStretchData(): IDataStretchLoad {
-        return this.collateLoadData('_stretchAnswers')
-    }
-    getStatusAndGoalData(): IDataStatusAndGoalsLoad {
-        return this.collateLoadData('_statusAndGoals')
-    }
-    getMomentumData(): IDataMomentum {
-        return valueTestData[this._userId]
-    }
-    getEmployeeData(): IDataAllEmployees {
-        return employeeTestData[this._userId]
-    }
-    getFollowUpData(): IDataAllEmployeeFollowUp {
-        return followUpTestData[this._userId]
-    }
-    getSettingsData(): IDataUserScopedSettings {
-        let values = settingsTestData['values'][this._userId]
 
-        if (!values) {
-            values = SettingsStore.getDefaultValues()
-        }
-        return {
-            entries: settingsTestData['entries'],
-            values,
-        }
+    async initDatabase(): Promise<string> {
+        return this.openDatabase()
+            .then(() => Promise.resolve('indexeddb initialized'))
+            .catch((e) => Promise.reject(e))
     }
-    getSelectedEmployeeData(): IDataSelectedEmployee {
-        return TestSelectedEmployeeData[this._userId]
+
+    getNotesData(): Promise<IDataNotes | string> {
+        return Promise.resolve(this.collateLoadData('_notes'))
     }
-    writeNotesData(noteData: IDataNotesLoad) {
+    getStretchData(): Promise<IDataStretchAnswers | string> {
+        return Promise.resolve(this.collateLoadData('_stretchAnswers'))
+    }
+    getStatusAndGoalData(): Promise<IDataStatusesAndGoals | string> {
+        return Promise.resolve(this.collateLoadData('_statusAndGoals'))
+    }
+    getMomentumData(): Promise<IDataMomentum | string> {
+        return Promise.resolve(valueTestData[this._userId])
+    }
+    getEmployeeData(): Promise<IDataEmployees | string> {
+        return Promise.resolve(employeeTestData[this._userId])
+    }
+    getFollowUpData(): Promise<IDataFollowUps | string> {
+        return Promise.resolve(followUpTestData[this._userId])
+    }
+    async getSettingsData(): Promise<IDataSettings | string> {
+        const db = await this.openDatabase()
+
+        return db
+            .get(SETTINGS_STORE_NAME, this._userId)
+            .then((result) => Promise.resolve(result))
+            .catch((e) => Promise.reject(e))
+    }
+    getSelectedEmployeeData(): Promise<IDataSelectedEmployee | string> {
+        return Promise.resolve(TestSelectedEmployeeData[this._userId])
+    }
+    writeNotesData(noteData: IDataNotes): Promise<string> {
         console.log('\tWRITE:  << note >> data:  ', noteData)
         return Promise.resolve('save successful')
     }
-    writeStretchData(stretchData: IDataStretchLoad) {
+    writeStretchData(stretchData: IDataStretchAnswers): Promise<string> {
         console.log('\tWRITE:  << stretch >> data:  ', stretchData)
         return Promise.resolve('save successful')
     }
-    writeStatusAndGoalData(statusAndGoalData: IDataStatusAndGoalsLoad) {
+    writeStatusAndGoalData(
+        statusAndGoalData: IDataStatusesAndGoals
+    ): Promise<string> {
         console.log('\tWRITE:  << status&goal >> data:  ', statusAndGoalData)
         return Promise.resolve('save successful')
     }
-    writeEmployeeData(employeeData: IDataAllEmployees) {
+    writeEmployeeData(employeeData: IDataEmployees): Promise<string> {
         console.log('\tWRITE:  << employee >> data:  ', employeeData)
         return Promise.resolve('save successful')
     }
-    writeFollowUpData(followUpData: IDataAllEmployeeFollowUp) {
+    writeFollowUpData(followUpData: IDataFollowUps): Promise<string> {
         console.log('\tWRITE:  << Followup >> data:  ', followUpData)
         return Promise.resolve('save successful')
     }
-    writeSettingsData(settingsData: IDataUserScopedSettings) {
-        console.log('\tWRITE:  << settings >> data:  ', settingsData)
-        return Promise.resolve('save successful')
+    async writeSettingsData(settingsData: IDataSettings): Promise<string> {
+        const db = await this.openDatabase()
+
+        return db
+            .put(SETTINGS_STORE_NAME, settingsData, this._userId)
+            .then(() => Promise.resolve('settings saved'))
+            .catch((e) => Promise.reject(e))
     }
-    writeSelectedEmployeeData(selectedEmployee: IDataSelectedEmployee) {
+    writeSelectedEmployeeData(
+        selectedEmployee: IDataSelectedEmployee
+    ): Promise<string> {
         console.log(
             '\tWRITE:  << selected Employee >>  data:  ',
             selectedEmployee

@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import App from '../client/App'
+//import App from '../client/App'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { RootStoreProvider } from '../client/components/RootStoreProvider'
 import { customTheme } from '../client/theme/theme'
@@ -10,9 +10,7 @@ test('renders learn react link', () => {
     render(
         <React.StrictMode>
             <ChakraProvider theme={theme}>
-                <RootStoreProvider>
-                    <App />
-                </RootStoreProvider>
+                <RootStoreProvider>{/* <App /> */}</RootStoreProvider>
             </ChakraProvider>
         </React.StrictMode>
     )

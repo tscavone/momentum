@@ -41,7 +41,7 @@ export class StatusAndGoals extends TemporalObject {
     //this is the first instance of the temporal collection in which we instantiate them
     //as an empty array
     static instantiate(
-        statusAndGoalsHistory: TemporalCollection<StatusAndGoals>
+        statusAndGoalsHistory?: TemporalCollection<StatusAndGoals>
     ) {
         let newStatusAndGoals = new StatusAndGoals()
 

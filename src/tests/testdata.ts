@@ -1,8 +1,8 @@
 import { IDataMultiuserTest } from '../shared/data_definitions/GlobalDefinitions'
-import { IDataSettings } from '../shared/data_definitions/SettingsDefinitions'
+import { IDataTestSettings } from '../shared/data_definitions/SettingsDefinitions'
 import { IDataEmployeeDetails } from '../shared/data_definitions/EmployeeDefinitions'
 import { IDataAuthedUser } from '../shared/data_definitions/AuthedUserDefinitions'
-import { IDataAllEmployeeSelections } from '../shared/data_definitions/SelectedEmployeeDefinitions'
+import { IDataSelectedEmployees } from '../shared/data_definitions/SelectedEmployeeDefinitions'
 import { IDataFollowUpAllUsers } from '../shared/data_definitions/FollowUpDefinitions'
 
 //test global business logic data
@@ -279,7 +279,7 @@ export const valueTestData: IDataMultiuserTest = {
 }
 
 //test settings data
-export const settingsTestData: IDataSettings = {
+export const settingsTestData: IDataTestSettings = {
     entries: [
         {
             _id: '1100',
@@ -572,7 +572,7 @@ export const TestAuthedUserData: IDataAuthedUser = {
 }
 
 //test user selction
-export const TestSelectedEmployeeData: IDataAllEmployeeSelections = {
+export const TestSelectedEmployeeData: IDataSelectedEmployees = {
     abcdef: { _selectedId: '1234' },
     uvwxyz: { _selectedId: '9876' },
 }

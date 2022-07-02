@@ -1,18 +1,26 @@
 //
 
-import { Container } from '@chakra-ui/react'
+import {
+    Avatar,
+    Box,
+    Center,
+    Container,
+    Heading,
+    Stack,
+    useColorModeValue,
+    Text,
+} from '@chakra-ui/react'
+import { FiEdit } from 'react-icons/fi'
 import { Note } from '../../value_objects/Note'
+import { ReportContainer } from './ReportContainer'
 
-// a component to display a Note in the report drawer
 export const NoteReport = ({ note }: { note: Note }) => {
     return (
-        <Container
-            p={5}
-            shadow="md"
-            borderWidth="1px"
-            w={[250, 500]}
-            borderRadius="md"
-            dangerouslySetInnerHTML={{ __html: note.text }}
-        ></Container>
+        <ReportContainer reportName="note" iconName="FiEdit">
+            <Text
+                color={'gray.900'}
+                dangerouslySetInnerHTML={{ __html: note.text }}
+            ></Text>
+        </ReportContainer>
     )
 }

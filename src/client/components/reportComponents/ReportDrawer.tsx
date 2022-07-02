@@ -136,7 +136,7 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
         dateReportComponentMap.forEach((reportComponents, dateString) => {
             dateReportComponents.push(
                 <VStack alignItems={'flex-start'}>
-                    <Box>
+                    <Box mx={-5}>
                         <Tag
                             size={'lg'}
                             key={'lg'}

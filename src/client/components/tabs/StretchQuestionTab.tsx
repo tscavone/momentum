@@ -194,23 +194,24 @@ export const StretchQuesitonTab = observer(() => {
 
     return (
         <TabPanelContainer title="stretch questions" helpText="" tag="stretch">
-            <Select
-                w={[250, 500, 750]}
-                value={(function () {
-                    return selectedQuestionStore.selectedQuestionId
-                })()}
-                placeholder="Select a stretch question"
-                onChange={(event) => {
-                    selectedQuestionStore.selectedQuestionId =
-                        event.target.value
+            <Box w={[250, 500, 750]} mb={4}>
+                <Select
+                    value={(function () {
+                        return selectedQuestionStore.selectedQuestionId
+                    })()}
+                    placeholder="Select a stretch question"
+                    onChange={(event) => {
+                        selectedQuestionStore.selectedQuestionId =
+                            event.target.value
 
-                    stretchAnswerStore.getCurrent(
-                        selectedEmployeeStore.selectedId
-                    ).questionId.id = event.target.value
-                }}
-            >
-                {populateStretchQuestions()}
-            </Select>
+                        stretchAnswerStore.getCurrent(
+                            selectedEmployeeStore.selectedId
+                        ).questionId.id = event.target.value
+                    }}
+                >
+                    {populateStretchQuestions()}
+                </Select>
+            </Box>
             <Box w={[250, 500, 750]}>
                 <Textarea
                     colorScheme={'green'}

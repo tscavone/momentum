@@ -15,7 +15,7 @@ const LocalStorageValue = {
 const ServerStorageValue = {
     _entryId: '1100',
     _id: new Id().id,
-    _value: 'local',
+    _value: 'server',
 }
 
 const NewUserSettingsEntries = [

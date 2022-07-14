@@ -33,4 +33,5 @@ export interface LoginPayload {
     userId: string
     token: string
     storage: string
+    needsInit: boolean
 }

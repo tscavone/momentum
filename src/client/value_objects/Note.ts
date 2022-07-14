@@ -26,6 +26,7 @@ export class Note extends TemporalObject {
         return this._text
     }
     public set text(value: string) {
+        console.log('setting text: ', value)
         this._text = value
     }
 
@@ -33,7 +34,11 @@ export class Note extends TemporalObject {
     //public methods
     //
     isNewlyMinted(): boolean {
-        return this.text === null
+        return (
+            this.text === null ||
+            this.text === '<p></p>' ||
+            this.text == '<p></p><p></p>'
+        )
     }
 
     public static fromJSON(jsonObj: IDataNote): Note {

@@ -20,6 +20,7 @@ const HOTKEYS: { [hotkey: string]: string } = {
 }
 
 export interface RichTextBlockProps {
+    initializationCounter: number
     initialValue?: any
     readOnly: any
     updateCurrent: any
@@ -50,7 +51,13 @@ export const serialize = (node: any) => {
 }
 
 export const RichTextBlock: React.FC<RichTextBlockProps> = observer(
-    ({ initialValue, readOnly, updateCurrent, renderDependencies }) => {
+    ({
+        initializationCounter,
+        initialValue,
+        readOnly,
+        updateCurrent,
+        renderDependencies,
+    }) => {
         const defaultInitialValue = [
             {
                 type: 'paragraph',
@@ -73,6 +80,9 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = observer(
         renderDependencies =
             typeof renderDependencies === 'undefined' ? [] : renderDependencies
         useEffect(() => {
+            if (initializationCounter === 1) {
+                return
+            }
             Transforms.delete(editor, {
                 at: {
                     anchor: Editor.start(editor, []),

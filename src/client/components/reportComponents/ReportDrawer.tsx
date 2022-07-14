@@ -214,7 +214,11 @@ export const ReportDrawer = observer(({ isOpen, onOpen, onClose }) => {
             <DrawerContent>
                 <DrawerCloseButton />
                 <DrawerHeader>
-                    <Center>{` ${selectedEmployee.first}'s Report `}</Center>
+                    {selectedEmployee ? (
+                        <Center>{` ${selectedEmployee.first}'s Report `}</Center>
+                    ) : (
+                        <></>
+                    )}
                     <Divider orientation="horizontal" />
                     <HStack>
                         <Box>

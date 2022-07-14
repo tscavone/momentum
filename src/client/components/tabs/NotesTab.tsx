@@ -15,12 +15,14 @@ import { Box, Button, Checkbox, Flex, Spacer, useToast } from '@chakra-ui/react'
 import { Note } from '../../value_objects/Note'
 import { observer } from 'mobx-react'
 import { TabPanelContainer } from './TabPanelContainer'
+import { useState } from 'react'
 
 export const NotesTab = observer(() => {
     const noteStore = useNoteStore()
     const selectedEmployeeStore = useSelectedEmployeeStore()
     const currentDateStore = useCurrentDateStore()
     const toast = useToast()
+    const [counter, setCounter] = useState<number>(1)
 
     const updateCurrentNote = (newValue) => {
         let newNote = new Note()
@@ -40,14 +42,15 @@ export const NotesTab = observer(() => {
                 currentDateStore.date ? currentDateStore.date : new Date(),
                 new Note()
             )
-            .then((successfulMessage) =>
+            .then((successfulMessage) => {
+                setCounter(counter + 1)
                 toast({
                     title: successfulMessage,
                     status: 'success',
                     duration: 2000,
                     isClosable: true,
                 })
-            )
+            })
             .catch((failureMessage) =>
                 toast({
                     title: 'save failed',
@@ -59,27 +62,14 @@ export const NotesTab = observer(() => {
             )
     }
 
-    const getDeserialized = () => {
-        let currentNote = noteStore.getCurrent(
-            selectedEmployeeStore.selectedId
-        ) as Note
-
-        if (currentNote?.isNewlyMinted()) return
-
-        var parser = new DOMParser()
-        var el = parser.parseFromString(currentNote.text, 'text/html')
-        let deserialized = deserialize(el.body)
-
-        return deserialized
-    }
-
     return (
         <TabPanelContainer title="notes" helpText="" tag="notes">
             <Box w={[250, 500, 750]}>
                 <RichTextBlock
-                    initialValue={getDeserialized()}
+                    initializationCounter={counter}
                     readOnly={false}
                     updateCurrent={updateCurrentNote}
+                    renderDependencies={[counter]}
                 />
                 <Flex
                     alignItems={'center'}

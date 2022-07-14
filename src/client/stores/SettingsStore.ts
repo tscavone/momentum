@@ -128,7 +128,7 @@ export class SettingsStore implements IStore, IWriteable {
         throw `deleteValue: value not found to be deleted: ${idStr}`
     }
 
-    async initializeNewUser(storage: string) {
+    async initializeNewUser(storage: string): Promise<string> {
         if (storage === 'local') {
             this.loadData(NewUserLocalStorageSettings)
             return this.write()

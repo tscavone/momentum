@@ -9,7 +9,7 @@ import { AuthedUserStore } from './AuthedUserStore'
 import { StatusAndGoalsStore } from './StatusAndGoalsStore'
 import { FollowUpStore } from './FollowUpStore'
 import { PersistenceProviderFactory } from '../persistence/PersistenceProviderFactory'
-import { IDataUser } from '../../shared/data_definitions/AuthedUserDefinitions'
+import { makeAutoObservable } from 'mobx'
 
 //const UserData
 export class RootStore {
@@ -23,8 +23,10 @@ export class RootStore {
     _noteStore: NoteStore
     _stretchAnswerStore: StretchAnswerStore
     _statusAndGoalsStore: StatusAndGoalsStore
+    private _loaded: boolean
 
     constructor() {
+        makeAutoObservable(this)
         this._authedUserStore = new AuthedUserStore()
         this._currentDateStore = new CurrentDateStore()
         this._selectedEmployeeStore = new SelectedEmployeeStore()
@@ -34,10 +36,11 @@ export class RootStore {
         this._stretchAnswerStore = new StretchAnswerStore()
         this._statusAndGoalsStore = new StatusAndGoalsStore()
         this._followUpStore = new FollowUpStore()
+        this._loaded = false
     }
 
-    initializeNewUser(user: IDataUser, storage: string) {
-        this._settingsStore.initializeNewUser(storage)
+    initializeNewUser(storage: string): Promise<string> {
+        return this._settingsStore.initializeNewUser(storage)
     }
 
     initialize(userId: Id | string, storage: string) {
@@ -57,13 +60,19 @@ export class RootStore {
         this._statusAndGoalsStore.persistenceProvider = persistenceProvider
         this._followUpStore.persistenceProvider = persistenceProvider
     }
-
+    public get loaded(): boolean {
+        return this._loaded
+    }
+    public set loaded(value: boolean) {
+        this._loaded = value
+    }
     async loadData() {
         await this._settingsStore.load()
         await this._selectedEmployeeStore.load()
         await this.loadTemporalObjects()
         await this._followUpStore.load()
         await this._employeeStore.load()
+        this.loaded = true
     }
 
     private async loadTemporalObjects() {

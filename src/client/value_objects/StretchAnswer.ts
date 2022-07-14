@@ -39,7 +39,11 @@ export class StretchAnswer extends TemporalObject {
             new StretchAnswer(),
             jsonObj
         ) as StretchAnswer
-        answer._questionId = Id.fromString(jsonObj._questionId)
+        answer._questionId =
+            jsonObj._questionId !== 'null'
+                ? Id.fromString(jsonObj._questionId)
+                : null
+
         answer.id = Id.fromString(jsonObj._id)
 
         return answer
@@ -49,7 +53,7 @@ export class StretchAnswer extends TemporalObject {
         return {
             _id: this.id.id,
             _answer: this._answer,
-            _questionId: this._questionId.id,
+            _questionId: this._questionId ? this._questionId.id : 'null',
         }
     }
 

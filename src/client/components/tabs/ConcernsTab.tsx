@@ -6,11 +6,11 @@ import { Box, Button, Flex, useToast } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { TabPanelContainer } from './TabPanelContainer'
 
-export const IssuesTab = observer(() => {
+export const ConcernsTab = observer(() => {
     const selectedEmployeeStore = useSelectedEmployeeStore()
     const toast = useToast()
 
-    const updateIssues = () => {
+    const updateConcerns = () => {
         // noteStore
         //     .save(
         //         selectedEmployeeStore.selectedId,
@@ -37,7 +37,7 @@ export const IssuesTab = observer(() => {
     }
 
     return (
-        <TabPanelContainer title="issues" helpText="" tag="issues">
+        <TabPanelContainer title="concerns" helpText="" tag="concerns">
             <Box w={[250, 500, 750]}>{/* main content */}</Box>
 
             <Flex
@@ -47,7 +47,7 @@ export const IssuesTab = observer(() => {
                 w={[250, 500, 750]}
             >
                 <Box p={2}>
-                    <Button onClick={updateIssues} colorScheme="green">
+                    <Button onClick={updateConcerns} colorScheme="green">
                         save note
                     </Button>
                 </Box>

@@ -32,6 +32,11 @@ export class FollowUpStore implements IStore, IWriteable {
         this._persistenceProvider = value
     }
 
+    public addEmployee(id: Id | string) {
+        const idStr = Id.asString(id)
+
+        this._followUps.set(idStr, [])
+    }
     //we need to set this because unresolvedFollowups needs to be a getter for mobx and they can't take parameters
     public get currentEmployee(): Id {
         return this._currentEmployee

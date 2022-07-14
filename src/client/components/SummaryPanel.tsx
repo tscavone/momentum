@@ -77,7 +77,7 @@ export const SummaryPanel = observer(() => {
                     </GridItem>
                     <GridItem>
                         <FormControl variant={'floating500'}>
-                            <FormLabel>current issues</FormLabel>
+                            <FormLabel>current concerns</FormLabel>
                             <Input
                                 readOnly
                                 color={'white'}

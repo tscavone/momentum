@@ -12,7 +12,6 @@ import {
 } from '../../shared/data_definitions/GlobalDefinitions'
 import { AbstractTemporalStore } from './AbstractTemporalStore'
 import { DateRange } from '../util/DateRange'
-import { DatedObject } from '../util/DatedObject'
 import { dateToString } from '../../shared/utils'
 
 export class NoteStore extends AbstractTemporalStore<Note> {
@@ -42,7 +41,7 @@ export class NoteStore extends AbstractTemporalStore<Note> {
     getNoteSummary(employeeId: string): string {
         let status = ''
         const employeeCollection = this.getCollectionForEmployee(employeeId)
-        if (employeeCollection) {
+        if (employeeCollection && employeeCollection.getLatestSaved()) {
             status = employeeCollection.getLatestSaved().text
         }
         return this.summarize([status])

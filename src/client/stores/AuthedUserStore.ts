@@ -1,9 +1,7 @@
 // The store that contains the selected employee at the global level
 //
 import { makeAutoObservable } from 'mobx'
-import { IDataAuthedUser } from '../../shared/data_definitions/AuthedUserDefinitions'
 import { Id } from '../util/Id'
-import { IStore } from './IStore'
 
 export class AuthedUserStore {
     //
@@ -11,15 +9,16 @@ export class AuthedUserStore {
     //
     private _userId: Id
     private _token: string
+    private _needsInit: boolean
 
     //
     //constructor
     //
     constructor() {
+        makeAutoObservable(this)
         this._userId = null
         this._token = null
-
-        makeAutoObservable(this)
+        this._needsInit = false
     }
 
     public get userId(): Id {
@@ -34,7 +33,12 @@ export class AuthedUserStore {
     public set token(value: string) {
         this._token = value
     }
-
+    public get needsInit(): boolean {
+        return this._needsInit
+    }
+    public set needsInit(value: boolean) {
+        this._needsInit = value
+    }
     public logout(): void {
         this._userId = null
         this._token = null

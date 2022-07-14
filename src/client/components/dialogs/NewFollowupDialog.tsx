@@ -43,7 +43,7 @@ export const NewFollowUpDialog = ({
             .add(text, checked ? null : currentEmployee.selectedId)
             .then(() => {
                 toast({
-                    title: 'followup added',
+                    title: 'follow up added',
                     status: 'success',
                     duration: 2000,
                     isClosable: true,

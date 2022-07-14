@@ -1,13 +1,6 @@
-import {
-    employeeTestData,
-    followUpTestData,
-    TestSelectedEmployeeData,
-    valueTestData,
-} from '../../tests/testdata'
 import { IDataEmployees } from '../../shared/data_definitions/EmployeeDefinitions'
 import { IDataFollowUps } from '../../shared/data_definitions/FollowUpDefinitions'
 import {
-    IDataMomentum,
     IDataNotes,
     IDataStatusAndGoals,
     IDataStatusesAndGoals,
@@ -19,7 +12,7 @@ import {
 } from '../../shared/data_definitions/SelectedEmployeeDefinitions'
 import { IDataSettings } from '../../shared/data_definitions/SettingsDefinitions'
 import { IPersistenceProvider } from './IPersistenceProvider'
-import { openDB, deleteDB, wrap, unwrap, IDBPDatabase } from 'idb'
+import { openDB, IDBPDatabase } from 'idb'
 
 const NOTES_STORE_NAME = 'notes'
 const STRETCH_STORE_NAME = 'stretch'
@@ -71,16 +64,6 @@ export class LocalPersistenceProvider implements IPersistenceProvider {
         this._DBVERSION = 1
     }
 
-    private collateLoadData(key: string) {
-        let retval = {}
-        const userTestData = valueTestData[this._userId]
-        for (const employeeId in userTestData) {
-            retval[employeeId] = userTestData[employeeId][key]
-        }
-
-        return retval
-    }
-
     async openDatabase(): Promise<IDBPDatabase<momentumDB>> {
         return openDB<momentumDB>(this._DBNAME, this._DBVERSION, {
             upgrade(db) {
@@ -101,72 +84,100 @@ export class LocalPersistenceProvider implements IPersistenceProvider {
             .catch((e) => Promise.reject(e))
     }
 
-    getNotesData(): Promise<IDataNotes | string> {
-        return Promise.resolve(this.collateLoadData('_notes'))
-    }
-    getStretchData(): Promise<IDataStretchAnswers | string> {
-        return Promise.resolve(this.collateLoadData('_stretchAnswers'))
-    }
-    getStatusAndGoalData(): Promise<IDataStatusesAndGoals | string> {
-        return Promise.resolve(this.collateLoadData('_statusAndGoals'))
-    }
-    getMomentumData(): Promise<IDataMomentum | string> {
-        return Promise.resolve(valueTestData[this._userId])
-    }
-    getEmployeeData(): Promise<IDataEmployees | string> {
-        return Promise.resolve(employeeTestData[this._userId])
-    }
-    getFollowUpData(): Promise<IDataFollowUps | string> {
-        return Promise.resolve(followUpTestData[this._userId])
-    }
-    async getSettingsData(): Promise<IDataSettings | string> {
+    private async writeData(
+        storeName: string,
+        data: object,
+        successMessage: string
+    ): Promise<string> {
         const db = await this.openDatabase()
 
         return db
-            .get(SETTINGS_STORE_NAME, this._userId)
+            .put(storeName, data, this._userId)
+            .then(() => Promise.resolve(successMessage))
+            .catch((e) => Promise.reject(e))
+    }
+
+    private async readData(storeName: string): Promise<object> {
+        const db = await this.openDatabase()
+
+        return db
+            .get(storeName, this._userId)
             .then((result) => Promise.resolve(result))
             .catch((e) => Promise.reject(e))
     }
-    getSelectedEmployeeData(): Promise<IDataSelectedEmployee | string> {
-        return Promise.resolve(TestSelectedEmployeeData[this._userId])
+
+    getNotesData(): Promise<IDataNotes> {
+        return this.readData(NOTES_STORE_NAME) as Promise<IDataNotes>
+    }
+    getStretchData(): Promise<IDataStretchAnswers> {
+        return this.readData(STRETCH_STORE_NAME) as Promise<IDataStretchAnswers>
+    }
+    getStatusAndGoalData(): Promise<IDataStatusesAndGoals> {
+        return this.readData(
+            STATUS_STORE_NAME
+        ) as Promise<IDataStatusesAndGoals>
+    }
+    getEmployeeData(): Promise<IDataEmployees> {
+        return this.readData(EMPLOYEE_STORE_NAME) as Promise<IDataEmployees>
+    }
+    getFollowUpData(): Promise<IDataFollowUps> {
+        return this.readData(FOLLOWUPS_STORE_NAME) as Promise<IDataFollowUps>
+    }
+    async getSettingsData(): Promise<IDataSettings> {
+        return this.readData(SETTINGS_STORE_NAME) as Promise<IDataSettings>
+    }
+    getSelectedEmployeeData(): Promise<IDataSelectedEmployee> {
+        return this.readData(
+            SELECTED_EMPLOYEE_STORE_NAME
+        ) as Promise<IDataSelectedEmployee>
     }
     writeNotesData(noteData: IDataNotes): Promise<string> {
-        console.log('\tWRITE:  << note >> data:  ', noteData)
-        return Promise.resolve('save successful')
+        return this.writeData(NOTES_STORE_NAME, noteData, 'notes data saved')
     }
     writeStretchData(stretchData: IDataStretchAnswers): Promise<string> {
-        console.log('\tWRITE:  << stretch >> data:  ', stretchData)
-        return Promise.resolve('save successful')
+        return this.writeData(
+            STRETCH_STORE_NAME,
+            stretchData,
+            'stretch data saved'
+        )
     }
     writeStatusAndGoalData(
         statusAndGoalData: IDataStatusesAndGoals
     ): Promise<string> {
-        console.log('\tWRITE:  << status&goal >> data:  ', statusAndGoalData)
-        return Promise.resolve('save successful')
+        return this.writeData(
+            STATUS_STORE_NAME,
+            statusAndGoalData,
+            'status and goals saved'
+        )
     }
     writeEmployeeData(employeeData: IDataEmployees): Promise<string> {
-        console.log('\tWRITE:  << employee >> data:  ', employeeData)
-        return Promise.resolve('save successful')
+        return this.writeData(
+            EMPLOYEE_STORE_NAME,
+            employeeData,
+            'employee data saved'
+        )
     }
     writeFollowUpData(followUpData: IDataFollowUps): Promise<string> {
-        console.log('\tWRITE:  << Followup >> data:  ', followUpData)
-        return Promise.resolve('save successful')
+        return this.writeData(
+            FOLLOWUPS_STORE_NAME,
+            followUpData,
+            'follow ups saved'
+        )
     }
-    async writeSettingsData(settingsData: IDataSettings): Promise<string> {
-        const db = await this.openDatabase()
-
-        return db
-            .put(SETTINGS_STORE_NAME, settingsData, this._userId)
-            .then(() => Promise.resolve('settings saved'))
-            .catch((e) => Promise.reject(e))
+    writeSettingsData(settingsData: IDataSettings): Promise<string> {
+        return this.writeData(
+            SETTINGS_STORE_NAME,
+            settingsData,
+            'settings saved'
+        )
     }
     writeSelectedEmployeeData(
         selectedEmployee: IDataSelectedEmployee
     ): Promise<string> {
-        console.log(
-            '\tWRITE:  << selected Employee >>  data:  ',
-            selectedEmployee
+        return this.writeData(
+            SELECTED_EMPLOYEE_STORE_NAME,
+            selectedEmployee,
+            'selected employee saved'
         )
-        return Promise.resolve('save successful')
     }
 }

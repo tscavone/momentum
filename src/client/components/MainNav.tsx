@@ -21,10 +21,6 @@ import {
     MenuList,
     Select,
     Button,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalBody,
     Heading,
     Spinner,
 } from '@chakra-ui/react'
@@ -64,33 +60,33 @@ const LinkItems: Array<LinkItemProps> = [
 ]
 
 export const MainNav = observer(({ children }: { children: ReactNode }) => {
+    const authedUserStore = useAuthedUserStore()
+
+    return (
+        <>
+            {authedUserStore.needsInit ? (
+                <InitEmployees />
+            ) : (
+                <MainContainer>{children} </MainContainer>
+            )}
+        </>
+    )
+})
+
+const MainContainer = observer(({ children }: { children: ReactNode }) => {
     const rootStore = useRootStore()
-    const { isOpen, onOpen, onClose } = useDisclosure()
     useEffect(() => {
-        console.log('calling use effect')
-        onOpen()
-        console.log('on open called')
-        rootStore
-            .loadData()
-            .then(() => {
-                onClose()
-                console.log('On close called')
-            })
-            .catch((e) => console.error('Failed to load data', e))
+        rootStore.loadData()
     }, [])
-
-    const employeeStore = useEmployeeStore()
-
     const {
         isOpen: isSidebarOpen,
         onOpen: onSidebarOpen,
         onClose: onSidebarClose,
     } = useDisclosure()
+
     return (
         <>
-            {employeeStore.numEmployees === 0 ? (
-                <InitEmployees />
-            ) : (
+            {rootStore.loaded ? (
                 <Box minH="90vh">
                     <SidebarContent
                         onSidebarClose={() => onSidebarClose}
@@ -106,16 +102,12 @@ export const MainNav = observer(({ children }: { children: ReactNode }) => {
                     />
                     <Box ml={{ base: 0, md: 60 }}>{children}</Box>
                 </Box>
+            ) : (
+                <>
+                    <Heading>Loading Employee Data</Heading>
+                    <Spinner></Spinner>
+                </>
             )}
-            <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent maxW="600px">
-                    <ModalBody>
-                        <Heading>Loading Employee Data</Heading>
-                        <Spinner></Spinner>
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
         </>
     )
 })
@@ -205,6 +197,7 @@ const SidebarContent = ({ onSidebarClose, ...rest }: SidebarProps) => {
                 origSettings={settingsStore.settings}
             />
             <NewEmployeeDialog
+                header="enter new employee information"
                 isDialogOpen={isNewEmployeeOpen}
                 onDialogClosed={onNewEmployeeClosed}
             />

@@ -19,7 +19,7 @@ export class SelectedEmployeeStore implements IStore, IWriteable {
     //
     constructor() {
         makeAutoObservable(this)
-        this._selectedId = new Id()
+        this._selectedId = null
         this._persistenceProvider = null
     }
 
@@ -36,7 +36,7 @@ export class SelectedEmployeeStore implements IStore, IWriteable {
     }
 
     get selectedId(): string {
-        return this._selectedId.id
+        return this._selectedId?.id
     }
 
     //

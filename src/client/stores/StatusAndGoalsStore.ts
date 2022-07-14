@@ -47,7 +47,7 @@ export class StatusAndGoalsStore extends AbstractTemporalStore<StatusAndGoals> {
     getSummarizedStatus(employeeId: string): string {
         let status = ''
         const employeeCollection = this.getCollectionForEmployee(employeeId)
-        if (employeeCollection) {
+        if (employeeCollection && employeeCollection.getLatestSaved()) {
             status = employeeCollection.getLatestSaved().status
         }
 

@@ -4,7 +4,6 @@ import {
     FiCheckSquare,
     FiEdit,
     FiExternalLink,
-    FiInfo,
     FiMessageCircle,
     FiClock,
     FiUser,
@@ -22,7 +21,7 @@ import { FiAlertTriangle } from 'react-icons/fi'
 import { DetailsTab } from './DetailsTab'
 import { FollowUpsTab } from './FollowUpsTab'
 import { IntegrationTab } from './IntegrationTab'
-import { IssuesTab } from './IssuesTab'
+import { ConcernsTab } from './ConcernsTab'
 
 export const TabContainer = observer(() => {
     const noteStore = useNoteStore()
@@ -43,15 +42,15 @@ export const TabContainer = observer(() => {
             <TabList>
                 <Tab>
                     <FiClock style={iconStyle} />
-                    Follow Ups
+                    follow ups
                 </Tab>
                 <Tab>
                     <FiAlertTriangle style={iconStyle} />
-                    Issues
+                    concerns
                 </Tab>
                 <TabButton
                     infoStore={statusAndGoalsStore}
-                    name={'goals'}
+                    name={'status & goals'}
                     icon={<FiCheckSquare style={iconStyle} />}
                 />
                 <TabButton
@@ -66,11 +65,11 @@ export const TabContainer = observer(() => {
                 />
                 <Tab>
                     <FiExternalLink style={iconStyle} />
-                    Integration
+                    integration
                 </Tab>
                 <Tab>
                     <FiUser style={iconStyle} />
-                    Details
+                    details
                 </Tab>
             </TabList>
             <TabPanels>
@@ -78,7 +77,7 @@ export const TabContainer = observer(() => {
                     <FollowUpsTab />
                 </TabPanel>
                 <TabPanel>
-                    <IssuesTab />
+                    <ConcernsTab />
                 </TabPanel>
                 <TabPanel>
                     <GoalsTab />

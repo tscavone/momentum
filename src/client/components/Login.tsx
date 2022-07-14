@@ -81,19 +81,6 @@ export const Login = () => {
         (registerPassword === '' && registerConfirmPassword) ||
         registerPassword === registerConfirmPassword
 
-    // useEffect(() => {
-    //     var input =
-    //         document.getElementById('loginPassword') ||
-    //         document.getElementById('registerPassword')
-
-    //     input.addEventListener('keypress', function (event) {
-    //         if (event.key === 'Enter') {
-    //             event.preventDefault()
-    //             document.getElementById('submit').click()
-    //         }
-    //     })
-    // })
-
     const toast = useToast()
 
     const handleLogin = async (e) => {
@@ -114,6 +101,7 @@ export const Login = () => {
 
         authedUserStore.token = loginPayload.token
         authedUserStore.userId = Id.fromString(loginPayload.userId)
+        authedUserStore.needsInit = loginPayload.needsInit
     }
 
     const handleSignup = async (e) => {
@@ -132,11 +120,17 @@ export const Login = () => {
 
         //let signupPayload: LoginPayload = responseData.payload as LoginPayload
         rootStore.initialize(newUser._id, newUser.storage)
-        rootStore.initializeNewUser(newUser, newUser.storage)
+        await rootStore.initializeNewUser(newUser.storage)
 
         console.log('new user response', responseData)
         return
     }
+
+    // what to do: add 'needInit' to database, set to false on new user
+    //   on login, return value from database then set to true
+    //   on client, trigger InitEmployees on that value (maybe store in authedUserStore?) not #employees
+    //   on first InitEmployee, set it to true
+    //   move load back into mainnav
 
     const getLoginComponent = () => {
         return (

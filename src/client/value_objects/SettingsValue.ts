@@ -37,7 +37,7 @@ export class SettingsValue extends IdentifiedObject {
         let entry = Object.assign(new SettingsValue(), jsonObj) as SettingsValue
         entry._entryId = Id.fromString(jsonObj._entryId)
         entry.id = Id.fromString(jsonObj._id)
-        entry._deleted = Boolean(jsonObj._deleted)
+        entry._deleted = jsonObj._deleted === 'true'
         return entry
     }
 
@@ -46,7 +46,7 @@ export class SettingsValue extends IdentifiedObject {
             _id: this.id.id,
             _entryId: this.entryId.id,
             _value: this.value,
-            _deleted: this.deleted ? 'true' : 'false',
+            _deleted: this.deleted && this.deleted === true ? 'true' : 'false',
         }
     }
 }

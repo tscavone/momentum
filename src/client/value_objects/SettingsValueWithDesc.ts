@@ -18,7 +18,7 @@ export class SettingsValueWithDesc extends SettingsValue {
         ) as SettingsValueWithDesc
         entry.id = Id.fromString(jsonObj._id)
         entry.entryId = Id.fromString(jsonObj._entryId)
-
+        entry.deleted = jsonObj._deleted === 'true'
         return entry
     }
     public get description(): string {
@@ -33,7 +33,7 @@ export class SettingsValueWithDesc extends SettingsValue {
             _id: this.id.id,
             _entryId: this.entryId.id,
             _value: this.value,
-            _deleted: this.deleted ? 'true' : 'false',
+            _deleted: this.deleted && this.deleted === true ? 'true' : 'false',
             _description: this._description,
         }
     }

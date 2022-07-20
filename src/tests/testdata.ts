@@ -17,14 +17,14 @@ export const valueTestData: IDataMultiuserTest = {
                     {
                         _obj: {
                             _id: '8888b',
-                            _text: '<p>Here is the first</p>',
+                            _text: '<p>Lamar is doing great work</p>',
                         },
                         _date: '02/01/2022',
                     },
                     {
                         _obj: {
                             _id: '8888c',
-                            _text: '<p>Here is the second</p>',
+                            _text: '<p>Lamar and I talked for a while about his childhood among other things</p>',
                         },
                         _date: '03/01/2022',
                     },
@@ -35,18 +35,11 @@ export const valueTestData: IDataMultiuserTest = {
                     {
                         _obj: {
                             _id: '9999b',
-                            _answer: 'Games, I love games',
+                            _answer:
+                                'Originally video games, modding and playing them got him into programming. He programmed his first game in basic at age 10',
                             _questionId: '1300-20',
                         },
                         _date: '02/01/2022',
-                    },
-                    {
-                        _obj: {
-                            _id: '9999c',
-                            _answer: 'Here is an answer to a deleted question',
-                            _questionId: '32132148378945231894732',
-                        },
-                        _date: '03/01/2022',
                     },
                 ],
             },
@@ -321,21 +314,35 @@ export const settingsTestData: IDataTestSettings = {
                 _id: '1200-10',
                 _value: 'Associate Software Engineer',
                 _description:
-                    'Somebody just starting out. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
+                    'A new entry into software engineering. Should be able to effectively address targeted, contained tickets within their area of expertise',
             },
             {
                 _entryId: '1200',
                 _id: '1200-20',
                 _value: 'Software Engineer',
                 _description:
-                    'Somebody who has been at it for a while. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
+                    'An engineer that has proven themselves capable at the Associate level and is now ready for larger scoped work. Should be able to step out of comfort zone and engage in more challenging assignments',
             },
             {
                 _entryId: '1200',
                 _id: '1200-30',
+                _value: 'Software Engineer II',
+                _description:
+                    'Having proven themselves capable of more challenging tasks outside their comfort zone, an SE II should be stepping into new roles like mentor, code reviewer, epic groomer, etc',
+            },
+            {
+                _entryId: '1200',
+                _id: '1200-40',
                 _value: 'Senior Software Engineer',
                 _description:
-                    'Should be well versed in a lot of stuff and a good programmer.  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                    'A Senior Engineer capable of taking on complex tasks and completing them with little oversight. Should be able to accurately estimate work and potentially act as Team Lead',
+            },
+            {
+                _entryId: '1200',
+                _id: '1200-40',
+                _value: 'Principle Software Engineer',
+                _description:
+                    'Can address virtually any problem or task in the stack, is an expert in our codebase and can be turned to for guidance on emerging trends in the industry',
             },
             {
                 _entryId: '1300',
@@ -350,36 +357,95 @@ export const settingsTestData: IDataTestSettings = {
             {
                 _entryId: '1300',
                 _id: '1300-30',
-                _value: 'Have you ever eaten Vegemite?',
+                _value: "When do you feel like you're at your best developing? What sets you up for success?",
             },
             {
                 _entryId: '1300',
-                _id: '32132148378945231894732',
-                _value: 'This is a deleted question',
-                _deleted: 'true',
+                _id: '1300-40',
+                _value: 'What part of your day to day job is most energizing? Which is draining?',
+            },
+            {
+                _entryId: '1300',
+                _id: '1300-50',
+                _value: 'What do you wish you could do more or less of?',
+            },
+            {
+                _entryId: '1300',
+                _id: '1300-60',
+                _value: 'Is there a part of the company you would like to learn more about or work with?',
+            },
+            {
+                _entryId: '1300',
+                _id: '1300-70',
+                _value: 'Do you have any side projects at home or here that you are working on or would like to?',
+            },
+            {
+                _entryId: '1300',
+                _id: '1300-80',
+                _value: 'Do you have any side projects at home or here that you are working on or would like to?',
+            },
+            {
+                _entryId: '1300',
+                _id: '1300-90',
+                _value: 'Are you up against any time wasters in your day-to-day? Is there anything we can do to minimize them?',
+            },
+            {
+                _entryId: '1300',
+                _id: '1300-100',
+                _value: 'How do you feel about the amount of feedback you are getting?',
             },
             {
                 _entryId: '1400',
                 _id: '1400-10-1',
-                _value: 'give a presentation',
+                _value: 'give a technical presentation',
                 _deleted: 'false',
             },
             {
                 _entryId: '1400',
                 _id: '1400-10-2',
-                _value: 'take a course',
+                _value: 'coursework for expanded expertise',
                 _deleted: 'false',
             },
             {
                 _entryId: '1400',
                 _id: '1400-10-3',
-                _value: 'plan an outing',
+                _value: 'plan an outing for the team',
                 _deleted: 'false',
             },
             {
                 _entryId: '1400',
                 _id: '1400-10-4',
-                _value: 'read a technical book',
+                _value: 'read a technical book or paper',
+                _deleted: 'false',
+            },
+            {
+                _entryId: '1400',
+                _id: '1400-10-5',
+                _value: 'work on a side project',
+                _deleted: 'false',
+            },
+            {
+                _entryId: '1400',
+                _id: '1400-10-6',
+                _value: 'address tech debt',
+                _deleted: 'false',
+            },
+            {
+                _entryId: '1400',
+                _id: '1400-10-7',
+                _value: 'scrummaster a team',
+                _deleted: 'false',
+            },
+            {
+                _entryId: '1400',
+                _id: '1400-10-8',
+                _value: 'conduct a retrospective',
+                _deleted: 'false',
+            },
+            {
+                _entryId: '1400',
+                _id: '1400-10-5',
+                _value: 'document an aread of expertise',
                 _deleted: 'false',
             },
         ],
@@ -464,37 +530,50 @@ export const employeeTestData: IDataEmployeeDetails = {
     abcdef: {
         '1234': {
             _id: '1234',
-            _first: 'Tom',
-            _last: 'Waits',
+            _first: 'Lamar',
+            _last: 'Smith',
             _email: 'ascavone+1@gmail.com',
             _startDate: '01/01/2022',
-            _position: '1200-10',
-            _skills: [],
+            _position: '1200-30',
+            _skills: [
+                'react',
+                'python',
+                'javascript',
+                'mentoring',
+                'data science',
+            ],
             _interests: ['foosball', 'running'],
-            _college: 'umass',
+            _college: 'MIT',
             _hometown: 'Boston',
             _townOfResidence: 'Cambridge',
-            _birthMonthDay: '',
+            _birthMonthDay: '2/28/22',
             _pets: ['cat: fluffy'],
             _additionalDetails:
-                'Tom is an awesome musician with a sick gravelly voice like an angel with throat cancer',
+                'Lamar has asperations to one day create his own startup',
         },
         '2345': {
             _id: '2345',
-            _first: 'Brandon',
+            _first: 'Nessa',
             _last: 'Flowers',
             _email: 'ascavone+2@gmail.com',
             _startDate: '02/02/2022',
             _position: '1200-20',
-            _skills: [],
+            _skills: [
+                'java',
+                'javascript',
+                'clojure',
+                'lisp',
+                'mentoring',
+                'spring',
+            ],
             _interests: ['music', 'videogames'],
-            _college: 'mit',
+            _college: 'Harvard',
             _hometown: 'Las Vegas',
             _townOfResidence: 'Somerville',
             _birthMonthDay: '08/05/22',
             _pets: ['dog: atom'],
             _additionalDetails:
-                'Brandon writes music like a millenial Bruce Springsteen',
+                'Nessa might like to explore working in Solutions',
         },
     },
     uvwxyz: {
@@ -522,34 +601,39 @@ export const followUpTestData: IDataFollowUpAllUsers = {
         '1234': [
             {
                 _id: '5555',
-                _text: 'Open enrollment',
-                _resolvedDate: '2/2/21',
+                _text: 'open enrollment',
+                _resolvedDate: '',
             },
             {
                 _id: '5556',
-                _text: 'Open enrollment',
+                _text: 'all hands on Friday',
                 _resolvedDate: '',
             },
             {
                 _id: '5557',
-                _text: 'Company Outing - lorem ipsum heres a bunch of text yada yada yad heres a link ',
+                _text: 'company outing - team bowling ',
+                _resolvedDate: '',
+            },
+            {
+                _id: '5558',
+                _text: 'need to take vacation days',
                 _resolvedDate: '',
             },
         ],
         '2345': [
             {
                 _id: '5555-2',
-                _text: 'Open enrollment - user 2',
-                _resolvedDate: '2/2/21',
+                _text: 'open enrollment - user 2',
+                _resolvedDate: '',
             },
             {
                 _id: '5556-2',
-                _text: 'Open enrollment - user 2',
+                _text: 'all hands on Friday - user 2',
                 _resolvedDate: '',
             },
             {
                 _id: '5557-2',
-                _text: 'user 2 - Company Outing - lorem ipsum heres a bunch of text yada yada yad heres a link ',
+                _text: 'company outing -  bowling for the team - user 2 ',
                 _resolvedDate: '',
             },
         ],

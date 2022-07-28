@@ -37,7 +37,11 @@ const DetailsInput = ({
             isRequired={isRequired}
         >
             <FormLabel>{label}</FormLabel>
-            <Input value={value} onChange={handleChange}></Input>
+            <Input
+                id={label.replaceAll(' ', '-')}
+                value={value}
+                onChange={handleChange}
+            ></Input>
             {helperText != '' ? (
                 <FormHelperText>{helperText}</FormHelperText>
             ) : (
@@ -133,6 +137,7 @@ export const DetailsForm = observer(
                     <FormControl style={controlStyle} variant="floating">
                         <FormLabel>email</FormLabel>
                         <Input
+                            id="email"
                             type={'email'}
                             value={email}
                             onChange={(event) => setEmail(event.target.value)}
@@ -142,6 +147,7 @@ export const DetailsForm = observer(
                     <FormControl style={controlStyle} variant="floating">
                         <FormLabel>{'start date'}</FormLabel>
                         <input
+                            id="start-date"
                             style={pickerStyle}
                             type="date"
                             value={
@@ -162,6 +168,7 @@ export const DetailsForm = observer(
                     >
                         <FormLabel>{'position'}</FormLabel>
                         <Select
+                            id="position"
                             placeholder="select a position"
                             value={position ? position.id : undefined}
                             onChange={(event) =>
@@ -188,7 +195,7 @@ export const DetailsForm = observer(
                             )}
                         </Select>
                     </FormControl>
-                    <DetailsInput
+                    {/* <DetailsInput
                         label="skills"
                         value={skills.join(',')}
                         handleChange={(event) =>
@@ -196,7 +203,7 @@ export const DetailsForm = observer(
                         }
                         helperText="comma separated list"
                         isRequired={false}
-                    />
+                    /> */}
                     <DetailsInput
                         label="interests"
                         value={interests.join(',')}
@@ -233,6 +240,7 @@ export const DetailsForm = observer(
                     <FormControl style={controlStyle} variant="floating">
                         <FormLabel>{'birth month/day'}</FormLabel>
                         <input
+                            id="birthday"
                             style={pickerStyle}
                             type="date"
                             value={
@@ -262,6 +270,7 @@ export const DetailsForm = observer(
                     <FormControl style={controlStyle} variant="floating">
                         <FormLabel>{'additional details'}</FormLabel>
                         <Input
+                            id="additional-details"
                             type="text"
                             value={additionalDetails}
                             onChange={(event) =>

@@ -282,6 +282,9 @@ const MobileNav = observer(({ onSidebarOpen, ...rest }: MobileProps) => {
 
         return returnValues
     }
+
+    const logout = () => {}
+
     return (
         <>
             <Flex
@@ -383,7 +386,13 @@ const MobileNav = observer(({ onSidebarOpen, ...rest }: MobileProps) => {
                             >
                                 <MenuItem>profile</MenuItem>
                                 <MenuDivider />
-                                <MenuItem>sign out</MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        authedUserStore.logout()
+                                    }}
+                                >
+                                    sign out
+                                </MenuItem>
                             </MenuList>
                         </Menu>
                     </Box>

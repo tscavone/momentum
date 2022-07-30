@@ -43,10 +43,17 @@ Cypress.Commands.add('login', (username, password) => {
     cy.contains('sign in').click()
 })
 
+Cypress.Commands.add('inputValueContains', (containsText) => {
+    return cy.get(`input[value*="${containsText}"]`)
+})
+
 declare global {
     namespace Cypress {
         interface Chainable {
             login(username: string, password: string): void
+            inputValueContains(
+                containsText: string
+            ): Chainable<JQuery<HTMLElement>>
         }
     }
 }

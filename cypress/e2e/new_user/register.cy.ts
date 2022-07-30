@@ -29,7 +29,7 @@ describe('empty spec', () => {
 
     const username = randomTestString()
     const password = 'password'
-    it('can register a new user', () => {
+    it('can register a new user and create new employee', () => {
         cy.contains('login').click()
 
         const first = randomTestString()
@@ -47,21 +47,40 @@ describe('empty spec', () => {
         cy.contains('created successfully, please login', {
             timeout: 25000,
         }).should('exist')
-    })
 
-    it('newly registered user can then login and create new employee', () => {
         const firstName = 'employee1First'
         const lastName = 'employee1Last'
-        const email = 'employee1email@foo.com'
+        const employeeEmail = 'employee1email@foo.com'
         const position = 'Software Engineer'
-
         cy.login(username, password)
         cy.contains('enter employee', { timeout: 25000 })
         cy.get('#first-name').type(firstName)
         cy.get('#last-name').type(lastName)
-        cy.get('#email').type(email)
+        cy.get('#email').type(employeeEmail)
         cy.get('#position').select(position)
         cy.contains('save details').click()
         cy.contains(`${firstName} ${lastName}`).should('exist')
+    })
+
+    const newFollowUp = 'remind about open enrollment'
+    it('newly registered user can create followups', () => {
+        cy.login(username, password)
+        cy.contains('new follow up', {
+            timeout: 25000,
+        }).click()
+        cy.get('#follow-up').type(newFollowUp)
+        cy.contains('add and close').click()
+        cy.contains('follow ups').click()
+        cy.inputValueContains(newFollowUp).should('exist')
+    })
+
+    it('newly registered users new data persists through logout', () => {
+        cy.login(username, password)
+        cy.contains('follow ups', {
+            timeout: 25000,
+        }).click()
+        cy.inputValueContains(newFollowUp).should('exist')
+        cy.contains('resolve').click()
+        cy.inputValueContains(newFollowUp).should('not.exist')
     })
 })

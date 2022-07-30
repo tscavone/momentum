@@ -52,24 +52,32 @@ export const GoalsTab = observer(() => {
     }
 
     const updateGoals = () => {
+        // ok this is a bit gross. We need 2 'StatusAndGoals' objects - one to set the updated goals on, the 'current', and then save, and then a new one
+        // with the updated goals, but a blank status since we don't want the new 'current' object of the temporal collection having the old status :/
+
         let current = StatusAndGoals.instantiate(
             statusAndGoalStore.getCollectionForEmployee(
                 selectedEmployeeStore.selectedId
             )
         )
-
         current.status = status
         current.goals = goals
         statusAndGoalStore.setCurrent(selectedEmployeeStore.selectedId, current)
+
+        let newCurrent = StatusAndGoals.instantiate(
+            statusAndGoalStore.getCollectionForEmployee(
+                selectedEmployeeStore.selectedId
+            )
+        )
+        newCurrent.status = ''
+
+        //reset status
+        setStatus('')
         statusAndGoalStore
             .save(
                 selectedEmployeeStore.selectedId,
                 currentDateStore.date ? currentDateStore.date : new Date(),
-                StatusAndGoals.instantiate(
-                    statusAndGoalStore.getCollectionForEmployee(
-                        selectedEmployeeStore.selectedId
-                    )
-                )
+                newCurrent
             )
             .then((successfulMessage) =>
                 toast({
@@ -90,9 +98,6 @@ export const GoalsTab = observer(() => {
             )
     }
 
-    const updateExistingGoalProgress = (event) => {
-        console.log(event)
-    }
     const addGoal = () => {
         const newGoals = [...goals]
         let newGoal = new Goal()
@@ -154,14 +159,20 @@ export const GoalsTab = observer(() => {
                                             ).value
                                         }
                                         goal={goal}
-                                        progress={goal.progress}
-                                        details={goal.details}
+                                        origProgress={goal.progress}
+                                        origDetails={goal.details}
                                         updateName={null}
-                                        updateDetails={null}
+                                        updateDetails={(details) => {
+                                            goals.find(
+                                                (g) => g.id.id === goal.id.id
+                                            ).details = details
+                                        }}
                                         updateLink={null}
-                                        updateProgress={
-                                            updateExistingGoalProgress
-                                        }
+                                        updateProgress={(v) => {
+                                            goals.find(
+                                                (g) => g.id.id === goal.id.id
+                                            ).progress = v
+                                        }}
                                     />
                                     <VStack w={100}>
                                         <VStack>
@@ -187,8 +198,8 @@ export const GoalsTab = observer(() => {
                         <GoalComponent
                             goalName={null}
                             goal={null}
-                            details={details}
-                            progress={progress}
+                            origDetails={details}
+                            origProgress={progress}
                             updateName={(e) => setName(e.currentTarget.value)}
                             updateDetails={(e) =>
                                 setDetails(e.currentTarget.value)

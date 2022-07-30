@@ -13,15 +13,15 @@ import {
     Textarea,
     Select,
 } from '@chakra-ui/react'
-import { ChangeEventHandler, Dispatch, SetStateAction } from 'react'
+import { ChangeEventHandler, Dispatch, SetStateAction, useState } from 'react'
 import { Goal } from '../value_objects/Goal'
 import { useSettingsStore } from './RootStoreProvider'
 
 export const GoalComponent = ({
     goalName,
     goal,
-    progress,
-    details,
+    origProgress,
+    origDetails,
     updateName,
     updateDetails,
     updateLink,
@@ -29,14 +29,16 @@ export const GoalComponent = ({
 }: {
     goalName: string | null
     goal: Goal | null
-    progress: number
-    details: string
+    origProgress: number
+    origDetails: string
     updateName: ChangeEventHandler<HTMLInputElement> | null
-    updateDetails: ChangeEventHandler<HTMLTextAreaElement> | null
+    updateDetails: (event) => void | null
     updateLink: Dispatch<SetStateAction<string>> | null
     updateProgress: (event) => void
 }) => {
     const settingsStore = useSettingsStore()
+    const [details, setDetails] = useState<string>(origDetails)
+    const [progress, setProgress] = useState<number>(origProgress)
 
     const populateSelect = () => {
         const goalsSetting = settingsStore.getByEntryName('goals')
@@ -65,8 +67,11 @@ export const GoalComponent = ({
                         id="new goal description"
                         colorScheme={'green'}
                         value={details ? details : ''}
-                        onChange={updateDetails}
-                        isReadOnly={goal ? true : false}
+                        onChange={(e) => {
+                            console.log('details', e.target.value, e)
+                            setDetails(e.target.value)
+                            updateDetails(e.target.value)
+                        }}
                     ></Textarea>
                 </Box>
                 <HStack style={{ marginTop: '10px', marginLeft: '15px' }}>
@@ -77,7 +82,10 @@ export const GoalComponent = ({
                         pl={'15px'}
                         w={'87%'}
                         aria-label="slider-ex-6"
-                        onChange={updateProgress}
+                        onChange={(v) => {
+                            setProgress(v)
+                            updateProgress(v)
+                        }}
                         colorScheme={'green'}
                         value={progress}
                     >

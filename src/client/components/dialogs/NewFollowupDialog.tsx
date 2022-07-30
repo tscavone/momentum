@@ -72,6 +72,7 @@ export const NewFollowUpDialog = ({
                         <HStack>
                             <FormControl colorScheme={'green'}>
                                 <Input
+                                    id="follow-up"
                                     type="text"
                                     placeholder="followup description"
                                     onChange={(e) => setText(e.target.value)}

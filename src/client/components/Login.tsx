@@ -118,7 +118,6 @@ export const Login = () => {
         }
         responseData = await queryServer('signup', newUser)
 
-        //let signupPayload: LoginPayload = responseData.payload as LoginPayload
         rootStore.initialize(newUser._id, newUser.storage)
         await rootStore.initializeNewUser(newUser.storage)
 
@@ -226,10 +225,13 @@ export const Login = () => {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </FormControl>
-                <FormControl id="password" colorScheme={'green'} isRequired>
+                <FormControl
+                    id="registerPassword"
+                    colorScheme={'green'}
+                    isRequired
+                >
                     <FormLabel>password</FormLabel>
                     <Input
-                        id="registerPassword"
                         type="password"
                         onChange={(e) => setRegisterPassword(e.target.value)}
                     />
